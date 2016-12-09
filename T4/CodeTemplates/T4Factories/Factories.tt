@@ -1,0 +1,29 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ include file="VisualStudioAutomationHelper.ttinclude" #>
+<#@ include file="ReuseableFactoryGenerator.ttinclude"#>
+<#@ output extension=".Generated.cs"#>
+
+<#
+//
+// Please edit Configuration.ttinclude to manually determine which factories to create, or simply resort to GenerateT4FactoryAttribute instead.
+//
+
+//
+// Required initialization
+//
+FactoryTemplate.VisualStudioHelper = VisualStudioHelper;
+FactoryTemplate.TextTransformation = this;
+
+//
+// Template instantiation
+//
+var template = new FactoryTemplate();
+
+//
+// Generate a factory for each class marked with GenerateT4FactoryAttribute. Any existing handcrafted factory contracts are preserved.
+//
+template.GenerateFactoriesForAttributedClasses();
+#>
+
+<#@ include file="Configuration.ttinclude"#>

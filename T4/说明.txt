@@ -1,0 +1,12 @@
+﻿本项目使用：Entity Framework code first 操作方式
+
+实体对象 => 上下文  => 映射数据库
+
+
+T4 使用次序：
+
+1，产生出Ecomm.Domain.Models中的实体对象
+2  Ecomm.Domain.Data 产生出实体映射关系
+3  产生出Repository层
+4  产生出Service层
+5  产生出Control View 等部分;
