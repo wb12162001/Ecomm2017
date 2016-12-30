@@ -10,8 +10,8 @@
 //		Copyright(c)2013 QuickFramework.All rights reserved.
 //		开发组织：QuickFramework
 //		公司网站：QuickFramework
-//		所属工程：Ecomm.Core.Repository
-//		生成时间：2016-12-09 09:06
+//		所属工程：QuickRMS.Core.Repository
+//		生成时间：2014-03-10 11:23
 // </copyright>
 //------------------------------------------------------------------------------
 
@@ -29,6 +29,8 @@ namespace Ecomm.Core.Repository.SysConfig.Impl
     /// 仓储操作层实现 —— OperateLog
     /// </summary>
     [Export(typeof(IOperateLogRepository))]
-    public class OperateLogRepository : EFRepositoryBase<OperateLog, Int64>, IOperateLogRepository
-    { }
+    public class OperateLogRepository : EFRepositoryBase<OperateLog>, IOperateLogRepository
+    {
+        public OperateLogRepository() : base("") { }
+    }
 }

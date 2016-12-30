@@ -1,0 +1,56 @@
+﻿@using Ecomm.Site.Models.Product.PROD_GROUP_ITEM
+@using Quick.Site.Common.Models
+@model PROD_GROUP_ITEMModel
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#pic" data-toggle="tab">Other</a></li>
+</ul>
+@Html.HiddenFor(t => t.Picture)
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ProductName) :
+            </label>
+            <div class="controls">
+                @Html.DropDownListFor(t => t.ProductID, Model.Products, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProductID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.GroupName) :
+            </label>
+            <div class="controls">
+                @Html.DropDownListFor(t => t.GROUP_INDEX, Model.Groups, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.GROUP_INDEX)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.Notes) :
+            </label>
+            <div class="controls">
+                @Html.TextAreaFor(t => t.Notes, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Notes)
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Status) :
+            </label>
+            <div class="controls">
+                @Html.CheckBoxFor(t => t.Status)
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="pic">
+        <p><input type="file" id="idFileUpload" name="file" /></p>
+        <input type="button" id="btnUploadFile" value="Upload" />
+        <p><img id="img_Picture" alt="upfile..." style="width:150px; height:auto" src="" /></p>
+    </div>
+</div>

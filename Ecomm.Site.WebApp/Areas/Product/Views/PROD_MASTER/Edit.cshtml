@@ -1,0 +1,956 @@
+﻿@using Ecomm.Site.Models.Product.PROD_MASTER
+@using Quick.Site.Common.Models
+@model UpdatePROD_MASTERModel
+
+@Html.HiddenFor(t => t.ID)
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ProductNo) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProductNo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProductNo)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ProductName) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProductName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProductName)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Description) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Description, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ProductType) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProductType, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.StndCost) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.StndCost, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.CurrCost) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.CurrCost, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ListPrice) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ListPrice, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.SpecialPrice) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.SpecialPrice, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ClearPrice) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ClearPrice, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ProdCategoryID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProdCategoryID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.CategoryCode) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.CategoryCode, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.SchdlUOM) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.SchdlUOM, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.PriceShed) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PriceShed, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.BaseUOFM) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.BaseUOFM, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.AvailableQTY) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.AvailableQTY, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ProdGroupID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProdGroupID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ProdSubclassID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProdSubclassID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LeadTime) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LeadTime, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.QtySales) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.QtySales, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.QtyMin) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.QtyMin, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.QtyMax) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.QtyMax, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.CustomerID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.CustomerID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.StockType) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.StockType, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.SalesRepID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.SalesRepID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.PriceBookItem) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PriceBookItem, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.PriceLevel) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PriceLevel, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.BarCode) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.BarCode, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Ranking) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Ranking, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Notes) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Notes, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Substitute1) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Substitute1, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Substitute2) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Substitute2, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Qty1) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Qty1, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Qty3) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Qty3, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Qty6) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Qty6, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Qty12) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Qty12, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Sales1) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Sales1, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Sales3) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Sales3, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Sales6) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Sales6, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Sales12) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Sales12, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.GPD1) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.GPD1, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.GPD3) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.GPD3, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.GPD6) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.GPD6, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.GPD12) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.GPD12, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LastDate) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LastDate, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.CreateDate) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.CreateDate, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Creator) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Creator, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Modifier) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Modifier, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ModiDate) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ModiDate, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Status) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Status, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P01) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P01, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P02) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P02, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P03) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P03, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P04) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P04, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P05) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P05, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P06) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P06, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P07) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P07, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P08) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P08, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P09) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P09, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.P10) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.P10, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.IsCommend) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.IsCommend, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.IsHot) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.IsHot, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ExteriorPart) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ExteriorPart, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ExteriorPartPrice) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ExteriorPartPrice, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ViewTimes) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ViewTimes, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.SmallPic) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.SmallPic, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.BigPic) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.BigPic, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks1) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks1, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks2) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks2, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks3) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks3, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks4) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks4, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks5) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks5, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks6) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks6, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks7) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks7, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks8) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks8, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks9) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks9, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks10) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks10, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks11) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks11, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks12) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks12, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks13) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks13, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks14) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks14, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationStocks15) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationStocks15, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate1) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate1, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate2) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate2, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate3) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate3, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate4) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate4, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate5) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate5, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate6) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate6, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate7) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate7, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate8) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate8, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate9) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate9, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate10) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate10, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate11) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate11, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate12) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate12, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate13) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate13, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate14) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate14, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LocationAllocate15) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LocationAllocate15, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Introduction) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Introduction, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Brand) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Brand, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Item01) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Item01, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Item02) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Item02, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Item03) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Item03, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Item04) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Item04, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Item05) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Item05, new { @class = "form-control" })
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>

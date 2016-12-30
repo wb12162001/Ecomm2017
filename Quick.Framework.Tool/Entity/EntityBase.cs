@@ -19,20 +19,20 @@ namespace Quick.Framework.Tool.Entity
         /// </summary>
         protected EntityBase()
         {
-            IsDeleted = false;
+            //IsDeleted = false;
         }
 
         #endregion
 
         #region 属性
 
-        [Key]
-        public TKey Id { get; set; }
+        //[Key]
+        //public TKey Id { get; set; }
 
         /// <summary>
         ///获取或设置是否禁用，逻辑上的删除，非物理删除
         /// </summary>
-        public bool? IsDeleted { get; set; }
+        //public bool? IsDeleted { get; set; }
 
         #endregion
     }

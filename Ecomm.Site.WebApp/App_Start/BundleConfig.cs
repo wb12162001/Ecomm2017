@@ -15,10 +15,19 @@ namespace Ecomm.Site.WebApp
                 "~/Scripts/jquery.validate*",
                 "~/Scripts/jquery.unobtrusive*"));
 
-			bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+            bundles.Add(new ScriptBundle("~/bundles/jqueryupload").Include(
+                "~/Scripts/jquery.fileupload.js",
+                "~/Scripts/jquery.fileupload-ui.js",
+                "~/Scripts/jquery.iframe-transport.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
 				"~/Scripts/jquery-ui-{version}.js",
 				"~/Scripts/jquery-ui-zh.js"
 				));
+
+            bundles.Add(new ScriptBundle("~/bundles/ajaxfileupload").Include(
+                "~/Scripts/ajaxfileupload.js"
+                ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

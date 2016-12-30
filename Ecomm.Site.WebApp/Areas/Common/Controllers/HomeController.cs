@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Ecomm.Site.Models.Authen.Admin_user;
 
 namespace Ecomm.Site.WebApp.Areas.Common.Controllers
 {
@@ -20,7 +21,9 @@ namespace Ecomm.Site.WebApp.Areas.Common.Controllers
 		[AdminLayout]
         public ActionResult Index()
         {
-            return View();
+            var model = new HomeModel();
+            model.DueDate = DateTime.Now.ToShortDateString();
+            return View(model);
         }
 	}
 }

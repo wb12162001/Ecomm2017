@@ -109,6 +109,16 @@ namespace Quick.Framework.Tool
             }
             return IsAssignableToGenericType(baseType, genericType);
         }
+
+        /// <summary>
+        /// 保留两位小数显示
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public static string ToDisplay(this decimal amount)
+        {
+            return amount.ToString("f2");
+        }
     }
 
 }

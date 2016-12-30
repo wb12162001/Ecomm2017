@@ -6,7 +6,27 @@ using System.Threading.Tasks;
 
 namespace Ecomm.Site.Models.AdminCommon
 {
-	public class BreadCrumbNavModel
+    public class BreadCrumbModelArray<T>
+    {
+        private SortedList<string,T> array;
+        public BreadCrumbModelArray()
+        {
+            array = new SortedList<string, T>();
+        }
+        public T getItem(string index)
+        {
+            if (array.ContainsKey(index)) { return array[index]; }
+            return default(T);
+
+        }
+        public void setItem(string index, T value)
+        {
+            array.Add(index, value);
+        }
+        public string Name { get; set; }
+        public string Icon { get; set; }
+    }
+    public class BreadCrumbNavModel
 	{
 		public BreadCrumbNavModel()
 		{

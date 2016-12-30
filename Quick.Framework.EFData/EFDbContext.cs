@@ -22,7 +22,11 @@ namespace Quick.Framework.EFData
             : base("default") { }
 
         public EFDbContext(string nameOrConnectionString)
-            : base(nameOrConnectionString) { }
+            : base(nameOrConnectionString ?? "default") {
+            this.Database.Connection.ConnectionString = nameOrConnectionString;
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
+        }
 
         public EFDbContext(DbConnection existingConnection)
             : base(existingConnection, true) { }

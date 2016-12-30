@@ -1,4 +1,5 @@
-﻿<#+
+﻿<#@ IntelliSenseLanguage processor="tangibleT4Editor" language="C#" #>
+<#+
 // <copyright file="EntityMapConfigurationTemplate.tt" company="QuickFramework">
 //  Copyright ©QuickFramework. All Rights Reserved.
 // </copyright>

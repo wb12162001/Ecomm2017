@@ -39,7 +39,7 @@ namespace Ecomm.Site.WebApp.Areas.SysConfig.Controllers
 		[AdminPermission(PermissionCustomMode.Ignore)]
 		public ActionResult List(DataTableParameter param)
 		{
-			int total = OperateLogService.OperateLogs.Count(t => t.IsDeleted == false);
+			int total = OperateLogService.OperateLogs.Count(t => t.UserId == 0);
 
 			//构建查询表达式
 			var expr = BuildSearchCriteria();
@@ -132,8 +132,8 @@ namespace Ecomm.Site.WebApp.Areas.SysConfig.Controllers
 				Expression<Func<OperateLog, Boolean>> tmp = t => t.LogTime <= data;
 				expr = bulider.BuildQueryAnd(expr, tmp);
 			}
-			Expression<Func<OperateLog, Boolean>> tmpSolid = t => t.IsDeleted == false;
-			expr = bulider.BuildQueryAnd(expr, tmpSolid);
+			//Expression<Func<OperateLog, Boolean>> tmpSolid = t => t.IsDeleted == false;
+			//expr = bulider.BuildQueryAnd(expr, tmpSolid);
 
 			return expr;
 		}

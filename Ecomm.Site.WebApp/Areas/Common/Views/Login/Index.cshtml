@@ -1,4 +1,4 @@
-﻿@using Ecomm.Site.Models.Authen.User
+﻿@using Ecomm.Site.Models.Authen.Admin_user
 @model LoginModel
 @{
     Layout = null;
@@ -26,7 +26,7 @@
                 <div class="controls">
                     <div class="main_input_box">
                         <span class="add-on bg_lg"><i class="icon-user"></i></span>
-                        @Html.TextBoxFor(m => m.LoginName, new { @class = "span3", @placeholder = "用户名" })
+                        @Html.TextBoxFor(m => m.LoginName, new { @class = "span3", @placeholder = "UserName" })
                         <div></div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                 <div class="controls">
                     <div class="main_input_box">
                         <span class="add-on bg_ly"><i class="icon-lock"></i></span>
-                        @Html.PasswordFor(m => m.LoginPwd, new { @class = "span3", @placeholder = "密码" })
+                        @Html.PasswordFor(m => m.LoginPwd, new { @class = "span3", @placeholder = "Password" })
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
             <div class="form-actions">
                 @*<span class="pull-left"><a href="#" class="flip-link btn btn-info" id="to-recover">忘记密码？</a></span>*@
                 <span class="pull-right">
-                    <input type="button" class="btn btn-success btn-login" value="登录" />
+                    <input type="button" class="btn btn-success btn-login" value="Login" />
                 </span>
             </div>
         </form>
@@ -90,7 +90,7 @@
                 var loginName = $("#LoginName").val();
                 var loginPwd = $("#LoginPwd").val();
                 if (trim(loginName) == "" || trim(loginPwd) == "") {
-                    bootbox.alert("用户名和密码不能为空");
+                    bootbox.alert("The user name and password can not be empty");
                 } else {
                     var actionUrl = "@Url.Action("CheckLogin", "Login")";
                     var formData = $("#loginform").serialize();

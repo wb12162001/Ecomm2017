@@ -19,6 +19,6 @@ namespace Ecomm.Domain.Models.SysConfig
 		public string LoginName { get; set; }
 		public int UserId { get; set; }
 
-        public virtual User User { get; set; }
+        //public virtual User User { get; set; }
 	}
 }

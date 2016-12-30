@@ -1,0 +1,163 @@
+﻿@using Ecomm.Site.Models.Product.PROD_GROUP_ITEM
+@using Ecomm.Site.Models.AdminCommon
+@model PROD_GROUP_ITEMModel
+@{
+    ViewBag.Title = ViewBag.CurrentTitle + "- Snell Admin";
+    var editButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    var deleteButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    var displayButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    editButton = ViewBag.Edit;
+    deleteButton = ViewBag.Delete;
+    displayButton = ViewBag.Display;
+}
+@section css{
+     @Styles.Render("~/bundles/css/jqueryui")   
+}
+
+<div id="content-body" class="row-fluid">
+    <div class="span22">
+        <!--Action -->
+        @Html.Partial("Search", Model.SearchModel)
+
+        <!--List-->
+        @Html.Partial("List")
+
+        <!--Add & Edit-->
+        @Html.Partial("_FormModal")
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryui", "~/bundles/ajaxfileupload")
+    <script type="text/javascript">
+        var oTable = null;
+        $(function () {
+            var actionUrl = "@Url.Action("List")?rand=" + Math.random();
+            var aoColumns = [
+                    { "sName": "SortId", "bSortable": false },
+                    { "sName": "ProductName", "bSortable": false },
+                    { "sName": "GroupName", "bSortable": false },
+                    { "sName": "Notes", "bSortable": false },
+                    { "sName": "Picture", "bSortable": false },
+                    { "sName": "Status", "bSortable": false },
+                    {
+                        "sName": "ProductID",
+                        "bSortable": false,
+                        "fnRender": function (oObj) {
+                            //console.log(oObj);
+                            var btnArray = "";
+                            @if (displayButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-normal" title="@displayButton.Text" onclick="View(\'' + oObj.aData[oObj.aData.length - 2] + '\',\'' + oObj.aData[oObj.aData.length - 1] + '\')"><span class="@displayButton.Icon"></span></button>'</text>
+                            }
+                            @if (editButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-primary btn-normal" title="@editButton.Text" onclick="Edit(\'' + oObj.aData[oObj.aData.length - 2] + '\',\'' + oObj.aData[oObj.aData.length - 1] + '\')"><span class="@editButton.Icon"></span></button>'</text>
+                            }
+                            @if (deleteButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-danger btn-normal" title="@deleteButton.Text" onclick="Delete(\'' + oObj.aData[oObj.aData.length - 2] + '\',\'' + oObj.aData[oObj.aData.length - 1] + '\')"><span class="@deleteButton.Icon"></span></button>'</text>
+                            }
+                            return btnArray;
+                        }
+                    }
+            ];
+            //InitData tables
+            oTable = InitDatatables($(".data-table"), actionUrl, aoColumns, oTable);
+        });
+
+        //Query
+        function Search() {
+            var filterdata = $(".search-form").serialize();
+            oTable.fnReloadAjax("@Url.Action("List")?rand=" + Math.random() + "&" + filterdata);
+        }
+
+        //Create
+        function Create() {
+            var actionUrl = "@Url.Action("Create")";
+            var param = {};
+            ShowModal(actionUrl, param, "Add PROD_GROUP_ITEM");
+
+            BindModal();
+        }
+
+        //View
+        function View(id,gindex) {
+            location.href = "@Url.Action("Display")" + "?ProductID=" + id + "&GROUP_INDEX=" + gindex;
+        }
+
+        //Edit
+        function Edit(id, gindex) {
+            var actionUrl = "@Url.Action("Edit")";
+            var param = { ProductID: id, GROUP_INDEX: gindex }
+            ShowModal(actionUrl, param, "Edit PROD_GROUP_ITEM");
+            BindModal();
+        }
+
+        function BindModal() {
+            $('#modal-form').on('shown.bs.modal', function () {
+                var img = $("#Picture").val();
+                if (img != "") {
+                    $("#img_Picture").attr("src", img);
+                    $("#img_Picture").show();
+                } else { $("#img_Picture").hide(); }
+
+                //    $("#ProductID").select2({});  //初始化
+                //    $("#GROUP_INDEX").select2({});  //初始化
+                $("#btnUploadFile").on("click", function () {
+                    if ($('#idFileUpload').val() == "") {
+                        return false;
+                    }
+                    else {
+                        ajaxFileUpload();
+                    }
+                });
+
+            });
+        }
+
+        //Save
+        function Save() {
+            SaveModal(oTable);
+        }
+
+        //Delete
+        function Delete(id, gindex) {
+            var actionUrl = "@Url.Action("Delete")";
+            var param = { ProductID: id, GROUP_INDEX: gindex }
+            DeleteRecord(actionUrl, param, oTable);
+        }
+
+
+        function ajaxFileUpload() {
+            $.ajaxFileUpload
+            (
+                {
+                    url: "@Url.Action("SingleFileUpload")", //用于文件上传的服务器端请求地址
+                    secureuri: false, //一般设置为false
+                    fileElementId: 'idFileUpload', //文件上传空间的id属性  <input type="file" id="file" name="file" />
+                    dataType: 'json', //返回值类型 一般设置为json
+                    success: function (data, status)  //服务器成功响应处理函数
+                    {
+                        console.log(data);
+                        if (data.err_code != 1) {
+                            alert(data.message);
+                        } else {
+                            //alert(data.msg);
+                            $("#img_Picture").attr("src", data.fileUrl);
+                            $("#img_Picture").show();
+                            $("#Picture").val(data.fileUrl);
+                        }
+                    },
+                    error: function (data, status, e)//服务器响应失败处理函数
+                    {
+                        alert(e);
+                    }
+                }
+            )
+            return false;
+        }
+</script>
+
+
+}

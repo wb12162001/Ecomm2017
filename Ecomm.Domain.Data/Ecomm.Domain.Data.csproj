@@ -55,22 +55,14 @@
   <ItemGroup>
     <Compile Include="Initialize\DatabaseInitializer.cs" />
     <Compile Include="Initialize\NonSystemTableSqlGenerator.cs" />
-    <Compile Include="Mapping\Authen\Configuration\ModuleMap.generated.cs" />
-    <Compile Include="Mapping\Authen\Configuration\ModulePermissionMap.generated.cs" />
-    <Compile Include="Mapping\Authen\Configuration\PermissionMap.generated.cs" />
-    <Compile Include="Mapping\Authen\Configuration\RoleMap.generated.cs" />
-    <Compile Include="Mapping\Authen\Configuration\RoleModulePermissionMap.generated.cs" />
-    <Compile Include="Mapping\Authen\Configuration\UserMap.generated.cs" />
-    <Compile Include="Mapping\Authen\Configuration\UserRoleMap.generated.cs" />
-    <Compile Include="Mapping\Authen\ModuleMap.cs" />
-    <Compile Include="Mapping\Authen\ModulePermissionMap.cs" />
-    <Compile Include="Mapping\Authen\PermissionMap.cs" />
-    <Compile Include="Mapping\Authen\RoleMap.cs" />
-    <Compile Include="Mapping\Authen\RoleModulePermissionMap.cs" />
-    <Compile Include="Mapping\Authen\UserMap.cs" />
-    <Compile Include="Mapping\Authen\UserRoleMap.cs" />
-    <Compile Include="Mapping\SysConfig\Configuration\OperateLogMap.generated.cs" />
-    <Compile Include="Mapping\SysConfig\OperateLogMap.cs" />
+    <Compile Include="Mapping\Authen\Admin_userMap.cs" />
+    <Compile Include="Mapping\Authen\Configuration\Admin_userMap.generated.cs" />
+    <Compile Include="Mapping\Product\Configuration\PROD_GROUP_INDEXMap.generated.cs" />
+    <Compile Include="Mapping\Product\Configuration\PROD_GROUP_ITEMMap.generated.cs" />
+    <Compile Include="Mapping\Product\Configuration\PROD_MASTERMap.generated.cs" />
+    <Compile Include="Mapping\Product\PROD_GROUP_INDEXMap.cs" />
+    <Compile Include="Mapping\Product\PROD_GROUP_ITEMMap.cs" />
+    <Compile Include="Mapping\Product\PROD_MASTERMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

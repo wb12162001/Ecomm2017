@@ -22,6 +22,7 @@ namespace Ecomm.Site.WebApp.Areas.SysConfig.Controllers
 		[AdminLayout]
 		public ActionResult Icon()
 		{
+
 			return View();
 		}
 	}

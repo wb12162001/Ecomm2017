@@ -10,6 +10,7 @@ using Ecomm.Domain.Data.Initialize;
 using Ecomm.Site.WebApp.Extension.ViewEngine;
 using Ecomm.Site.WebApp.Extension.ModelBinder;
 using System.Web.Http;
+using Elmah;
 
 namespace Ecomm.Site.WebApp
 {
@@ -38,6 +39,28 @@ namespace Ecomm.Site.WebApp
 
             //初始化DB
             DatabaseInitializer.Initialize(); //在项目第一运行就需要初始数，到后面数据有的就不需要了
+        }
+
+        // ELMAH Filtering
+        protected void ErrorLog_Filtering(object sender, ExceptionFilterEventArgs e)
+        {
+            FilterError404(e);
+        }
+
+        protected void ErrorMail_Filtering(object sender, ExceptionFilterEventArgs e)
+        {
+            FilterError404(e);
+        }
+
+        // Dismiss 404 errors for ELMAH
+        private void FilterError404(ExceptionFilterEventArgs e)
+        {
+            if (e.Exception.GetBaseException() is HttpException)
+            {
+                HttpException ex = (HttpException)e.Exception.GetBaseException();
+                if (ex.GetHttpCode() == 404)
+                    e.Dismiss();
+            }
         }
     }
 }

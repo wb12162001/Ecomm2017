@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 using Quick.Framework.Tool;
 using Ecomm.Core.Service.Authen;
-using Ecomm.Site.Models.Authen.User;
+using Ecomm.Site.Models.Authen.Admin_user;
 using Quick.Framework.Common.SecurityHelper;
 
 namespace Ecomm.Site.WebApp.Areas.Common.Controllers
@@ -21,14 +21,19 @@ namespace Ecomm.Site.WebApp.Areas.Common.Controllers
 
 		#region 属性
 		[Import]
-        public IUserService UserService { get; set; }
+        public IAdmin_userService UserService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.Product.IPROD_MASTERService ProductService { get; set; }
 
         #endregion
 
         public ActionResult Index()
         {
             //TODO:TEST
-            //var entity = UserService.Users.FirstOrDefault();
+            //var user = UserService.Users.FirstOrDefault();
+            //var entiry = ProductService.PROD_MASTERList.Count();
+
             var model = new LoginModel();
             return View();
         }
@@ -37,18 +42,13 @@ namespace Ecomm.Site.WebApp.Areas.Common.Controllers
         public ActionResult CheckLogin(LoginModel model)
         {
             OperationResult result = new OperationResult(OperationResultType.Warning, "用户名或密码错误");
-            var user = UserService.Users.FirstOrDefault(t => t.LoginName == model.LoginName && t.IsDeleted == false);
+            var user = UserService.Admin_userList.FirstOrDefault(t => t.Userid == model.LoginName);
             if (user != null)
             {
-				if (user.Enabled == false)
-				{
-					result = new OperationResult(OperationResultType.Warning, "你的账户已经被禁用");
-				}
-				else if (DESProvider.DecryptString(user.LoginPwd) == model.LoginPwd)
+				if (user.Passid == model.LoginPwd)
 				{
 					//更新User
-					user.LastLoginTime = DateTime.Now;
-					user.LoginCount += 1;
+					user.Lastdate = DateTime.Now;
 					UserService.Update(user);
 
 					result = new OperationResult(OperationResultType.Success, "登录成功");

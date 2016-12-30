@@ -1,7 +1,7 @@
-﻿<#@ template language="C#" debug="True" #>
+﻿<#@ template language="C#" debug="True" hostSpecific="true" #>
 <#@ output extension="cs" #>
 <#@ Assembly Name="System.Core" #>
-<#@ Assembly Name="$(SolutionDir)\Quick.Framework.Tool\bin\Debug\Quick.Framework.Tool.dll" #>
+<#@ Assembly Name="$(SolutionDir)\GeneratedCode\dll\Quick.Framework.Tool.dll" #>
 <#@ import namespace="System.IO" #>
 <#@ Import Namespace="System.Linq" #>
 <#@ Import Namespace="System.Text" #>
@@ -15,23 +15,35 @@
 <#@ include file="EntityMapTemplate.ttinclude" #>
 <#
 	//******* Configuration *******
+    string r_solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");  
+    string r_projectPath = Host.ResolveAssemblyReference("$(ProjectDir)"); 
 
+    string codeFolder = "GeneratedCode";
 	string currentNamespace = @"\Ecomm.Domain.Data";
 	string modelsDLLPath = @"Ecomm.Domain.Models\bin\Debug\Ecomm.Domain.Models.dll";
 	string configurationFolder = "Mapping";
-
 	//******* Configuration *******
 
-    string currentPath = Path.GetDirectoryName(Host.TemplateFile);
-    string projectPath = currentPath.Substring(0, currentPath.IndexOf(@"\T4"));
-    string solutionPath = currentPath.Substring(0, currentPath.IndexOf(currentNamespace));
+    //string currentPath = Path.GetDirectoryName(Host.TemplateFile);
+    string currentPath = r_solutionsPath + codeFolder;
+    string projectPath = currentPath + currentNamespace;
+    //string solutionPath = r_solutionsPath.Substring(0, currentPath.IndexOf(currentNamespace));
+    if (!Directory.Exists(currentPath))//如果不存在就创建文件夹
+    {
+      Directory.CreateDirectory(currentPath);
+    }
+    if (!Directory.Exists(projectPath))//如果不存在就创建文件夹
+    {
+      Directory.CreateDirectory(projectPath);
+    }
 
-    string modelFile= Path.Combine(solutionPath, modelsDLLPath);
+    string modelFile= Path.Combine(r_solutionsPath, modelsDLLPath);
     byte[] fileData= File.ReadAllBytes(modelFile);
     Assembly assembly = Assembly.Load(fileData);
     Type baseType = typeof(EntityBase<>);
     IEnumerable<Type> modelTypes = assembly.GetTypes().Where(m => m.IsAssignableToGenericType(baseType) && !m.IsAbstract);
-    foreach(Type modelType in modelTypes)
+
+   foreach(Type modelType in modelTypes)
     {
         T4ModelInfo model = new T4ModelInfo(modelType, true);
         
@@ -56,4 +68,4 @@
         mapconfig.RenderToFile(Path.Combine(mapPath, mapconfig.FileName));
 
     }
-#>
+#> 

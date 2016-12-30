@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-using Quick.Framework.EFData.Extensions;
+//using Quick.Framework.EFData.Extensions;
 using Quick.Framework.Tool;
 using Quick.Framework.Tool.Entity;
 
-
 namespace Quick.Framework.EFData
 {
+    public enum EFWorkContext
+    {
+        appdb,
+        inetapp,
+        ep_snell
+    }
     /// <summary>
     /// 单元操作实现基类
     /// </summary>
@@ -36,6 +42,8 @@ namespace Quick.Framework.EFData
             }
         }
 
+        public EFWorkContext WorkContext;
+
 
         /// <summary>
         /// 提交当前单元操作的结果
@@ -53,6 +61,21 @@ namespace Quick.Framework.EFData
                 int result = Context.SaveChanges(validateOnSaveEnabled);
                 IsCommitted = true;
                 return result;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var entry = ex.EntityValidationErrors.First().Entry;
+                var err = ex.EntityValidationErrors.First().ValidationErrors.First();
+                var msg = err.ErrorMessage;
+                try
+                {
+                    var displayName = entry.Entity.GetType().GetProperty(err.PropertyName).GetPropertyDisplayName();
+                    msg = string.Format(msg, displayName, entry.CurrentValues.GetValue<object>(err.PropertyName));
+                }
+                catch (Exception)
+                {
+                }
+                throw new Exception(msg);
             }
             catch (DbUpdateException e)
             {
@@ -87,9 +110,9 @@ namespace Quick.Framework.EFData
         /// 为指定的类型返回 System.Data.Entity.DbSet，这将允许对上下文中的给定实体执行 CRUD 操作。
         /// </summary>
         /// <typeparam name="TEntity"> 应为其返回一个集的实体类型。 </typeparam>
-        /// <typeparam name="TKey">实体主键类型</typeparam>
+
         /// <returns> 给定实体类型的 System.Data.Entity.DbSet 实例。 </returns>
-        public DbSet<TEntity> Set<TEntity, TKey>() where TEntity : EntityBase<TKey>
+        public DbSet<TEntity> Set<TEntity>() where TEntity : class  //EntityBase<TKey>
         {
             return Context.Set<TEntity>();
         }
@@ -98,14 +121,12 @@ namespace Quick.Framework.EFData
         /// 注册一个新的对象到仓储上下文中
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
-        /// <typeparam name="TKey">实体主键类型</typeparam>
-        /// <param name="entity"> 要注册的对象 </param>
-        public void RegisterNew<TEntity, TKey>(TEntity entity) where TEntity : EntityBase<TKey>
+        public void RegisterNew<TEntity>(TEntity entity) where TEntity : class //EntityBase<TKey>
         {
-            EntityState state = Context.Entry(entity).State;
-            if (state == EntityState.Detached)
+            System.Data.Entity.EntityState state = Context.Entry(entity).State;
+            if (state == System.Data.Entity.EntityState.Detached)
             {
-                Context.Entry(entity).State = EntityState.Added;
+                Context.Entry(entity).State = System.Data.Entity.EntityState.Added;
             }
             IsCommitted = false;
         }
@@ -114,16 +135,16 @@ namespace Quick.Framework.EFData
         /// 批量注册多个新的对象到仓储上下文中
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
-        /// <typeparam name="TKey">实体主键类型</typeparam>
+
         /// <param name="entities"> 要注册的对象集合 </param>
-        public void RegisterNew<TEntity, TKey>(IEnumerable<TEntity> entities) where TEntity : EntityBase<TKey>
+        public void RegisterNew<TEntity>(IEnumerable<TEntity> entities) where TEntity : class  //EntityBase<TKey>
         {
             try
             {
                 Context.Configuration.AutoDetectChangesEnabled = false;
                 foreach (TEntity entity in entities)
                 {
-                    RegisterNew<TEntity, TKey>(entity);
+                    RegisterNew<TEntity>(entity);
                 }
             }
             finally
@@ -136,11 +157,10 @@ namespace Quick.Framework.EFData
         /// 注册一个更改的对象到仓储上下文中
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
-        /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <param name="entity"> 要注册的对象 </param>
-        public void RegisterModified<TEntity, TKey>(TEntity entity) where TEntity : EntityBase<TKey>
+        public void RegisterModified<TEntity>(TEntity entity) where TEntity : class // EntityBase<TKey>
         {
-            Context.Update<TEntity, TKey>(entity);
+            Context.Update<TEntity>(entity);
             IsCommitted = false;
         }
 
@@ -148,12 +168,11 @@ namespace Quick.Framework.EFData
         /// 使用指定的属性表达式指定注册更改的对象到仓储上下文中
         /// </summary>
         /// <typeparam name="TEntity">要注册的类型</typeparam>
-        /// <typeparam name="TKey">主键类型</typeparam>
         /// <param name="propertyExpression">属性表达式，包含要更新的实体属性</param>
         /// <param name="entity">附带新值的实体信息，必须包含主键</param>
-        public void RegisterModified<TEntity, TKey>(Expression<Func<TEntity, object>> propertyExpression, TEntity entity) where TEntity : EntityBase<TKey>
+        public void RegisterModified<TEntity>(Expression<Func<TEntity, object>> propertyExpression, TEntity entity) where TEntity :class // EntityBase<TKey>
         {
-            Context.Update<TEntity, TKey>(propertyExpression, entity);
+            Context.Update<TEntity>(propertyExpression, entity);
             IsCommitted = false;
         }
 
@@ -161,11 +180,10 @@ namespace Quick.Framework.EFData
         /// 注册一个删除的对象到仓储上下文中
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
-        /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <param name="entity"> 要注册的对象 </param>
-        public void RegisterDeleted<TEntity, TKey>(TEntity entity) where TEntity : EntityBase<TKey>
+        public void RegisterDeleted<TEntity>(TEntity entity) where TEntity :class // EntityBase<TKey>
         {
-            Context.Entry(entity).State = EntityState.Deleted;
+            Context.Entry(entity).State = System.Data.Entity.EntityState.Deleted;
             IsCommitted = false;
         }
 
@@ -173,16 +191,15 @@ namespace Quick.Framework.EFData
         /// 批量注册多个删除的对象到仓储上下文中
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
-        /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <param name="entities"> 要注册的对象集合 </param>
-        public void RegisterDeleted<TEntity, TKey>(IEnumerable<TEntity> entities) where TEntity : EntityBase<TKey>
+        public void RegisterDeleted<TEntity>(IEnumerable<TEntity> entities) where TEntity :class // EntityBase<TKey>
         {
             try
             {
                 Context.Configuration.AutoDetectChangesEnabled = false;
                 foreach (TEntity entity in entities)
                 {
-                    RegisterDeleted<TEntity, TKey>(entity);
+                    RegisterDeleted<TEntity>(entity);
                 }
             }
             finally
@@ -190,5 +207,50 @@ namespace Quick.Framework.EFData
                 Context.Configuration.AutoDetectChangesEnabled = true;
             }
         }
+
+        /// <summary>
+        ///   从仓储上下文中删除注册的对象
+        /// </summary>
+        /// <typeparam name="TEntity"> 要删除注册的类型 </typeparam>
+        /// <param name="entity"> 要删除的对象 </param>
+        public void RegisterRemove<TEntity>(TEntity entity) where TEntity : class// EntityBase<TKey>
+        {
+            Context.Set<TEntity>().Remove(entity);
+            IsCommitted = false;
+        }
+
+        /// <summary>
+        /// EF SQL 语句返回 dataTable
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public DataSet SqlQueryForDataSet(CommandType commandType, string sql, SqlParameter[] parameters)
+        {
+            using (var conn = new SqlConnection { ConnectionString = Context.Database.Connection.ConnectionString })
+            {
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+
+                var cmd = new SqlCommand { Connection = conn, CommandText = sql, CommandType = commandType, CommandTimeout = conn.ConnectionTimeout };
+                if (parameters != null && parameters.Length > 0)
+                {
+                    foreach (var item in parameters)
+                    {
+                        cmd.Parameters.Add(item);
+                    }
+                }
+
+                var adapter = new SqlDataAdapter(cmd);
+                var ds = new DataSet();
+                adapter.Fill(ds);
+                cmd.Parameters.Clear();
+                return ds;
+            }
+        }
+
     }
 }

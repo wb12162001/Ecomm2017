@@ -3,8 +3,8 @@
 <div id="sidebar">
     <a href="#" class="visible-phone"><i class="icon icon-home"></i> 控制面板 </a>
     <ul>
-        <li class="index"><a href="@Url.Action("Index", "Home", new {Area = "Common"})"><i class="icon icon-home"></i> <span>首页</span></a> </li>
-       @if (Model != null)
+        <li class="index"><a href="@Url.Action("Index", "Home", new {Area = "Common"})"><i class="icon icon-home"></i> <span>Home</span></a> </li>
+       @*@if (Model != null)
        {
          foreach (var parentMenu in Model)
          {
@@ -26,6 +26,44 @@
                 </ul>
             </li>
          }
-       }
+       }*@
+        <li class="submenu">
+            <a href="javascript:void(0)">
+                <i class="icon icon-sitemap"></i> <span>Product Management </span>
+                <span class="label label-important">
+                    4
+                </span>
+            </a>
+            <ul class="childmenu">
+                <li><a rel="Role" href="/Authen/Role"><i class="icon "></i> <span>Product Category</span></a></li>
+                <li><a rel="PROD_MASTER" href="/Product/PROD_MASTER"><i class="icon "></i> <span>Product Master</span></a></li>
+                <li><a rel="PROD_GROUP_INDEX" href="/Product/PROD_GROUP_INDEX"><i class="icon "></i> <span>Index Group</span></a></li>
+                <li><a rel="PROD_GROUP_ITEM" href="/Product/PROD_GROUP_ITEM"><i class="icon "></i> <span>Group Items</span></a></li>
+            </ul>
+        </li>
+        <li class="submenu">
+            <a href="javascript:void(0)">
+                <i class="icon icon-sitemap"></i> <span>Shipping Management </span>
+                <span class="label label-important">
+                    2
+                </span>
+            </a>
+            <ul class="childmenu">
+                <li><a rel="Role" href="/Authen/Role"><i class="icon "></i> <span>Account Management</span></a></li>
+                <li><a rel="User" href="/Authen/User"><i class="icon "></i> <span>User Management</span></a></li>
+            </ul>
+        </li>
+        <li class="submenu">
+            <a href="javascript:void(0)">
+                <i class="icon icon-cloud"></i> <span>系统应用</span>
+                <span class="label label-important">
+                    2
+                </span>
+            </a>
+            <ul class="childmenu">
+                <li><a rel="OperateLog" href="/SysConfig/OperateLog"><i class="icon "></i> <span>操作日志管理</span></a></li>
+                <li><a rel="Appendix" href="/SysConfig/Appendix/Icon"><i class="icon "></i> <span>图标附录</span></a></li>
+            </ul>
+        </li>
     </ul>
 </div>

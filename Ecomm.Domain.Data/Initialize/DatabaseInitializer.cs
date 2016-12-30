@@ -25,8 +25,9 @@ namespace Ecomm.Domain.Data.Initialize
         public static void Initialize()
         {
             //每次重构的时候，必须要关闭数据库连接，才能执行成功；
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<EFDbContext, Configuration>()); 
-            //即可见数据库在不修改数据的情况下实现了字段的修改                                                                                         
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<EFDbContext, Configuration>()); 
+            //即可见数据库在不修改数据的情况下实现了字段的修改   
+            Database.SetInitializer<EFDbContext>(null);
         }
     }
 }

@@ -10,7 +10,7 @@
 //		Copyright(c)2013 QuickFramework.All rights reserved.
 //		开发组织：QuickFramework
 //		公司网站：QuickFramework
-//		所属工程：Ecomm.Core.Service
+//		所属工程：QuickRMS.Core.Service
 //		生成时间：2013-12-11 23:55
 // </copyright>
 //------------------------------------------------------------------------------
@@ -69,10 +69,10 @@ namespace Ecomm.Core.Service.SysConfig.Impl
 
         public OperationResult Delete()
         {
-			var entities = OperateLogRepository.Entities.Where(t => t.IsDeleted == false);
+            var entities = OperateLogRepository.Entities.Where(t => t.UserId == 0);
 			foreach (var entity in entities)
 			{
-				entity.IsDeleted = true;
+				//entity.IsDeleted = true;
 				OperateLogRepository.Update(entity);
 			}		
             return new OperationResult(OperationResultType.Success, "删除成功");

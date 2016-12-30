@@ -1,12 +1,14 @@
-﻿@{
-    ViewBag.Title = "Home - QucikRMS";
+﻿@using Ecomm.Site.Models.Authen.Admin_user
+@model HomeModel
+@{
+    ViewBag.Title = "Home - Snell Admin";
 }
 <div class="row-fluid">
     <div class="span12">
         <div class="widget-box">
             <div class="widget-title">
                 <span class="icon"><i class="icon-briefcase"></i></span>
-                <h5>首页</h5>
+                <h5>Home</h5>
             </div>
             <div class="widget-content">
                 <div class="row-fluid">
@@ -15,7 +17,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <h4>QuickRMS</h4>
+                                        <h4>Snell Admin</h4>
                                     </td>
                                 </tr>
                                 <tr>
@@ -47,7 +49,7 @@
                                     </tr>
                                     <tr>
                                         <td>Due Date:</td>
-                                        <td><strong></strong></td>
+                                        <td><strong>@Model.DueDate</strong></td>
                                     </tr>
                                     <td class="width30">Client Address:</td>
                                     <td class="width70"><strong></strong>

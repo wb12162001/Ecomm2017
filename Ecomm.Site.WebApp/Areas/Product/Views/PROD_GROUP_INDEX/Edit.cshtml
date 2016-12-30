@@ -1,0 +1,95 @@
+﻿@using Ecomm.Site.Models.Product.PROD_GROUP_INDEX
+@using Quick.Site.Common.Models
+@model PROD_GROUP_INDEXModel
+
+@Html.HiddenFor(t => t.ID)
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.Name) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.Description) :
+            </label>
+            <div class="controls">
+                @Html.TextAreaFor(t => t.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ParentName) :
+            </label>
+            <div class="controls">
+                @Html.DropDownListFor(t => t.ParentID, Model.ParentGroupItems, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ColorBg) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ColorBg, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ColorText) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ColorText, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Picture) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Picture, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.DisplayOrder) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DisplayOrder, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Status) :
+            </label>
+            <div class="controls">
+                @Html.CheckBoxFor(t => t.Status)
+                
+            </div>
+        </div>
+       
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

@@ -1,0 +1,37 @@
+MEF依赖注入MVCRepository框架
+
+1, 框架实体类中继承EntityBase<TKey>；
+
+EntityBase作用是定义所有表相共同的属性：ＩＤ，　caretetime....
+
+这种方式合适与新做项目，所有表都以这种方式建立；
+
+
+2，项目中没有使用Cache 功能；EFDBcontent 没有缓存；
+
+以下是使用二级缓存的方法
+Install-Package EntityFramework.Cache –Pre
+
+public class Configuration : DbConfiguration
+    {
+	internal static readonly InMemoryCache Cache = new InMemoryCache();
+
+	public Configuration()
+	{
+	    var transactionHandler = new CacheTransactionHandler(Cache);
+
+	    AddInterceptor(transactionHandler);
+
+	    Loaded +=
+	      (sender, args) => args.ReplaceService<DbProviderServices>(
+		(s, _) => new CachingProviderServices(s, transactionHandler));
+	}
+
+	public static int GetCountOfCache()
+	{
+	    return Cache.Count;
+	}
+    }
+
+
+3, 没有集成分页与可以执行sql方法;

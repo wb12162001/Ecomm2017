@@ -40,6 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeTemplates\T4Factories\Factories.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Factories.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,6 +83,11 @@
     <Content Include="T4-Domain.Data\EntityCodeScript.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityCodeScript.cs</LastGenOutput>
+      <LastOutputs>.\EntityCodeScript.cs</LastOutputs>
+    </Content>
+    <Content Include="Template1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Template1.cs</LastGenOutput>
     </Content>
     <Content Include="说明.txt" />
   </ItemGroup>
@@ -88,6 +98,7 @@
     <None Include="CodeTemplates\T4Factories\Configuration.ttinclude" />
     <None Include="CodeTemplates\T4Factories\ReuseableFactoryGenerator.ttinclude" />
     <None Include="CodeTemplates\T4Factories\VisualStudioAutomationHelper.ttinclude" />
+    <None Include="ReuseableTemplate1.ttinclude" />
     <None Include="T4-Service\EntityServiceTemplate.ttinclude" />
     <None Include="T4-Service\IEntityServiceTemplate.ttinclude" />
     <None Include="T4-Repository\EntityRepositoryTemplate.ttinclude" />

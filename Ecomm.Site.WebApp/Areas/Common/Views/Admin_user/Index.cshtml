@@ -1,0 +1,119 @@
+﻿@using Ecomm.Site.Models.Authen.Admin_user
+@using Ecomm.Site.Models.AdminCommon
+@model Admin_userModel
+@{
+    ViewBag.Title = ViewBag.CurrentTitle + "- Snell Admin";
+    var editButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    var deleteButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    editButton = ViewBag.Edit;
+    deleteButton = ViewBag.Delete;
+}
+
+<div id="content-body" class="row-fluid">
+    <div class="span22">
+        <!--Action -->
+        @Html.Partial("Search")
+
+        <!--List-->
+        @Html.Partial("List")
+
+        <!--Add & Edit-->
+        @Html.Partial("_FormModal")
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var oTable = null;
+        $(function () {
+            var actionUrl = "@Url.Action("List")?rand=" + Math.random();
+            var aoColumns = [
+                    { "sName": "SortId", "bSortable": false },
+                    { "sName": "Id", "bSortable": true },
+                    { "sName": "Name", "bSortable": true },
+                    { "sName": "Userid", "bSortable": true },
+                    { "sName": "Passid", "bSortable": true },
+                    { "sName": "Usertype", "bSortable": true },
+                    { "sName": "Fname", "bSortable": true },
+                    { "sName": "Lname", "bSortable": true },
+                    { "sName": "Mname", "bSortable": true },
+                    { "sName": "Gender", "bSortable": true },
+                    { "sName": "Title", "bSortable": true },
+                    { "sName": "Email", "bSortable": true },
+                    { "sName": "Description", "bSortable": true },
+                    { "sName": "Status", "bSortable": true },
+                    { "sName": "Sessionid", "bSortable": true },
+                    { "sName": "Ip", "bSortable": true },
+                    { "sName": "Lastdate", "bSortable": true },
+                    { "sName": "Cretuser", "bSortable": true },
+                    { "sName": "Cretdate", "bSortable": true },
+                    { "sName": "Modidate", "bSortable": true },
+                    { "sName": "Modiuser", "bSortable": true },
+                    { "sName": "Row_id", "bSortable": true },
+                    { "sName": "Phoneid", "bSortable": true },
+                    { "sName": "Temp01", "bSortable": true },
+                    {
+                        "sName": "icon",
+                        "bSortable": false,
+                        "fnRender": function (oObj) {
+                            return '<i class="' + oObj.aData[3] + '"></i>';
+                        }
+                    },
+                    { "sName": "OrderSort", "bSortable": false },
+                    { "sName": "Description", "bSortable": false },
+                    { "sName": "Enabled", "bSortable": false },
+                    {
+                        "sName": "Id",
+                        "bSortable": false,
+                        "fnRender": function (oObj) {
+                            var btnArray = "";
+                            @if (editButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-primary btn-normal" title="@editButton.Text" onclick="Edit(' + oObj.aData[oObj.aData.length - 1] + ')"><span class="@editButton.Icon"></span></button>'</text>
+                            }
+                            @if (deleteButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-danger btn-normal" title="@deleteButton.Text" onclick="Delete(' + oObj.aData[oObj.aData.length - 1] + ')"><span class="@deleteButton.Icon"></span></button>'</text>
+                            }
+                            return btnArray;
+                        }
+                    }
+            ];
+            //InitData tables
+            oTable = InitDatatables($(".data-table"), actionUrl, aoColumns, oTable);
+        });
+
+        //Query
+        function Search() {
+            var filterdata = $(".search-form").serialize();
+            oTable.fnReloadAjax("@Url.Action("List")?rand=" + Math.random() + "&" + filterdata);
+        }
+
+        //Create
+        function Create() {
+            var actionUrl = "@Url.Action("Create")";
+            var param = {};
+            ShowModal(actionUrl, param, "Add Admin_user");
+        }
+
+        //Edit
+        function Edit(id) {
+            var actionUrl = "@Url.Action("Edit")";
+            var param = { Id: id }
+            ShowModal(actionUrl, param, "Edit Admin_user");
+        }
+
+        //Save
+        function Save() {
+            SaveModal(oTable);
+        }
+
+        //Delete
+        function Delete(id) {
+            var actionUrl = "@Url.Action("Delete")";
+            var param = { Id: id }
+            DeleteRecord(actionUrl, param, oTable);
+        }
+
+    </script>
+}

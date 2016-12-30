@@ -227,7 +227,7 @@ function InitDatatables(dataTableObj, actionUrl, aoColumns, oTable) {
         "sPaginationType": "full_numbers",
         'bLengthChange': true,
         "bFilter": false,
-        "bInfo": true,
+        "bInfo": false,
         'bPaginate': true,
         "bProcessing": true,
         "bAutoWidth": false,
@@ -236,18 +236,18 @@ function InitDatatables(dataTableObj, actionUrl, aoColumns, oTable) {
         "iDisplayLength": 10,
         "aLengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]],
         "oLanguage": {
-            "sLengthMenu": "每页显示 _MENU_ 条记录",
+            "sLengthMenu": "Show _MENU_ Items",
             "sZeroRecords": "对不起，查询不到任何相关数据",
             "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
             "sInfoEmtpy": "找不到相关数据",
             "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
-            "sProcessing": "正在加载中...",
-            "sSearch": "搜索",
+            "sProcessing": "Loading...",
+            "sSearch": "Search",
             "oPaginate": {
-                "sFirst": "第一页",
-                "sPrevious": " 上一页 ",
-                "sNext": " 下一页 ",
-                "sLast": " 最后一页 "
+                "sFirst": "First",
+                "sPrevious": " Previous ",
+                "sNext": " Next ",
+                "sLast": " Last "
             }
         },
         "sAjaxSource": actionUrl,
@@ -323,8 +323,8 @@ function SearchRecord(actionUrl, oTable) {
 
 /*******删除操作*********/
 function DeleteRecord(actionUrl, param, oTable) {
-    bootbox.dialog("你确认要删除这条记录？", [{
-        "label": "删除",
+    bootbox.dialog("You confirm that you want to delete this record ?", [{
+        "label": "Delete",
         "class": "btn-danger",
         "callback": function () {
             $.ajax({
@@ -349,15 +349,15 @@ function DeleteRecord(actionUrl, param, oTable) {
             });
         }
     }, {
-        "label": "取消",
+        "label": "Cancel",
         "class": "btn-default"
     }]);
 }
 
 /*******删除全部操作*********/
 function DeleteAllRecord(actionUrl, oTable) {
-    bootbox.dialog("你确认要删除所有记录？", [{
-        "label": "删除",
+    bootbox.dialog("You confirm that you want to delete all records ?", [{
+        "label": "Delete",
         "class": "btn-danger",
         "callback": function () {
             $.ajax({
@@ -381,7 +381,7 @@ function DeleteAllRecord(actionUrl, oTable) {
             });
         }
     }, {
-        "label": "取消",
+        "label": "Cancel",
         "class": "btn-default"
     }]);
 }

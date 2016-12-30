@@ -41,23 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authen\IModulePermissionService.cs" />
-    <Compile Include="Authen\IModuleService.cs" />
-    <Compile Include="Authen\Impl\ModulePermissionService.cs" />
-    <Compile Include="Authen\Impl\ModuleService.cs" />
-    <Compile Include="Authen\Impl\NaService.cs" />
-    <Compile Include="Authen\Impl\PermissionService.cs" />
-    <Compile Include="Authen\Impl\RoleModulePermissionService.cs" />
-    <Compile Include="Authen\Impl\RoleService.cs" />
-    <Compile Include="Authen\Impl\UserRoleService.cs" />
-    <Compile Include="Authen\Impl\UserService.cs" />
-    <Compile Include="Authen\INaService.cs" />
-    <Compile Include="Authen\IPermissionService.cs" />
-    <Compile Include="Authen\IRoleModulePermissionService.cs" />
-    <Compile Include="Authen\IRoleService.cs" />
-    <Compile Include="Authen\IUserRoleService.cs" />
-    <Compile Include="Authen\IUserService.cs" />
+    <Compile Include="Authen\IAdmin_userService.cs" />
+    <Compile Include="Authen\Impl\Admin_userService.cs" />
     <Compile Include="CoreServiceBase.cs" />
+    <Compile Include="Product\Impl\PROD_GROUP_INDEXService.cs" />
+    <Compile Include="Product\Impl\PROD_GROUP_ITEMService.cs" />
+    <Compile Include="Product\Impl\PROD_MASTERService.cs" />
+    <Compile Include="Product\IPROD_GROUP_INDEXService.cs" />
+    <Compile Include="Product\IPROD_GROUP_ITEMService.cs" />
+    <Compile Include="Product\IPROD_MASTERService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SysConfig\Impl\OperateLogService.cs" />
     <Compile Include="SysConfig\IOperateLogService.cs" />

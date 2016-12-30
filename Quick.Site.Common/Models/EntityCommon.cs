@@ -8,6 +8,7 @@ namespace Quick.Site.Common.Models
 {
     public class EntityCommon
     {
+        /*
         /// <summary>
         /// 创建者Id
         /// </summary>
@@ -37,5 +38,6 @@ namespace Quick.Site.Common.Models
         /// 修改者日期
         /// </summary>
         public DateTime? ModifyTime { get; set; }
+        */
     }
 }

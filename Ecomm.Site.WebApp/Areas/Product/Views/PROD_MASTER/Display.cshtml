@@ -1,0 +1,43 @@
+﻿@using Ecomm.Site.Models.Product.PROD_MASTER
+@using Ecomm.Site.Models.AdminCommon
+@model PROD_MASTERModel
+@{
+    ViewBag.Title = "Information";
+}
+
+<div id="content-body" class="row-fluid">
+    <div class="span22">
+        <div class="widget-box">
+            <div class="widget-title">
+                <span class="icon"><i class="icon-info-sign"></i></span>
+                <h5>Product</h5>
+            </div>
+            <div class="widget-content nopadding">
+                <div class="form-horizontal search-form">
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.ProductNo) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.ProductNo
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.ProductName) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.ProductName
+                        </div>
+                    </div>
+
+                    <div class="form-actions form-operate">
+                        <a class="btn btn-default" href="@Url.Action("Index", "PROD_MASTER", new { Area = "Product" })" role="button">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+    </script>
+}

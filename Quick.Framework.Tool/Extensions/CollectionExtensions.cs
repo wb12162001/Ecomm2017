@@ -170,7 +170,7 @@ namespace Quick.Framework.Tool
             total = source.Count(predicate);
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy(m => m.Id);
+                source = source.OrderBy("");//这里应该是主键
             }
             else
             {
