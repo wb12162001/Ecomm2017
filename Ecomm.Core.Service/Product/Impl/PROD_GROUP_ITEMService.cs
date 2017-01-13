@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Text;
 using System.Collections.Generic;
 
 using Quick.Framework.Tool;
@@ -55,16 +56,43 @@ namespace Ecomm.Core.Service.Product.Impl
             return new OperationResult(OperationResultType.Success, "Added successfully");
         }
 
-        public OperationResult Update(PROD_GROUP_ITEMModel model)
+        public OperationResult Update(UpdatePROD_GROUP_ITEMModel model)
         {
-			var entity = PROD_GROUP_ITEMList.First(t => t.ProductID == model.ProductID && t.GROUP_INDEX == model.GROUP_INDEX);
-            entity.ProductID = model.ProductID;
-            entity.GROUP_INDEX = model.GROUP_INDEX;
+            //因为这里使用两个联合主键为约束
+            /*
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("UPDATE dbo.[PROD_GROUP_ITEM]");
+            sb.AppendLine("   SET [ProductID] = @ProductID");
+            sb.AppendLine("      ,[GROUP_INDEX] = @GROUP_INDEX");
+            sb.AppendLine("      ,[Notes] = @Notes");
+            sb.AppendLine("      ,[Picture] = @Picture");
+            sb.AppendLine("      ,[Status] = @Status");
+            sb.AppendLine(" WHERE [ProductID] = @oldProductID");
+            sb.AppendLine("       and [GROUP_INDEX] = @oldGROUP_INDEX");
+
+            System.Data.SqlClient.SqlParameter[] parameters = {
+               new System.Data.SqlClient.SqlParameter("@ProductID",model.NewProductID),
+               new System.Data.SqlClient.SqlParameter("@GROUP_INDEX",model.NewGROUP_INDEX),
+               new System.Data.SqlClient.SqlParameter("@Notes",model.Notes),
+               new System.Data.SqlClient.SqlParameter("@Picture",model.Picture),
+               new System.Data.SqlClient.SqlParameter("@Status",model.Status),
+               new System.Data.SqlClient.SqlParameter("@oldProductID",model.ProductID),
+               new System.Data.SqlClient.SqlParameter("@oldGROUP_INDEX",model.GROUP_INDEX),
+            };
+            //这里以在数据库中修改成功;
+            PROD_GROUP_ITEMRepository.ExcuteNoQuery(sb.ToString(), System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction,false,"", parameters);
+            //这里的Entities没有更新??
+            */
+
+            var entity = PROD_GROUP_ITEMList.First(t => t.ProductID == model.ProductID && t.GROUP_INDEX == model.GROUP_INDEX);
+            //entity.ProductID = model.NewProductID;
+            //entity.GROUP_INDEX = model.NewGROUP_INDEX;
             entity.Notes = model.Notes;
             entity.Picture = model.Picture;
             entity.Status = (byte)(model.Status ? 1 : 0);
 
             PROD_GROUP_ITEMRepository.Update(entity);
+
             return new OperationResult(OperationResultType.Success, "update completed");
         }
 

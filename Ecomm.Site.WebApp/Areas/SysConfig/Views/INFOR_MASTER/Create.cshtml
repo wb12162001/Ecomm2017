@@ -1,0 +1,165 @@
+﻿@using Ecomm.Site.Models.SysConfig.INFOR_MASTER
+@using Quick.Site.Common.Models
+@model INFOR_MASTERModel
+
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#other" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.InforSubject) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.InforSubject, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.InforSubject)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.InforCategoryName) :
+            </label>
+            <div class="controls">
+                @Html.DropDownListFor(t => t.InforCategoryID, Model.Categrouies, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Introduction) :
+            </label>
+            <div class="controls">
+                @Html.TextAreaFor(t => t.Introduction, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Author) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Author, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ViewTimes) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ViewTimes, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.DisplayOrder) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DisplayOrder, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Status) :
+            </label>
+            <div class="controls">
+                @Html.DropDownListFor(t => t.Status, Model.StatusModel.EnabledItems, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.IsOuterLink) :
+            </label>
+            <div class="controls">
+                @Html.CheckBoxFor(t => t.IsOuterLink)
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ActiveLink) :
+            </label>
+            <div class="controls">
+                @Html.TextAreaFor(t => t.ActiveLink, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Target) :
+            </label>
+            <div class="controls">
+                @Html.DropDownListFor(t => t.Target, Model.TargetModel.TargetItems, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LinkTitle) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LinkTitle, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LinkText) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LinkText, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.LinkStyle) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.LinkStyle, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ParentID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ParentID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Item01) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Item01, new { @class = "form-control" })
+
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="other">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div class="widget-content">
+                    @Html.TextAreaFor(t => t.Description, new { @class = "textarea_editor", @style = "width:450px;" })
+                    <script>
+	                    $('.textarea_editor').wysihtml5();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

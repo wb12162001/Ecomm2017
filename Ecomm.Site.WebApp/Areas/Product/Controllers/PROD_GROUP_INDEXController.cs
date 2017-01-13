@@ -49,7 +49,7 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
 
             var model = new PROD_GROUP_INDEXModel();
             #region 父级列表
-            var parentModuleData = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => t.ParentID == null && t.Status == 1)
+            var parentModuleData = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => string.IsNullOrEmpty(t.ParentID) && t.Status == 1)
             .Select(t => new PROD_GROUP_INDEXModel
             {
                 ID = t.ID,
@@ -67,6 +67,7 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
         [AdminPermission(PermissionCustomMode.Ignore)]
         public ActionResult List(DataTableParameter param)
         {
+            /*
             string columns = Request["sColumns"];
             string sortCol = Request["iSortCol_0"];
             string sortDir = Request["sSortDir_0"];
@@ -125,10 +126,12 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                 .OrderBy(t => t.ParentID).ThenBy(t => t.DisplayOrder)
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength).ToList();
-
+                */
+            List<PROD_GROUP_INDEXModel> list = GetProdGroupIndexNode("");
+            int total = list.Count;
             int sortId = param.iDisplayStart + 1;
             //这里的次序一定要与index.cshtml,list.cshtml一样;
-            var result = from c in filterResult
+            var result = from c in list.Skip(param.iDisplayStart).Take(param.iDisplayLength)
                          select new[]
                              {
                                  sortId++.ToString(),
@@ -137,8 +140,9 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                                  c.ParentName,
                                  c.ColorBg,
                                  c.ColorText,
-                                 c.Picture,
+                                 CommonHelper.GetImageString(c.Picture),
                                  c.DisplayOrder.ToString(),
+                                 CommonHelper.GetStatusString(c.Status),
                                  c.ID,
                              };
 
@@ -152,16 +156,60 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-		#region 构建查询表达式
-		/// <summary>
-		/// 构建查询表达式
-		/// </summary>
-		/// <returns></returns>
-		private Expression<Func<PROD_GROUP_INDEX, Boolean>> BuildSearchCriteria()
+        [NonAction]
+        public List<PROD_GROUP_INDEXModel> GetProdGroupIndexNode(string id)
+        {
+            List<PROD_GROUP_INDEXModel> cmbTreeList = new List<PROD_GROUP_INDEXModel>();
+            var ext = BuildSearchCriteria(id);
+            var parentList = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(ext).OrderBy(t => t.Name).Select(t => new PROD_GROUP_INDEXModel
+            {
+                ID = t.ID,
+                Name = t.Name,
+                Description = t.Description,
+                ParentID = t.ParentID,
+                ParentName = t.ParentGroup != null ? t.ParentGroup.Name : "",
+                ColorBg = t.ColorBg,
+                ColorText = t.ColorText,
+                Picture = t.Picture,
+                DisplayOrder = t.DisplayOrder,
+                Creator = t.Creator,
+                Modifier = t.Modifier,
+                CreateDate = t.CreateDate,
+                Modidate = t.Modidate,
+                Status = t.Status == 1 ? true : false,
+                Item01 = t.Item01,
+                Item02 = t.Item02,
+                Item03 = t.Item03,
+                Item04 = t.Item04,
+                Item05 = t.Item05,
+            }).ToList();
+
+            if (parentList.Count >= 1)
+            {
+                foreach (var item in parentList)
+                {
+                    cmbTreeList.Add(item);
+                    List<PROD_GROUP_INDEXModel> tempList = GetProdGroupIndexNode(item.ID);
+                    if (tempList.Count >= 1)
+                    {
+                        cmbTreeList.AddRange(tempList);
+                    }
+
+                }
+            }
+            return cmbTreeList;
+        }
+
+        #region 构建查询表达式
+        /// <summary>
+        /// 构建查询表达式
+        /// </summary>
+        /// <returns></returns>
+        private Expression<Func<PROD_GROUP_INDEX, Boolean>> BuildSearchCriteria(string id)
 		{
 			DynamicLambda<PROD_GROUP_INDEX> bulider = new DynamicLambda<PROD_GROUP_INDEX>();
 			Expression<Func<PROD_GROUP_INDEX, Boolean>> expr = null;
-            
+            /*
             if (!string.IsNullOrEmpty(Request["Name"]))
             {
                 var data = Request["Name"].Trim();
@@ -174,16 +222,21 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                 Expression<Func<PROD_GROUP_INDEX, Boolean>> tmp = t => t.ParentID.Contains(data);
                 expr = bulider.BuildQueryAnd(expr, tmp);
             }
+            //if (!string.IsNullOrEmpty(id))
+            //{
+            //    Expression<Func<PROD_GROUP_INDEX, Boolean>> tmp = t => t.ParentID == id;
+            //    expr = bulider.BuildQueryAnd(expr, tmp);
+            //}
+
             if (Request["Status"] == "0" || Request["Status"] == "1")
             {
                 var data = Request["Status"] == "1" ? 1 : 0;
                 Expression<Func<PROD_GROUP_INDEX, Boolean>> tmp = t => t.Status == data;
                 expr = bulider.BuildQueryAnd(expr, tmp);
-            }
-            
-            Expression<Func<PROD_GROUP_INDEX, Boolean>> tmpSolid = t => 1 == 1;
+            }*/
+            Expression<Func<PROD_GROUP_INDEX, Boolean>> tmpSolid = t => t.ParentID == id;
             expr = bulider.BuildQueryAnd(expr, tmpSolid);
-			return expr;
+            return expr;
 		}
 
 		#endregion
@@ -201,7 +254,7 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
 		/// <param name="model"></param>
 		private void InitParentGroup(PROD_GROUP_INDEXModel model)
         {
-            var parentModuleData = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => t.ParentID == null && t.Status == 1)
+            var parentModuleData = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => string.IsNullOrEmpty(t.ParentID) && t.Status == 1)
                 .Select(t => new PROD_GROUP_INDEXModel
                 {
                     ID = t.ID,
@@ -210,7 +263,33 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
             foreach (var item in parentModuleData)
             {
                 model.ParentGroupItems.Add(new SelectListItem { Text = item.Name, Value = item.ID });
+                model.ParentGroupItems.AddRange(GetProdGroup(item.ID,"|--"));
             }
+        }
+        [NonAction]
+        public List<SelectListItem> GetProdGroup(string id,string level)
+        {
+            List<SelectListItem> cmbTreeList = new List<SelectListItem>();
+            var parentList = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => t.ParentID == id && t.Status == 1).OrderBy(t => t.Name).Select(t => new SelectListItem
+            {
+                Text = level + t.Name,
+                Value = t.ID
+            }).ToList();
+
+            if (parentList.Count >= 1)
+            {
+                foreach (var item in parentList)
+                {
+                    cmbTreeList.Add(item);
+                    List<SelectListItem> tempList = GetProdGroup(item.Value, " |---");
+                    if (tempList.Count >= 1)
+                    {
+                        cmbTreeList.AddRange(tempList);
+                    }
+
+                }
+            }
+            return cmbTreeList;
         }
 
         [HttpPost]

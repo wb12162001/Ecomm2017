@@ -1,0 +1,26 @@
+﻿<div class="links" id="top_menu">
+    @Html.Hidden("hdUserid")
+    <img src="/Content/snell/images/logo.png" />
+    @if (!string.IsNullOrEmpty(ViewBag.UserName))
+    {
+        <ul class="top-ul-left">
+            <li><a href="">My Account　|</a></li>
+            <li><a href="">Wishlist　|</a></li>
+            <li><a href="">Checkout　|</a></li>
+            <li><a href="">Shopping Cart</a></li>
+        </ul>
+    }
+    <ul class="top-ul-right">
+        @if (!string.IsNullOrEmpty(ViewBag.UserName))
+        {
+            
+            <li>Welcome [@ViewBag.UserName]</li>
+            <li><a href="#" onclick="logout();">Logout</a></li>
+        }
+        else
+        {
+            <li><a href="" data-toggle="modal" data-target="#login-modal-form">Login</a></li>
+            <li><a href="">Register</a></li>
+        }
+    </ul>
+</div>

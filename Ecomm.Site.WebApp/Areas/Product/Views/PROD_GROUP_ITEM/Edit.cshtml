@@ -1,6 +1,6 @@
 ﻿@using Ecomm.Site.Models.Product.PROD_GROUP_ITEM
 @using Quick.Site.Common.Models
-@model PROD_GROUP_ITEMModel
+@model UpdatePROD_GROUP_ITEMModel
 
 @Html.HiddenFor(t => t.ProductID)
 @Html.HiddenFor(t => t.GROUP_INDEX)
@@ -19,8 +19,8 @@
                 <label class="red">*</label>@Html.DisplayNameFor(t => t.ProductName) :
             </label>
             <div class="controls">
-                @Html.DropDownListFor(t => t.ProductID, Model.Products, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.ProductID)
+                @Html.DropDownListFor(t => t.NewProductID, Model.Products, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.NewProductID)
             </div>
         </div>
         <div class="control-group">
@@ -28,8 +28,8 @@
                 <label class="red">*</label>@Html.DisplayNameFor(t => t.GroupName) :
             </label>
             <div class="controls">
-                @Html.DropDownListFor(t => t.GROUP_INDEX, Model.Groups, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.GROUP_INDEX)
+                @Html.DropDownListFor(t => t.NewGROUP_INDEX, Model.Groups, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.NewGROUP_INDEX)
             </div>
         </div>
         <div class="control-group">

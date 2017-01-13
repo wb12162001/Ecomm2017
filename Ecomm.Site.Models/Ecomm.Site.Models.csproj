@@ -74,11 +74,20 @@
     <Compile Include="AdminCommon\ButtonModel.cs" />
     <Compile Include="AdminCommon\ProfileModel.cs" />
     <Compile Include="AdminCommon\SidebarMenuModel.cs" />
+    <Compile Include="AdminCommon\StatusModel.cs" />
     <Compile Include="Authen\Admin_user\Admin_userModel.cs" />
     <Compile Include="Authen\Admin_user\ChangePwdModel.cs" />
     <Compile Include="Authen\Admin_user\HomeModel.cs" />
     <Compile Include="Authen\Admin_user\LoginModel.cs" />
     <Compile Include="Authen\Admin_user\UpdateAdmin_userModel.cs" />
+    <Compile Include="EpSnell\Rela_contact\Rela_contactModel.cs" />
+    <Compile Include="EpSnell\Rela_contact\UpdateRela_contactModel.cs" />
+    <Compile Include="MyOffice\SALES_EBASKET\SALES_EBASKETModel.cs" />
+    <Compile Include="MyOffice\SALES_EBASKET\UpdateSALES_EBASKETModel.cs" />
+    <Compile Include="MyOffice\SALES_EORDERDETAILS\SALES_EORDERDETAILSModel.cs" />
+    <Compile Include="MyOffice\SALES_EORDERDETAILS\UpdateSALES_EORDERDETAILSModel.cs" />
+    <Compile Include="MyOffice\SALES_EORDERS\SALES_EORDERSModel.cs" />
+    <Compile Include="MyOffice\SALES_EORDERS\UpdateSALES_EORDERSModel.cs" />
     <Compile Include="Product\PROD_GROUP_INDEX\PROD_GROUP_INDEXModel.cs" />
     <Compile Include="Product\PROD_GROUP_INDEX\UpdatePROD_GROUP_INDEXModel.cs" />
     <Compile Include="Product\PROD_GROUP_ITEM\PROD_GROUP_ITEMModel.cs" />
@@ -86,7 +95,20 @@
     <Compile Include="Product\PROD_MASTER\PROD_MASTERModel.cs" />
     <Compile Include="Product\PROD_MASTER\UpdatePROD_MASTERModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SysConfig\INFOR_CATEGORIES\INFOR_CATEGORIESModel.cs" />
+    <Compile Include="SysConfig\INFOR_CATEGORIES\UpdateINFOR_CATEGORIESModel.cs" />
+    <Compile Include="SysConfig\INFOR_MASTER\INFOR_MASTERModel.cs" />
+    <Compile Include="SysConfig\INFOR_MASTER\UpdateINFOR_MASTERModel.cs" />
     <Compile Include="SysConfig\OperateLog\OperateLogModel.cs" />
+    <Compile Include="SysConfig\SYS_CONFIG\SYS_CONFIGModel.cs" />
+    <Compile Include="SysConfig\SYS_CONFIG\UpdateSYS_CONFIGModel.cs" />
+    <Compile Include="SysConfig\SYS_DICTIONARY\SYS_DICTIONARYModel.cs" />
+    <Compile Include="SysConfig\SYS_DICTIONARY\UpdateSYS_DICTIONARYModel.cs" />
+    <Compile Include="SysConfig\SYS_DICTIONARY_DATA\SYS_DICTIONARY_DATAModel.cs" />
+    <Compile Include="SysConfig\SYS_DICTIONARY_DATA\UpdateSYS_DICTIONARY_DATAModel.cs" />
+    <Compile Include="SysConfig\SYS_PROPERTY\SYS_PROPERTYModel.cs" />
+    <Compile Include="SysConfig\SYS_PROPERTY\UpdateSYS_PROPERTYModel.cs" />
+    <Compile Include="Web\IndexPageModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Quick.Site.Common\Quick.Site.Common.csproj">
@@ -97,6 +119,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

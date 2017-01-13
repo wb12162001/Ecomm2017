@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecomm.Domain.Models.Product
 {
@@ -70,7 +71,7 @@ namespace Ecomm.Domain.Models.Product
 
 		public string Item05  { get; set; }
 
-
+        [ForeignKey("ParentID")]
         public virtual PROD_GROUP_INDEX ParentGroup { get; set; }
         public virtual ICollection<PROD_GROUP_INDEX> ChildGroup { get; set; }
     }

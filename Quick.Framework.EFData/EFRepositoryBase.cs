@@ -166,6 +166,13 @@ namespace Quick.Framework.EFData
             return isSave ? EFContext.Commit() : 0;
         }
 
+        public virtual int UpdateState(TEntity entity, bool isSave = true)
+        {
+            PublicHelper.CheckArgument(entity, "entity");
+            EFContext.RegisterModifiedState<TEntity>(entity);
+            return isSave ? EFContext.Commit() : 0;
+        }
+
         /// <summary>
         /// 使用附带新值的实体信息更新指定实体属性的值
         /// </summary>
@@ -188,6 +195,7 @@ namespace Quick.Framework.EFData
             }
             return 0;
         }
+
 
         /// <summary>
         ///     查找指定主键的实体记录

@@ -164,6 +164,12 @@ namespace Quick.Framework.EFData
             IsCommitted = false;
         }
 
+        public void RegisterModifiedState<TEntity>(TEntity entity) where TEntity : class // EntityBase<TKey>
+        {
+            Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+            IsCommitted = false;
+        }
+
         /// <summary>
         /// 使用指定的属性表达式指定注册更改的对象到仓储上下文中
         /// </summary>

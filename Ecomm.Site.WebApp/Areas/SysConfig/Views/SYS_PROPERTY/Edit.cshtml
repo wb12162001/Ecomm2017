@@ -1,0 +1,57 @@
+﻿@using Ecomm.Site.Models.SysConfig.SYS_PROPERTY
+@using Quick.Site.Common.Models
+@model UpdateSYS_PROPERTYModel
+
+@Html.HiddenFor(t => t.PropertyID)
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.PropertyID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PropertyID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PropertyID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.PropertyName) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PropertyName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PropertyName)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Remark) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Remark, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Status) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Status, new { @class = "form-control" })
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

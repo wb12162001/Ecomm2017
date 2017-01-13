@@ -63,7 +63,7 @@ namespace Quick.Framework.Tool
                 }
                 catch (InvalidOperationException exc)
                 {
-                    throw new Exception("ObjectContext中已有相同键值对象 " + typeof(TEntity).Name + "：" + exc.Message);
+                    //throw new Exception("ObjectContext中已有相同键值对象 " + typeof(TEntity).Name + "：" + exc.Message);
                     //TEntity originalEntity = dbSet.Local.Single(m => Equals(m.Id, entity.Id));
                     //ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext;
                     //ObjectStateEntry objectEntry = objectContext.ObjectStateManager.GetObjectStateEntry(originalEntity);

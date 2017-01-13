@@ -29,10 +29,9 @@ namespace Ecomm.Domain.Data.Mapping.Product
             this.ToTable("PROD_GROUP_ITEM");
             // Properties
             // Primary Key
-            this.HasKey(t => t.ProductID);   		
+            this.HasKey(t => new { t.ProductID, t.GROUP_INDEX } );   		
             
             //this.Property(t => t.ProductID).HasColumnName("ProductID").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            this.HasKey(t => t.GROUP_INDEX);
 
             //this.Property(t => t.GROUP_INDEX).HasColumnName("GROUP_INDEX").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             // Relation

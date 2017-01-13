@@ -18,16 +18,39 @@ namespace Ecomm.Site.Models.Product.PROD_GROUP_ITEM
     {
         public UpdatePROD_GROUP_ITEMModel()
         {
+            Groups = new List<SelectListItem>() {
+                new SelectListItem { Text = "--- Root ---", Value = ""},
+            };
+            Products = new List<SelectListItem>() {
+                new SelectListItem { Text = "--- Root ---", Value = ""},
+            };
         }
 
         [Display(Name = "ProductID")]
         [Required(ErrorMessage = "ProductID can not be empty")]
-		public string ProductID  { get; set; }
+        public string ProductID { get; set; }
+
+        [Display(Name = "Product")]
+        public string ProductName { get; set; }
+        public List<SelectListItem> Products { get; set; }
 
 
         [Display(Name = "GROUP_INDEX")]
         [Required(ErrorMessage = "GROUP_INDEX can not be empty")]
-		public string GROUP_INDEX  { get; set; }
+        public string GROUP_INDEX { get; set; }
+
+        [Display(Name = "Group")]
+        public string GroupName { get; set; }
+        public List<SelectListItem> Groups { get; set; }
+
+        [Display(Name = "ProductID")]
+        [Required(ErrorMessage = "ProductID can not be empty")]
+        public string NewProductID { get; set; }
+
+
+        [Display(Name = "GROUP_INDEX")]
+        [Required(ErrorMessage = "GROUP_INDEX can not be empty")]
+        public string NewGROUP_INDEX { get; set; }
 
 
         [Display(Name = "Notes")]
@@ -39,8 +62,8 @@ namespace Ecomm.Site.Models.Product.PROD_GROUP_ITEM
 		public string Picture  { get; set; }
 
 
-        [Display(Name = "Status")]
-		public byte? Status  { get; set; }
+        [Display(Name = "IsActivate")]
+        public bool Status { get; set; }
 
     }
     

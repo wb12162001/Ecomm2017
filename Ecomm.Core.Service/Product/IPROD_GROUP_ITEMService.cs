@@ -29,7 +29,7 @@ namespace Ecomm.Core.Service.Product
 
         #region 公共方法
         OperationResult Insert(PROD_GROUP_ITEMModel model);
-        OperationResult Update(PROD_GROUP_ITEMModel model);
+        OperationResult Update(UpdatePROD_GROUP_ITEMModel model);
         /// <summary>
         /// 逻辑删除
         /// </summary>

@@ -300,7 +300,7 @@ function SaveModal(oTable) {
     $.ajax({
         type: "POST",
         url: actionUrl,
-        data: $form.serialize(),
+        data: $form.serialize(),  //redo 这个方式不能提交上传文件;我改用：FormData
         success: function (data) {
             //判断返回值，若为Object类型，即操作成功
             var result = ((typeof data == 'object') && (data.constructor == Object));

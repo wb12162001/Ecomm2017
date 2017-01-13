@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Ecomm.Core.Service.SysConfig;
+using Ecomm.Site.Models.SysConfig.INFOR_MASTER;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +14,11 @@ namespace Ecomm.Site.WebApp.Common
         public static string GetStatusString(bool statue)
         {
             return statue ? "<span class='date badge badge-success'>True</span>" : "<span class='date badge badge-warning'>False</span>";
+        }
+
+        public static string GetEnableStatusString(int? Enable)
+        {
+            return Enable==0 ? "<span class='date badge badge-success'>True</span>" : "<span class='date badge badge-warning'>False</span>";
         }
         public static string GetImageString(string img)
         {
@@ -32,6 +40,7 @@ namespace Ecomm.Site.WebApp.Common
             string imagesurl2 = tmpRootDir + imagesurl1.Replace(@"/", @"\"); //转换成绝对路径
             return imagesurl2;
         }
+
 
         public static string SiteRootURL
         {

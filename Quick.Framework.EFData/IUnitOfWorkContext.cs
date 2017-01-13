@@ -37,7 +37,7 @@ namespace Quick.Framework.EFData
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
         /// <param name="entity"> 要注册的对象 </param>
         void RegisterModified<TEntity>(TEntity entity) where TEntity : class; //EntityBase<TKey>;
-
+        void RegisterModifiedState<TEntity>(TEntity entity) where TEntity : class;
         /// <summary>
         /// 使用指定的属性表达式指定注册更改的对象到仓储上下文中
         /// </summary>

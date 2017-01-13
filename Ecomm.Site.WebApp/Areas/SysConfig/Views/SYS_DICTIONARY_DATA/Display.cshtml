@@ -1,0 +1,94 @@
+﻿@using Ecomm.Site.Models.SysConfig.SYS_DICTIONARY_DATA
+@using Ecomm.Site.Models.AdminCommon
+@model SYS_DICTIONARY_DATAModel
+
+<div id="content-body" class="row-fluid">
+    <div class="span22">
+        <div class="widget-box">
+            <div class="widget-title">
+                <span class="icon"><i class="icon-info-sign"></i></span>
+                <h5>Display Information</h5>
+            </div>
+            <div class="widget-content nopadding">
+                    <div class="form-horizontal search-form">
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.DictionaryValue) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.DictionaryValue
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.DictDataName) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.DictDataName
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.DictDataValue) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.DictDataValue
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.DictDataType) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.DictDataType
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.IsFixed) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.IsFixed
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.IsCancel) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.IsCancel
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.DictParentID) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.DictParentID
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.CreateDate) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.CreateDate
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.ModiDate) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.ModiDate
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Remark) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Remark
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.DisplayOrder) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.DisplayOrder
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions form-operate">
+                        <a class="btn btn-default" href="@Url.Action("Index", "SYS_DICTIONARY_DATA", new { Area = "SysConfig" })" role="button">Back</a>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    </script>
+}
+

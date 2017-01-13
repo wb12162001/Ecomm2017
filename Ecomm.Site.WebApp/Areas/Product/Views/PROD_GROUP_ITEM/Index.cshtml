@@ -113,6 +113,8 @@
                     }
                 });
 
+               
+
             });
         }
 
@@ -156,6 +158,49 @@
                 }
             )
             return false;
+        }
+
+        
+
+        $(function () {
+
+            $("#sel_menu3").select2({
+                ajax: {
+                    url: "@Url.Action("GetProdJson", "PROD_MASTER",new { area = "Product" })",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    console.log(params);
+                    return {
+                        q: params, // search term
+                        page: ""
+                    };
+                },
+                processResults: function (data, params) {
+                    console.log(params);
+                    console.log(data);
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: (params.page * 10) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 2,
+            templateResult: formatRepoProvince, // omitted for brevity, see the source of this page
+            templateSelection: formatRepoProvince // omitted for brevity, see the source of this page
+        });
+        });
+
+        function formatRepoProvince(repo) {
+            if (repo.loading) return repo.text;
+            var markup = "<div>" + repo.name + "</div>";
+            return markup;
         }
 </script>
 

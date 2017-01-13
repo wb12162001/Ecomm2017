@@ -9,6 +9,7 @@ using System.Text;
 
 using Quick.Framework.Tool.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ecomm.Domain.Models.Product
 {
@@ -18,9 +19,9 @@ namespace Ecomm.Domain.Models.Product
         {
         }
 
-		public string ProductID  { get; set; }
+        public string ProductID  { get; set; }
 
-		public string GROUP_INDEX  { get; set; }
+        public string GROUP_INDEX  { get; set; }
 
 
 		public string Notes  { get; set; }

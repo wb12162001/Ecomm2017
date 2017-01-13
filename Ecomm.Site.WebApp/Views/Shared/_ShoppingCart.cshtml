@@ -1,0 +1,62 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EBASKET
+@{ 
+    ShoppingCartViewModel ShoppingCart = (ShoppingCartViewModel)ViewBag.ShoppingCartModel;
+}
+
+    <a href="">
+        <div class="cart-text">
+            <span class="line-1">SHOPPING CART</span>
+            <br>
+            <span class="line-2">@ShoppingCart.ItemCount ITEM $@ShoppingCart.CartTotal</span>
+        </div>
+        <img class="cart-logo" src="/Content/snell/images/cart.png">
+    </a>
+    <div class="cart-layer">
+        <div class="empty-cart">
+            There is no goods in the shopping cart.
+        </div>
+@if (ShoppingCart.ItemCount > 0)
+{
+    int c = 0;
+        <div id="cartCarousel" class="carousel slide vertical">
+            <div class="cart-list carousel-inner">
+                <ul class="active item">
+    @foreach (var item in ShoppingCart.Sales_Ebaskets)
+    {
+        <li>
+            <div class="cart-item">
+                <div class="cart-item-img pull-left">
+                    <img src="/Content/snell/images/sellers-1.jpg">
+                </div>
+                <div class="cart-item-detail pull-right">
+                    <a href="#" class="product-name">@item.ProductNo</a>
+                    <div>
+                        <span><span>@item.Quantity.ToString("N1")</span> <i class="fa fa-times" style="font-size:12px;"></i> <span style="color:#777">$@item.UnitPrice.Value.ToString("N2")</span></span>
+                        <span class="del-cart pull-right" data-list-id="1"><i class="fa fa-times" style="font-size:18px;color:#000"></i></span>
+                    </div>
+                </div>
+            </div>
+        </li>
+        if (c % 3 > 1)
+        {
+           @Html.Raw("</ul><ul class='item'>") 
+        }
+        c = c + 1;
+    }
+
+                </ul>
+            </div>
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#cartCarousel" data-slide="prev">‹</a>
+            <a class="carousel-control right" href="#cartCarousel" data-slide="next">›</a>
+        </div>
+        <div class="cart-layer-fun">
+            <p class="pull-right" style="margin-bottom:30px;"><b>Subtotal:</b>$@ShoppingCart.CartTotal</p>
+            <div class="clearfix"></div>
+            <div>
+                <a href="javascript:;" class="btn btn-primary">VIEW CART</a>
+                <a href="javascript:;" class="btn btn-warning pull-right">CHECKOUT</a>
+            </div>
+        </div>
+}
+    </div>

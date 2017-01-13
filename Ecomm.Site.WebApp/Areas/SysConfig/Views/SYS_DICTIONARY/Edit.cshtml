@@ -1,0 +1,48 @@
+﻿@using Ecomm.Site.Models.SysConfig.SYS_DICTIONARY
+@using Quick.Site.Common.Models
+@model UpdateSYS_DICTIONARYModel
+
+@Html.HiddenFor(t => t.DictionaryValue)
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.DictionaryName) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DictionaryName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DictionaryName)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.DictionaryValue) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DictionaryValue, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DictionaryValue)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Remark) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Remark, new { @class = "form-control" })
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

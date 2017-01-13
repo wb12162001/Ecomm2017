@@ -1,0 +1,66 @@
+﻿@using Ecomm.Site.Models.SysConfig.SYS_CONFIG
+@using Quick.Site.Common.Models
+@model UpdateSYS_CONFIGModel
+
+@Html.HiddenFor(t => t.ID)
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ConfigName) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ConfigName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ConfigName)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ConfigContent) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ConfigContent, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ConfigContent)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.FieldProperty) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.FieldProperty, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.IsSystem) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.IsSystem, new { @class = "form-control" })
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

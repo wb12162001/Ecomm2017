@@ -2,30 +2,209 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="clearfix"></div>
+<!-- Slides -->
+@if (ViewBag.Slides != null)
+{
+    @Html.Raw(ViewBag.Slides)
+}
+<!-- mid AD -->
+@if (ViewBag.mid_Ad != null)
+{
+    @Html.Raw(ViewBag.mid_Ad)
+}
+<!-- Today and product -->
+<div class="products">
+    <div class="today-deals">
+        <h3>TODAY DEALS</h3>
+        <div class="product-show">
+            @if (ViewBag.Today != null)
+            {
+                @Html.Raw(ViewBag.Today)
+            }
+        </div>
+    </div>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>POPULAR PRODUCTS</h3>
+            <div class="pull-right customNavigation">
+                <a href="javascript:;" class="product-pre"><i class="fa fa-angle-left"></i></a>
+                <a href="javascript:;" class="product-next"><i class="fa fa-angle-right"></i></a>
+            </div>
+        </div>
+        <div class="product-list owl-carousel owl-theme" id="owl-product-list">
+            @if (ViewBag.PopularProducts != null)
+            {
+                @Html.Raw(ViewBag.PopularProducts)
+            }
+        </div>
+    </div>
+    <div class="best-sellers">
+        <div class="sellers-title">
+            <h3>BEST SELLERS</h3>
+            <div class="pull-right customNavigation">
+                <a href="javascript:;" class="sellers-pre"><i class="fa fa-angle-left"></i></a>
+                <a href="javascript:;" class="sellers-next"><i class="fa fa-angle-right"></i></a>
+            </div>
+        </div>
+        <div class="sellers-list"  id="owl-sellers-list">
+            @if (ViewBag.BestSellers != null)
+            {
+                @Html.Raw(ViewBag.BestSellers)
+            }
+        </div>
+    </div>
 </div>
+<div class="clearfix"></div>
+<!-- start -->
+<div class="main">
+    <!-- 01 Recommended -->
+        @if (ViewData["RecommendedProducts01"] != null)
+        {
+            @Html.Raw(ViewData["RecommendedProducts01"])
+        }
+    <!-- AD2 -->
+    <div class="adv-2">
+        <a href="#"><img src="/Content/snell/images/adv-2.jpg"></a>
+    </div>
+    <!-- 02 Recommended -->
+    @if (ViewData["RecommendedProducts02"] != null)
+    {
+        @Html.Raw(ViewData["RecommendedProducts02"])
+    }
+    <!-- 03 Links -->
+@if (ViewBag.Links != null)
+{
+        @Html.Raw(ViewBag.Links)
+}
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    <!-- 04 The press -->
+    @if (ViewBag.ThePress != null)
+    {
+        @Html.Raw(ViewBag.ThePress)
+    }
+    <!-- 05 map -->
+    <div class="last-module">
+        <div class="last-module-list">
+            <div class="last-module-box pull-left">
+                <p class="line-1">
+                    <img src="/Content/snell/images/last-1.png">
+                </p>
+                <p class="line-2">GREAT VALUE</p>
+                <p class="line-3">We offer competitive prices on our 100 million plus product range.</p>
+            </div>
+            <div class="last-module-box pull-left">
+                <p class="line-1">
+                    <img src="/Content/snell/images/last-2.png">
+                </p>
+                <p class="line-2">GREAT VALUE</p>
+                <p class="line-3">We offer competitive prices on our 100 million plus product range.</p>
+            </div>
+            <div class="last-module-box pull-left">
+                <p class="line-1">
+                    <img src="/Content/snell/images/last-3.png">
+                </p>
+                <p class="line-2">GREAT VALUE</p>
+                <p class="line-3">We offer competitive prices on our 100 million plus product range.</p>
+            </div>
+            <div class="last-module-box pull-left">
+                <p class="line-1">
+                    <img src="/Content/snell/images/last-4.png">
+                </p>
+                <p class="line-2">GREAT VALUE</p>
+                <p class="line-3">We offer competitive prices on our 100 million plus product range.</p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <!-- 06 subcribe -->
+    <div class="subcribe">
+        <div class="subcribe-box">
+            <div class="subcribe-box-left pull-left">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="newsletter" class="col-lg-3 control-label">NEWSLETTER</label>
+                        <div class="col-lg-7 sub-input-left">
+                            <input type="password" class="form-control input-lg" id="newsletter" placeholder="">
+                        </div>
+                        <div class="col-lg-2 sub-input-right">
+                            <input type="submit" class="form-control input-lg" value="Subcribe">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="subcribe-box-right pull-right">
+                <ul class="subcribe-box-right-ul">
+                    <li><span>STAYCONNECT</span></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
+@section Header  {
+    @Styles.Render("~/Content/plugins/owl-carousel")
+
+    <style>
+        #owl-product-list .item{
+        }
+        #owl-sellers-list .owl-pagination, #owl-product-list .owl-pagination{
+            display:none;
+        }
+        .customNavigation{
+          text-align: center;
+        }
+        .customNavigation a{
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+    </style>
+}
+@section scripts  {
+    @Scripts.Render("~/bundles/plugins/owl-carousel")
+    <script>
+        $(document).ready(function () {
+            //product-list start
+            var owl = $("#owl-product-list");
+            owl.owlCarousel({
+                lazyLoad: true,
+                navigation: false, // Show next and prev buttons
+                slideSpeed: 300,
+                paginationSpeed: 400,
+                items: 3
+            });
+            // Custom Navigation Events
+            $(".product-next").click(function () {
+                owl.trigger('owl.next');
+            })
+            $(".product-pre").click(function () {
+                owl.trigger('owl.prev');
+            })
+            //----------product-list end-------
+            //
+            var owl_sellers = $("#owl-sellers-list");
+            owl_sellers.owlCarousel({
+                lazyLoad: true,
+                navigation: false, // Show next and prev buttons
+                slideSpeed: 300,
+                paginationSpeed: 400,
+                items: 3
+            });
+            // Custom Navigation Events
+            $(".sellers-next").click(function () {
+                owl_sellers.trigger('owl.next');
+            })
+            $(".sellers-pre").click(function () {
+                owl_sellers.trigger('owl.prev');
+            })
+
+        });
+    </script>
+}

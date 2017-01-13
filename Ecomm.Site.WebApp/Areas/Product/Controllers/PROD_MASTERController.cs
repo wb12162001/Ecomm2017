@@ -462,5 +462,43 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
 			OperationResult result = PROD_MASTERService.Delete(Id);
             return Json(result);
         }
-	}
+
+        /// <summary>
+        /// 用户json 分页加载使用; 比方在下拉框中分页加载
+        /// </summary>
+        /// <param name="q"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public JsonResult GetProdJson(string q, string page)
+        {
+            /*
+             var lstRes = new List<Province>();
+             for (var i = 0; i < 30; i++)
+             {
+                 var oProvince = new Province();
+                 oProvince.id = i;
+                 oProvince.name = lstProvince[i];
+                 lstRes.Add(oProvince);
+             }
+             if (!string.IsNullOrEmpty(q.Trim()))
+             {
+                 lstRes = lstRes.Where(x => x.name.Contains(q)).ToList();
+             }
+             */
+            var filterResult = PROD_MASTERService.PROD_MASTERList.Select(t => new PROD_MASTERModel
+            {
+                ID = t.ID,
+                ProductNo = t.ProductNo,
+                ProductName = t.ProductName
+            }
+                                          ).OrderBy(t => t.ProductNo).ToList();
+
+            if (!string.IsNullOrEmpty(q))
+            {
+                filterResult = filterResult.Where(x => x.ProductNo.Contains(q)).ToList();
+            }
+            var lstCurPageRes = string.IsNullOrEmpty(page) ? filterResult.Take(10) : filterResult.Skip(Convert.ToInt32(page) * 10 - 10).Take(10);
+            return Json(new { items = lstCurPageRes, total_count = filterResult.Count }, JsonRequestBehavior.AllowGet);
+        }
+    }
 }

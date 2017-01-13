@@ -1,0 +1,129 @@
+﻿@using Ecomm.Site.Models.SysConfig.SYS_DICTIONARY_DATA
+@using Quick.Site.Common.Models
+@model UpdateSYS_DICTIONARY_DATAModel
+
+@Html.HiddenFor(t => t.ID)
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.DictionaryValue) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DictionaryValue, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DictionaryValue)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.DictDataName) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DictDataName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DictDataName)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.DictDataValue) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DictDataValue, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DictDataValue)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.DictDataType) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DictDataType, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.IsFixed) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.IsFixed, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.IsCancel) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.IsCancel, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.DictParentID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DictParentID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.CreateDate) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.CreateDate, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ModiDate) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ModiDate, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Remark) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Remark, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.DisplayOrder) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DisplayOrder, new { @class = "form-control" })
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

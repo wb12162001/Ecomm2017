@@ -98,7 +98,7 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                 Picture = t.Picture,
                 Status = t.Status == 1? true:false
             }
-										  ).OrderBy(sortName, sortDirection).Skip(param.iDisplayStart).Take(param.iDisplayLength).ToList();
+										  ).OrderBy(t=>t.GROUP_INDEX).Skip(param.iDisplayStart).Take(param.iDisplayLength).ToList();
 
             int sortId = param.iDisplayStart + 1;
 
@@ -153,8 +153,25 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
         {
             var model = new PROD_GROUP_ITEMModel();
             InitParentGroup(model);
-            InitProducts(model);
+            //InitProducts(model);
+            model.Products = GetProducts();
             return PartialView(model);
+        }
+        private List<SelectListItem> GetParentGroup()
+        {
+            List<SelectListItem> lt = new List<SelectListItem>();
+            var parentModuleData = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => string.IsNullOrEmpty(t.ParentID) && t.Status == 1)
+                .Select(t => new PROD_GROUP_INDEXModel
+                {
+                    ID = t.ID,
+                    Name = t.Name
+                });
+            foreach (var item in parentModuleData)
+            {
+                lt.Add(new SelectListItem { Text = item.Name, Value = item.ID });
+                lt.AddRange(GetProdGroup(item.ID, "|--"));
+            }
+            return lt;
         }
         /// <summary>
         /// 父列表
@@ -162,7 +179,7 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
         /// <param name="model"></param>
         private void InitParentGroup(PROD_GROUP_ITEMModel model)
         {
-            var parentModuleData = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => t.Status == 1)
+            var parentModuleData = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => string.IsNullOrEmpty(t.ParentID) && t.Status == 1)
                 .Select(t => new PROD_GROUP_INDEXModel
                 {
                     ID = t.ID,
@@ -171,10 +188,37 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
             foreach (var item in parentModuleData)
             {
                 model.Groups.Add(new SelectListItem { Text = item.Name, Value = item.ID });
+                model.Groups.AddRange(GetProdGroup(item.ID, "|--"));
             }
         }
-        private void InitProducts(PROD_GROUP_ITEMModel model)
+        [NonAction]
+        public List<SelectListItem> GetProdGroup(string id, string level)
         {
+            List<SelectListItem> cmbTreeList = new List<SelectListItem>();
+            var parentList = PROD_GROUP_INDEXService.PROD_GROUP_INDEXList.Where(t => t.ParentID == id && t.Status == 1).OrderBy(t => t.Name).Select(t => new SelectListItem
+            {
+                Text = level + t.Name,
+                Value = t.ID
+            }).ToList();
+
+            if (parentList.Count >= 1)
+            {
+                foreach (var item in parentList)
+                {
+                    cmbTreeList.Add(item);
+                    List<SelectListItem> tempList = GetProdGroup(item.Value, " |---");
+                    if (tempList.Count >= 1)
+                    {
+                        cmbTreeList.AddRange(tempList);
+                    }
+
+                }
+            }
+            return cmbTreeList;
+        }
+        private List<SelectListItem> GetProducts()
+        {
+            List<SelectListItem> lt = new List<SelectListItem>();
             var parentModuleData = PROD_MASTERService.PROD_MASTERList
                 .Select(t => new PROD_GROUP_INDEXModel
                 {
@@ -183,9 +227,23 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                 });
             foreach (var item in parentModuleData)
             {
-                model.Products.Add(new SelectListItem { Text = item.Name, Value = item.ID });
+                lt.Add(new SelectListItem { Text = item.Name, Value = item.ID });
             }
+            return lt;
         }
+        //private void InitProducts(PROD_GROUP_ITEMModel model)
+        //{
+        //    var parentModuleData = PROD_MASTERService.PROD_MASTERList
+        //        .Select(t => new PROD_GROUP_INDEXModel
+        //        {
+        //            ID = t.ID,
+        //            Name = t.ProductNo
+        //        });
+        //    foreach (var item in parentModuleData)
+        //    {
+        //        model.Products.Add(new SelectListItem { Text = item.Name, Value = item.ID });
+        //    }
+        //}
         [HttpPost]
 		[AdminOperateLog]
         public ActionResult Create(PROD_GROUP_ITEMModel model)
@@ -201,41 +259,44 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                 else
                 {
                     InitParentGroup(model);
-                    InitProducts(model);
+                    model.Products = GetProducts();
                     return PartialView(model);
                 }
             }
             else
             {
                 InitParentGroup(model);
-                InitProducts(model);
+                model.Products = GetProducts();
                 return PartialView(model);
             }          
         }
 
         public ActionResult Edit( string ProductID, string GROUP_INDEX )
         {
-            var model = new PROD_GROUP_ITEMModel();
+            var model = new UpdatePROD_GROUP_ITEMModel();
             var entity = PROD_GROUP_ITEMService.PROD_GROUP_ITEMList.FirstOrDefault(t => t.ProductID == ProductID && t.GROUP_INDEX == GROUP_INDEX );
             if (null != entity)
             { 
-                model = new PROD_GROUP_ITEMModel 
+                model = new UpdatePROD_GROUP_ITEMModel
                 { 
                     ProductID = entity.ProductID,
+                    NewProductID = entity.ProductID,
                     GROUP_INDEX = entity.GROUP_INDEX,
+                    NewGROUP_INDEX = entity.GROUP_INDEX,
                     Notes = entity.Notes,
                     Picture = entity.Picture,
                     Status = entity.Status==1?true:false,
                 };
-                InitParentGroup(model);
-                InitProducts(model);
+                model.Groups = GetParentGroup();
+                //InitParentGroup(model);
+                model.Products = GetProducts();
             }
             return PartialView(model);
         }
 
         [HttpPost]
 		[AdminOperateLog]
-        public ActionResult Edit(PROD_GROUP_ITEMModel model)
+        public ActionResult Edit(UpdatePROD_GROUP_ITEMModel model)
         {
             if (ModelState.IsValid)
             {
@@ -247,15 +308,15 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                 }
                 else
                 {
-                    InitParentGroup(model);
-                    InitProducts(model);
+                    model.Groups = GetParentGroup();
+                    model.Products = GetProducts();
                     return PartialView(model);
                 }
             }
             else
             {
-                InitParentGroup(model);
-                InitProducts(model);
+                model.Groups = GetParentGroup();
+                model.Products = GetProducts();
                 return PartialView(model);
             }   
         }

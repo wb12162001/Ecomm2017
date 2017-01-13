@@ -42,11 +42,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authen\Admin_user.cs" />
+    <Compile Include="EpSnell\Rela_contact.cs" />
+    <Compile Include="MyOffice\SALES_EBASKET.cs" />
+    <Compile Include="MyOffice\SALES_EORDERDETAILS.cs" />
+    <Compile Include="MyOffice\SALES_EORDERS.cs" />
     <Compile Include="Product\PROD_GROUP_INDEX.cs" />
     <Compile Include="Product\PROD_GROUP_ITEM.cs" />
     <Compile Include="Product\PROD_MASTER.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SysConfig\INFOR_CATEGORIES.cs" />
+    <Compile Include="SysConfig\INFOR_MASTER.cs" />
     <Compile Include="SysConfig\OperateLog.cs" />
+    <Compile Include="SysConfig\SYS_CONFIG.cs" />
+    <Compile Include="SysConfig\SYS_DICTIONARY.cs" />
+    <Compile Include="SysConfig\SYS_DICTIONARY_DATA.cs" />
+    <Compile Include="SysConfig\SYS_PROPERTY.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Quick.Framework.Tool\Quick.Framework.Tool.csproj">
