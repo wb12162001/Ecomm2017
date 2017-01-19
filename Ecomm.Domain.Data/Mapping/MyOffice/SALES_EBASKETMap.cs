@@ -33,6 +33,7 @@ namespace Ecomm.Domain.Data.Mapping.MyOffice
             
             this.Property(t => t.ID).HasColumnName("ID").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             // Relation
+            //this.HasOptional(t => t.ProductNo).WithMany().HasForeignKey(d => d.ProductNo).WillCascadeOnDelete(false);
         }
 
 		

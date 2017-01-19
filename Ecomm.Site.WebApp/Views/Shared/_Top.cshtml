@@ -1,5 +1,5 @@
 ﻿<div class="links" id="top_menu">
-    @Html.Hidden("hdUserid")
+    <input type="hidden" name="hdUserid" id="hdUserid" value="@ViewBag.UserName"> 
     <img src="/Content/snell/images/logo.png" />
     @if (!string.IsNullOrEmpty(ViewBag.UserName))
     {

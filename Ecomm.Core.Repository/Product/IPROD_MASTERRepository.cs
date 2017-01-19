@@ -17,6 +17,8 @@ namespace Ecomm.Core.Repository.Product
     /// 仓储操作层接口 —— PROD_MASTER 
     /// </summary>
     public interface IPROD_MASTERRepository : IRepository<PROD_MASTER>
-    { }
+    {
+        void GetSellingPrice(string itemnmbr, string custnmbr, out double sellPrice, out string priceType);
+    }
 }
 

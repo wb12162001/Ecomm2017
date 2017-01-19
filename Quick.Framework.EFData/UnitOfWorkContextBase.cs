@@ -37,7 +37,8 @@ namespace Quick.Framework.EFData
 
         public DbContext DbContext
         {
-            get {
+            get
+            {
                 return Context;
             }
         }
@@ -176,7 +177,7 @@ namespace Quick.Framework.EFData
         /// <typeparam name="TEntity">要注册的类型</typeparam>
         /// <param name="propertyExpression">属性表达式，包含要更新的实体属性</param>
         /// <param name="entity">附带新值的实体信息，必须包含主键</param>
-        public void RegisterModified<TEntity>(Expression<Func<TEntity, object>> propertyExpression, TEntity entity) where TEntity :class // EntityBase<TKey>
+        public void RegisterModified<TEntity>(Expression<Func<TEntity, object>> propertyExpression, TEntity entity) where TEntity : class // EntityBase<TKey>
         {
             Context.Update<TEntity>(propertyExpression, entity);
             IsCommitted = false;
@@ -187,7 +188,7 @@ namespace Quick.Framework.EFData
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
         /// <param name="entity"> 要注册的对象 </param>
-        public void RegisterDeleted<TEntity>(TEntity entity) where TEntity :class // EntityBase<TKey>
+        public void RegisterDeleted<TEntity>(TEntity entity) where TEntity : class // EntityBase<TKey>
         {
             Context.Entry(entity).State = System.Data.Entity.EntityState.Deleted;
             IsCommitted = false;
@@ -198,7 +199,7 @@ namespace Quick.Framework.EFData
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
         /// <param name="entities"> 要注册的对象集合 </param>
-        public void RegisterDeleted<TEntity>(IEnumerable<TEntity> entities) where TEntity :class // EntityBase<TKey>
+        public void RegisterDeleted<TEntity>(IEnumerable<TEntity> entities) where TEntity : class // EntityBase<TKey>
         {
             try
             {
@@ -224,7 +225,6 @@ namespace Quick.Framework.EFData
             Context.Set<TEntity>().Remove(entity);
             IsCommitted = false;
         }
-
         /// <summary>
         /// EF SQL 语句返回 dataTable
         /// </summary>
@@ -258,5 +258,11 @@ namespace Quick.Framework.EFData
             }
         }
 
+        public void Update<TEntity>(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities)
+            where TEntity : class
+        {
+            DbContextExtensions.Update<TEntity>(Context, propertyExpression, entities);
+            IsCommitted = false;
+        }
     }
 }

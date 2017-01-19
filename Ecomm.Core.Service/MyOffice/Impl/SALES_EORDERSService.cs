@@ -161,7 +161,6 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             SALES_EORDERSRepository.Delete(model);
             return new OperationResult(OperationResultType.Success, "successfully deleted");
         }
-
         #endregion
     }
 }

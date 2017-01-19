@@ -44,8 +44,8 @@ namespace Ecomm.Site.WebApp.Common
             //var user = SessionHelper.GetSession("CurrentSnellUser") as Rela_contact;
             if (CurrentUser != null)
             {
-                var list = SALES_EBASKETService.SALES_EBASKETList
-                    .Where(t => t.Status == 0 && t.ContactID == CurrentUser.Id)
+                var list = SALES_EBASKETService.SALES_EBASKETList.ToList()
+                    .Where(t => t.Status == 0 && t.ContactID == CurrentUser.Id && string.IsNullOrEmpty(t.MakeOrderID))
                     .Select(t => new SALES_EBASKETModel
                     {
                         UnitPrice = t.UnitPrice,
@@ -54,8 +54,8 @@ namespace Ecomm.Site.WebApp.Common
                         ProductNo = t.ProductNo,
                         Unit = t.Unit,
                         UnitPType = t.UnitPType
-                    })
-                    .ToList();
+                    });
+                    
                 StringBuilder sb = new StringBuilder();
                 StringBuilder sb_item = new StringBuilder();
                 int item_count = list.Count();

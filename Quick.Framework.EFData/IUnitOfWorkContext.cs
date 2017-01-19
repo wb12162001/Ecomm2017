@@ -67,6 +67,10 @@ namespace Quick.Framework.EFData
         /// <param name="entity"> 要删除的对象 </param>
         void RegisterRemove<TEntity>(TEntity entity) where TEntity : class;
 
+
         DataSet SqlQueryForDataSet(CommandType commandType, string sql, SqlParameter[] parameters);
+
+        void Update<TEntity>(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities)
+            where TEntity : class;
     }
 }

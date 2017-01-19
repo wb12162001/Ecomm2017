@@ -24,12 +24,17 @@ namespace Ecomm.Core.Service.MyOffice
 		#region 属性
 
         IQueryable<SALES_EBASKET> SALES_EBASKETList { get; }
-
+        IEnumerable<SALES_EBASKET> Entities { get; }
+        IEnumerable<SALES_EBASKET> EntitiesToList { get; }
         #endregion
 
         #region 公共方法
         OperationResult Insert(SALES_EBASKETModel model);
         OperationResult Update(UpdateSALES_EBASKETModel model);
+
+        int UpdateEBasketQuantity(string custId, string contactId, string proNo, float quantity);
+        int ModificationByProce(SALES_EBASKETModel model);
+        int ModificationCart(SALES_EBASKETModel model);
         /// <summary>
         /// 逻辑删除
         /// </summary>

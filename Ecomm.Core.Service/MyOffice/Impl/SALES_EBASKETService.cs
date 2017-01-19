@@ -32,11 +32,27 @@ namespace Ecomm.Core.Service.MyOffice.Impl
         [Import]
         public ISALES_EBASKETRepository SALES_EBASKETRepository { get; set; }
 
+        /// <summary>
+        /// SALES_EBASKETList.ToList() 后IEnumerable, 才会更新内存中的数据
+        /// </summary>
         public IQueryable<SALES_EBASKET> SALES_EBASKETList
         {
             get { return SALES_EBASKETRepository.Entities; }
         }
 
+        public IEnumerable<SALES_EBASKET> Entities
+        {
+            get {
+                return SALES_EBASKETRepository.EntitiesAsNoTracking;
+            }
+        }
+        public IEnumerable<SALES_EBASKET> EntitiesToList
+        {
+            get
+            {
+                return SALES_EBASKETRepository.GetEntitiesBySql("dbo.SALES_EBASKET").ToList();
+            }
+        }
         #endregion
 
         #region 公共方法
@@ -86,6 +102,129 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
             SALES_EBASKETRepository.Update(entity);
             return new OperationResult(OperationResultType.Success, "update completed");
+        }
+
+        public int UpdateEBasketQuantity(string custId, string contactId, string proNo, float quantity)
+        {
+            return SALES_EBASKETRepository.UpdateEBasketQuantity(custId, contactId, proNo, quantity);
+        }
+        /// <summary>
+        /// 使用存储过程更新, 但不知道怎样可以同步上下文;
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public int ModificationByProce(SALES_EBASKETModel model)
+        {
+            var entity = SALES_EBASKETRepository.Entities.Where(t =>
+            t.CustomerID == model.CustomerID
+            && t.ContactID == model.ContactID
+            && t.ProductNo == model.ProductNo && t.Status == 0).FirstOrDefault();
+            if (entity == null)
+            {
+                entity = new SALES_EBASKET
+                {
+                    ID = CombHelper.NewComb().ToString(),
+                    CustomerID = model.CustomerID,
+                    ContactID = model.ContactID,
+                    ProductNo = model.ProductNo,
+                    Quantity = model.Quantity,
+                    UnitPrice = model.UnitPrice,
+                    Unit = model.Unit,
+                    Creator = model.Creator,
+                    Modifier = model.Modifier,
+                    CreateDate = model.CreateDate,
+                    ModiDate = model.ModiDate,
+                    MakeOrderID = model.MakeOrderID,
+                    //RowID = model.RowID,
+                    Status = model.Status,
+                    UnitPType = model.UnitPType,
+                };
+            }
+            else
+            {
+                //entity.ID = model.ID;
+                entity.CustomerID = model.CustomerID;
+                entity.ContactID = model.ContactID;
+                entity.ProductNo = model.ProductNo;
+                entity.Quantity = model.Quantity;
+                entity.UnitPrice = model.UnitPrice;
+                entity.Unit = model.Unit;
+                //entity.Creator = model.Creator;
+                entity.Modifier = model.Modifier;
+                //entity.CreateDate = model.CreateDate;
+                entity.ModiDate = model.ModiDate;
+                entity.MakeOrderID = model.MakeOrderID;
+                //entity.RowID = model.RowID;
+                //entity.Status = model.Status;
+                entity.UnitPType = model.UnitPType;
+            }
+
+            int ret = SALES_EBASKETRepository.ModificationByProce(entity);
+            //这里刷新内存中数据集;
+            //-------------------------------
+            ////一直有问题不可以使用
+            //var entity_new = SALES_EBASKETRepository.EntitiesToList.Where(t => t.ID == entity.ID);
+            //if (entity_new.Count() > 0) { SALES_EBASKETRepository.ReLoad(entity_new.FirstOrDefault()); } else
+            //{
+            //    SALES_EBASKETRepository.Add(entity);
+            //}
+            //SALES_EBASKETRepository.Load();
+            //---------------------------------------
+            return ret;
+        }
+
+        public int ModificationCart(SALES_EBASKETModel model)
+        {
+            var entity = SALES_EBASKETList.ToList().Where(t =>
+            t.CustomerID == model.CustomerID
+            && t.ContactID == model.ContactID
+            && t.ProductNo == model.ProductNo && t.Status == 0).FirstOrDefault();
+            if (entity == null)
+            {
+                entity = new SALES_EBASKET
+                {
+                    ID = CombHelper.NewComb().ToString(),
+                    CustomerID = model.CustomerID,
+                    ContactID = model.ContactID,
+                    ProductNo = model.ProductNo,
+                    Quantity = model.Quantity,
+                    UnitPrice = model.UnitPrice,
+                    Unit = model.Unit,
+                    Creator = model.Creator,
+                    Modifier = model.Modifier,
+                    CreateDate = model.CreateDate,
+                    ModiDate = model.ModiDate,
+                    MakeOrderID = model.MakeOrderID,
+                    //RowID = model.RowID,
+                    Status = model.Status,
+                    UnitPType = model.UnitPType,
+                };
+                return SALES_EBASKETRepository.Insert(entity);
+            }
+            else
+            {
+                //entity.ID = model.ID;
+                //entity.CustomerID = model.CustomerID;
+                //entity.ContactID = model.ContactID;
+                //entity.ProductNo = model.ProductNo;
+                entity.Quantity += model.Quantity;
+                //entity.UnitPrice = model.UnitPrice;
+                //entity.Unit = model.Unit;
+                //entity.Creator = model.Creator;
+                entity.Modifier = model.Modifier;
+                //entity.CreateDate = model.CreateDate;
+                entity.ModiDate = model.ModiDate;
+                //entity.MakeOrderID = model.MakeOrderID;
+                //entity.RowID = model.RowID;
+                //entity.Status = model.Status;
+                //entity.UnitPType = model.UnitPType;
+
+                return SALES_EBASKETRepository.Update(entity);  //这个是可以成功; 注意entity是通过entities集成读取
+
+                //return SALES_EBASKETRepository.Update(e => new { e.Quantity }, entity); //这个局部更新
+
+
+            }
         }
 
         public OperationResult Delete(string  ID)

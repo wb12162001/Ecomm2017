@@ -22,6 +22,28 @@ namespace Ecomm.Core.Repository.Product
         public PROD_MASTERRepository() : base("default")
         {
         }
+
+        public void GetSellingPrice(string itemnmbr, string custnmbr, out double sellPrice, out string priceType)
+        {
+            sellPrice = 0;
+            priceType = string.Empty;
+
+            var sellprice = new System.Data.SqlClient.SqlParameter("@sellprice", System.Data.SqlDbType.Money, 5);
+            sellprice.Direction = System.Data.ParameterDirection.Output;
+            var ptype = new System.Data.SqlClient.SqlParameter("@ptype", System.Data.SqlDbType.Char, 1);
+            ptype.Direction = System.Data.ParameterDirection.Output;
+
+            System.Data.SqlClient.SqlParameter[] parameters = {
+               new System.Data.SqlClient.SqlParameter("@itemnmbr",itemnmbr),
+               new System.Data.SqlClient.SqlParameter("@custnmbr", custnmbr),
+               sellprice,
+               ptype,
+            };
+            var result = base.ExecuteProc("zx_GetSellingPrice", parameters);
+
+            double.TryParse(result[0].ToString(), out sellPrice);
+            priceType = result[1].ToString();
+        }
     }
 }
 

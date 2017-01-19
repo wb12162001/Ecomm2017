@@ -36,7 +36,11 @@ namespace Ecomm.Core.Service.Product
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(string Id);
+
+        PROD_MASTER GetProduct(string prono);
+
+        void GetSellingPrice(string itemnmbr, string custnmbr, out double sellPrice, out string priceType);
         #endregion
-	}
+    }
 }
 

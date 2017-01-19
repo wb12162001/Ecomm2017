@@ -105,9 +105,14 @@
     })
 
     //add to cart
-    $('a.cart').on('click', function () {
-        addCart();
-    })
+    $('a.cart').each(function (index) {
+        $(this).bind('click', function () {
+            var pro = $(this).attr("data-pno");
+            addCart(pro);
+            return false;
+        });
+    });
+    
 
     //删除购物车
     $('.del-cart').on('click', function () {
@@ -125,9 +130,32 @@
 
 
 //add cart
-function addCart() {
+function addCart(pro) {
     if ($("#hdUserid").val() == '') {
         bootbox.alert({ message: "Please login the site!" });
         return;
     }
+    //var pro = $(this).attr("data-pno");
+    //console.log($(this));
+    console.log(pro);
+    if (pro == '' || pro == undefined) {
+        bootbox.alert({ message: "Product sku is empty!" });
+        return;
+    }
+    var post_data = { pno: pro, qty: 1 };
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        url: "/Home/AddCart",
+        data: post_data,
+        success: function (d) {
+            bootbox.alert(d.message, function () {
+                //bind shopping cart
+                $("#shopping_cart").load('/Home/ShoppingCart' + '?ts=' + Math.random());
+            });
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
 }

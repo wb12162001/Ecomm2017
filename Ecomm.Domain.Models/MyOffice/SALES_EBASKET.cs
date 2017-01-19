@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ecomm.Domain.Models.MyOffice
 {
@@ -53,8 +55,8 @@ namespace Ecomm.Domain.Models.MyOffice
 
 		public string MakeOrderID  { get; set; }
 
-
-		public int RowID  { get; set; }
+        [NotMapped]
+        public int RowID  { get; set; }
 
 
 		public int? Status  { get; set; }
@@ -62,8 +64,9 @@ namespace Ecomm.Domain.Models.MyOffice
 
 		public string UnitPType  { get; set; }
 
-        
-        
+        [ForeignKey("ProductNo")]
+        public virtual Models.Product.PROD_MASTER ProductInfo { get; set; }
+
     }
     
     

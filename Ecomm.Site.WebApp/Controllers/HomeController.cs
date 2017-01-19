@@ -5,12 +5,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Quick.Framework.Tool;
+using Quick.Framework.Common.ToolsHelper;
 using Ecomm.Site.Models.Authen.Admin_user;
 using Ecomm.Core.Service.Authen;
 using Ecomm.Site.Models;
+
 using System.Web.UI;
 using System.IO;
 using System.Text;
+using Ecomm.Site.Models.MyOffice.SALES_EBASKET;
 
 namespace Ecomm.Site.WebApp.Controllers
 {
@@ -31,7 +34,10 @@ namespace Ecomm.Site.WebApp.Controllers
         public Ecomm.Core.Service.Product.IPROD_GROUP_INDEXService PROD_GROUP_INDEXService { get; set; }
 
         [Import]
-        public Ecomm.Core.Service.MyOffice.ISALES_EBASKETService SALES_EBASKETService { get; set; }
+        public Ecomm.Core.Service.Product.IPROD_MASTERService PROD_MASTERService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
 
         public ActionResult Index()
         {
@@ -216,7 +222,7 @@ namespace Ecomm.Site.WebApp.Controllers
                         <p class='new-price'>${3}</p>
                     </div>
                     <div class='pull-right'>
-                        <a href='{4}' class='cart'>
+                        <a href='javascript:void(0);' class='cart' data-pno='{5}' >
                             <img src='/Content/snell/images/cart_03.png'>
                         </a>
                     </div>
@@ -228,7 +234,7 @@ namespace Ecomm.Site.WebApp.Controllers
                 <div class='clearfix'></div>
                 <span class='label label-danger is-sale'>SALE!</span>
             </div>
-", item.Picture, item.Product.ProductName, item.Product.ListPrice, item.Product.StndCost,"#").AppendLine();
+", item.Picture, item.Product.ProductName, item.Product.ListPrice, item.Product.StndCost,"#", item.Product.ProductNo.Trim()).AppendLine();
                 }
             }
             if (!string.IsNullOrEmpty(sb_item.ToString()))
@@ -538,7 +544,90 @@ namespace Ecomm.Site.WebApp.Controllers
             return PartialView("_ShoppingCart");
             //return Json(cartModel, JsonRequestBehavior.AllowGet);
         }
-        
-       
+
+        [HttpPost]
+        public JsonResult AddCart(string pno,int qty)
+        {
+            int ret = 0;
+            if (!string.IsNullOrEmpty(pno) && base.CurrentUser != null) {
+                Domain.Models.Product.PROD_MASTER prod = PROD_MASTERService.GetProduct(pno);
+                if (prod != null)
+                {
+                    if (base.CurrentUser.AccountInfo != null)
+                    {
+                        string unitPriceType = string.Empty;
+                        double uPrice = 0;
+                        PROD_MASTERService.GetSellingPrice(prod.ProductNo, base.CurrentUser.AccountInfo.Account_no, out uPrice, out unitPriceType);
+                        if (uPrice == 0)
+                        {
+                            uPrice = (double)prod.ListPrice;
+                        }
+                        var model = new SALES_EBASKETModel
+                        {
+                            ID = CombHelper.NewComb().ToString(),
+                            ContactID = base.CurrentUser.Id,
+                            CreateDate = DateTime.Now,
+                            Creator = base.CurrentUser.AccountInfo.Account_no,
+                            CustomerID = base.CurrentUser.AccountInfo.Account_no,//request
+                            ModiDate = DateTime.Now,
+                            Modifier = base.CurrentUser.AccountInfo.Account_no,
+                            ProductNo = prod.ProductNo,
+                            Quantity = Convert.ToDouble(qty),
+                            Unit = prod.BaseUOFM,
+                            UnitPrice = uPrice,
+                            UnitPType = unitPriceType,
+                            Status = 0,
+                            MakeOrderID = "",
+                        };
+                        if (base.CurrentUser.IsContractLimit && unitPriceType != "L")//only to purchase contract goods
+                        {
+                            if (unitPriceType == "S")//Special Price
+                            {
+                                bool hasContractPrice = SALES_CONTRACTPRICEService.IsExist(base.CurrentUser.AccountInfo.Account_no, prod.ProductNo);
+                                if (!hasContractPrice)
+                                {
+                                    return Json(new { success = false, message = "You need to purchase contract goods." });
+                                }
+                            }
+                        }
+                        ret = SALES_EBASKETService.ModificationCart(model); 
+                        //ret = SALES_EBASKETService.ModificationByProce(model);//有问题不可以使用
+                    }
+                }
+            }
+
+
+            if (ret > 0)
+            {
+                return Json(new { success = true, message = "successfull added to cart" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "added to cart failed." });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateCartItem(string sku, string qty)
+        {
+            int ret = 0;
+            //string sku = Request.Params["sku"].ToString();
+            int q = ConvertHelper.ObjToInt(qty);
+            if (!string.IsNullOrEmpty(sku) && base.CurrentUser != null)
+            {
+                if (base.CurrentUser.AccountInfo != null)
+                {
+                    ret = SALES_EBASKETService.UpdateEBasketQuantity(base.CurrentUser.AccountInfo.Account_no, base.CurrentUser.Id, sku, (float)q);
+                }
+            }
+            if (ret > 0)
+            {
+                return Json(new { success = true, message = "successfull update to cart" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "update cart failed." });
+            }
+        }
     }
 }

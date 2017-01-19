@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 using Quick.Framework.Tool;
 using Quick.Framework.Tool.Entity;
-
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Quick.Framework.EFData
 {
@@ -25,7 +27,15 @@ namespace Quick.Framework.EFData
         ///     获取 当前实体的查询数据集
         /// </summary>
         IQueryable<TEntity> Entities { get; }
+        void Load();
+        void ReLoad(TEntity entity);
+        void Add(TEntity entity);
+        IEnumerable<TEntity> GetEntitiesWithRawSql(string query, params object[] parameters);
+        IEnumerable<TEntity> GetEntitiesWithRawSql(string query);
+        IEnumerable<TEntity> GetEntitiesBySql(string tableName);
+        IQueryable<TEntity> EntitiesAsNoTracking { get; }
 
+        IEnumerable<TEntity> EntitiesToList { get; }
         #endregion
 
         #region 公共方法
@@ -85,7 +95,7 @@ namespace Quick.Framework.EFData
         /// <param name="isSave"> 是否执行保存 </param>
         /// <returns> 操作影响的行数 </returns>
         int Update(TEntity entity, bool isSave = true);
-        int UpdateState(TEntity entity, bool isSave = true);
+        int Update(Expression<Func<TEntity, bool>> predicate, Action<TEntity> updateAction);
         /// <summary>
         /// 使用附带新值的实体信息更新指定实体属性的值
         /// </summary>
@@ -93,7 +103,9 @@ namespace Quick.Framework.EFData
         /// <param name="isSave">是否执行保存</param>
         /// <param name="entity">附带新值的实体信息，必须包含主键</param>
         /// <returns>操作影响的行数</returns>
-        int Update(Expression<Func<TEntity, object>> propertyExpression, TEntity entity, bool isSave = true);
+       // int Update(Expression<Func<TEntity, object>> propertyExpression, TEntity entity, bool isSave = true);
+
+        int Update(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities);
         /// <summary>
         ///     查找指定主键的实体记录
         /// </summary>
@@ -189,5 +201,86 @@ namespace Quick.Framework.EFData
         List<Tuple<PropertyInfo, string, string>> GetEntityPropertiesChanges(TEntity model);
 
         #endregion
+        /// <summary>
+        ///  执行不带参数的sql语句，返回一个对象
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        T GetSingle<T>(string sqlText);
+        /// <summary>
+        ///  执行带参数的sql语句，返回一个对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        T GetSingle<T>(string sqlText, params DbParameter[] parms);
+
+        /// <summary>
+        /// 执行不带参数的sql语句，返回list
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        List<T> GetList<T>(string sqlText);
+
+        /// <summary>
+        /// 执行带参数的sql语句，返回List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        List<T> GetList<T>(string sqlText, params DbParameter[] parms);
+
+        /// <summary>
+        /// 执行SQL命令
+        /// </summary>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        int ExecuteSqlCommand(string sqlText, TransactionalBehavior behavior = TransactionalBehavior.DoNotEnsureTransaction);
+
+        /// <summary>
+        /// 执行带参数SQL命令
+        /// </summary>
+        /// <param name="sqlText"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        int ExecuteSqlCommand(string sqlText, TransactionalBehavior behavior = TransactionalBehavior.DoNotEnsureTransaction, params DbParameter[] parms);
+
+        /// <summary>
+        /// 通过Out参数返回要获取的值
+        /// </summary>
+        /// <param name="procName"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        object[] ExecuteProc(string procName, params DbParameter[] parms);
+        int ExecuteProcNo(string procName, params DbParameter[] parms);
+        /// <summary>
+        /// 返回结果集的存储过程
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="procName"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        List<T> ExecuteProc<T>(string procName, params DbParameter[] parms);
+
+        /// <summary>
+        /// 创建参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        SqlParameter GetParameter(string name, object value);
+
+        /// <summary>
+        /// 创建参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        SqlParameter GetParameterOut(string name, DbType type, int size);
     }
 }

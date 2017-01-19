@@ -26,6 +26,7 @@ namespace Quick.Framework.EFData
             this.Database.Connection.ConnectionString = nameOrConnectionString;
             this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = false;
+           //this.Configuration.AutoDetectChangesEnabled = false;
         }
 
         public EFDbContext(DbConnection existingConnection)

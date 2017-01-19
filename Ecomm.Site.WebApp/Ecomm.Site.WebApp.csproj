@@ -573,6 +573,7 @@
     <Content Include="Areas\SysConfig\Views\SYS_PROPERTY\Index.cshtml" />
     <Content Include="Areas\SysConfig\Views\SYS_PROPERTY\List.cshtml" />
     <Content Include="Areas\SysConfig\Views\SYS_PROPERTY\Search.cshtml" />
+    <None Include="Properties\PublishProfiles\Web.config.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />

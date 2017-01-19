@@ -19,7 +19,7 @@ using Quick.Framework.Common.SecurityHelper;
 
 namespace Ecomm.Core.Service.Product.Impl
 {
-	/// <summary>
+    /// <summary>
     /// 服务层实现 —— PROD_MASTERService
     /// </summary>
     [Export(typeof(IPROD_MASTERService))]
@@ -31,13 +31,16 @@ namespace Ecomm.Core.Service.Product.Impl
 
         public IQueryable<PROD_MASTER> PROD_MASTERList
         {
-            get {
+            get
+            {
                 string key = "PROD_MASTER_list_service";
                 Quick.Framework.Common.CacheHelper.ApplicationCache cache = new Quick.Framework.Common.CacheHelper.ApplicationCache();
                 var entity = cache.GetApplicationCache(key);
-                if(entity != null){
+                if (entity != null)
+                {
                     return (IQueryable<PROD_MASTER>)entity;
-                }else
+                }
+                else
                 {
                     cache.SetApplicationCache(key, PROD_MASTERRepository.Entities);
                 }
@@ -164,7 +167,7 @@ namespace Ecomm.Core.Service.Product.Impl
 
         public OperationResult Update(UpdatePROD_MASTERModel model)
         {
-			var entity = PROD_MASTERList.First(t =>t.ID == model.ID );
+            var entity = PROD_MASTERList.First(t => t.ID == model.ID);
             entity.ID = model.ID;
             entity.ProductNo = model.ProductNo;
             entity.ProductName = model.ProductName;
@@ -276,13 +279,30 @@ namespace Ecomm.Core.Service.Product.Impl
 
         public OperationResult Delete(string Id)
         {
-            var model = PROD_MASTERList.FirstOrDefault(t =>t.ID == Id );
+            var model = PROD_MASTERList.FirstOrDefault(t => t.ID == Id);
 
             PROD_MASTERRepository.Delete(model);
             return new OperationResult(OperationResultType.Success, "successfully deleted");
         }
-
+        public PROD_MASTER GetProduct(string prono)
+        {
+            //return  PROD_MASTERRepository.GetByFiltered(t => t.ProductNo == prono);
+            return PROD_MASTERList.First(t => t.ProductNo == prono);
+        }
         #endregion
+
+        public void GetSellingPrice(string itemnmbr, string custnmbr, out double sellPrice, out string priceType)
+        {
+            try
+            {
+                PROD_MASTERRepository.GetSellingPrice(itemnmbr, custnmbr, out sellPrice, out priceType);
+            }
+            catch (Exception ex)
+            {
+                sellPrice = 0;
+                priceType = string.Empty;
+            }
+        }
     }
 }
 

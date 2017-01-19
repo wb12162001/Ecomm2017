@@ -42,10 +42,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authen\Admin_user.cs" />
+    <Compile Include="EpSnell\Rela_account.cs" />
+    <Compile Include="EpSnell\Rela_account_contractprice.cs" />
+    <Compile Include="EpSnell\Rela_account_location.cs" />
+    <Compile Include="EpSnell\Rela_account_quote.cs" />
     <Compile Include="EpSnell\Rela_contact.cs" />
+    <Compile Include="EpSnell\Rela_contact_location.cs" />
+    <Compile Include="EpSnell\Rela_location_limit.cs" />
+    <Compile Include="MyOffice\SALES_CLEARANCE.cs" />
+    <Compile Include="MyOffice\SALES_CONTRACTPRICE.cs" />
     <Compile Include="MyOffice\SALES_EBASKET.cs" />
     <Compile Include="MyOffice\SALES_EORDERDETAILS.cs" />
     <Compile Include="MyOffice\SALES_EORDERS.cs" />
+    <Compile Include="MyOffice\SALES_ESIORDERFORM.cs" />
+    <Compile Include="MyOffice\SALES_FAVFOLDER.cs" />
+    <Compile Include="MyOffice\SALES_FAVORITE.cs" />
+    <Compile Include="MyOffice\SALES_INTERNETPRICE.cs" />
+    <Compile Include="MyOffice\SALES_QUOTE.cs" />
+    <Compile Include="MyOffice\SALES_VIEWED.cs" />
     <Compile Include="Product\PROD_GROUP_INDEX.cs" />
     <Compile Include="Product\PROD_GROUP_ITEM.cs" />
     <Compile Include="Product\PROD_MASTER.cs" />

@@ -30,9 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TextTemplating.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,14 +53,42 @@
   <ItemGroup>
     <Compile Include="Authen\IAdmin_userRepository.cs" />
     <Compile Include="Authen\Impl\Admin_userRepository.cs" />
+    <Compile Include="EpSnell\Impl\Rela_accountRepository.cs" />
+    <Compile Include="EpSnell\Impl\Rela_account_contractpriceRepository.cs" />
+    <Compile Include="EpSnell\Impl\Rela_account_locationRepository.cs" />
+    <Compile Include="EpSnell\Impl\Rela_account_quoteRepository.cs" />
     <Compile Include="EpSnell\Impl\Rela_contactRepository.cs" />
+    <Compile Include="EpSnell\Impl\Rela_contact_locationRepository.cs" />
+    <Compile Include="EpSnell\Impl\Rela_location_limitRepository.cs" />
+    <Compile Include="EpSnell\IRela_accountRepository.cs" />
+    <Compile Include="EpSnell\IRela_account_contractpriceRepository.cs" />
+    <Compile Include="EpSnell\IRela_account_locationRepository.cs" />
+    <Compile Include="EpSnell\IRela_account_quoteRepository.cs" />
     <Compile Include="EpSnell\IRela_contactRepository.cs" />
+    <Compile Include="EpSnell\IRela_contact_locationRepository.cs" />
+    <Compile Include="EpSnell\IRela_location_limitRepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_CLEARANCERepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_CONTRACTPRICERepository.cs" />
     <Compile Include="MyOffice\Impl\SALES_EBASKETRepository.cs" />
     <Compile Include="MyOffice\Impl\SALES_EORDERDETAILSRepository.cs" />
     <Compile Include="MyOffice\Impl\SALES_EORDERSRepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_ESIORDERFORMRepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_FAVFOLDERRepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_FAVORITERepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_INTERNETPRICERepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_QUOTERepository.cs" />
+    <Compile Include="MyOffice\Impl\SALES_VIEWEDRepository.cs" />
+    <Compile Include="MyOffice\ISALES_CLEARANCERepository.cs" />
+    <Compile Include="MyOffice\ISALES_CONTRACTPRICERepository.cs" />
     <Compile Include="MyOffice\ISALES_EBASKETRepository.cs" />
     <Compile Include="MyOffice\ISALES_EORDERDETAILSRepository.cs" />
     <Compile Include="MyOffice\ISALES_EORDERSRepository.cs" />
+    <Compile Include="MyOffice\ISALES_ESIORDERFORMRepository.cs" />
+    <Compile Include="MyOffice\ISALES_FAVFOLDERRepository.cs" />
+    <Compile Include="MyOffice\ISALES_FAVORITERepository.cs" />
+    <Compile Include="MyOffice\ISALES_INTERNETPRICERepository.cs" />
+    <Compile Include="MyOffice\ISALES_QUOTERepository.cs" />
+    <Compile Include="MyOffice\ISALES_VIEWEDRepository.cs" />
     <Compile Include="Product\Impl\PROD_GROUP_INDEXRepository.cs" />
     <Compile Include="Product\Impl\PROD_GROUP_ITEMRepository.cs" />
     <Compile Include="Product\Impl\PROD_MASTERRepository.cs" />
@@ -91,7 +128,10 @@
       <Name>Quick.Framework.Tool</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

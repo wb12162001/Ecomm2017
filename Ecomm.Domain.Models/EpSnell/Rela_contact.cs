@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecomm.Domain.Models.EpSnell
 {
@@ -263,8 +264,9 @@ namespace Ecomm.Domain.Models.EpSnell
 
 		public string Report_To_Email  { get; set; }
 
-        
-        
+        [ForeignKey("Account_id")]
+        public virtual Rela_account AccountInfo { get; set; }
+
     }
     
     

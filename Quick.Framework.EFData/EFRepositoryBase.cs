@@ -11,7 +11,9 @@ using EntityFramework.Extensions;
 
 using Quick.Framework.Tool;
 using Quick.Framework.Tool.Entity;
-
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Quick.Framework.EFData
 {
@@ -64,13 +66,63 @@ namespace Quick.Framework.EFData
         }
 
         /// <summary>
-        ///     获取 当前实体的查询数据集
+        ///     获取 当前实体的查询数据集; .ToList() 后IEnumerable, 当TEntity ReLoad后.才会更新内存中的数据
         /// </summary>
         public virtual IQueryable<TEntity> Entities
         {
             get { return EFContext.Set<TEntity>(); }
         }
+        /// <summary>
+        /// 加载内存数据
+        /// </summary>
+        public virtual void Load()
+        {
+            EFContext.Set<TEntity>().Load();
+        }
 
+        public virtual void ReLoad(TEntity entity)
+        {
+            var entry = EFContext.DbContext.Entry(entity);
+            entry.Reload();
+        }
+        public virtual void Add(TEntity entity)
+        {
+            EFContext.Set<TEntity>().Add(entity);
+            var entry = EFContext.DbContext.Entry(entity);
+            entry.State = System.Data.Entity.EntityState.Added;  //一直有问题不可以
+            entry.Reload();
+        }
+        /// <summary>
+        /// 利用存储过程 获取 当前实体的查询数据集
+        /// </summary>
+        /// <param name="query">参数的名字一定要是@p0,@p1依次排下去</param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<TEntity> GetEntitiesWithRawSql(string query, params object[] parameters)
+        {
+            return EFContext.Set<TEntity>().SqlQuery(query, parameters).ToList();
+        }
+        public virtual IEnumerable<TEntity> GetEntitiesWithRawSql(string query)
+        {
+            return EFContext.Set<TEntity>().SqlQuery(query).ToList();
+        }
+
+        public virtual IEnumerable<TEntity> GetEntitiesBySql(string tableName)
+        {
+            var lt = EFContext.DbContext.Database.SqlQuery<TEntity>(string.Format("select * from {0}", tableName)).ToList();
+            EFContext.Set<TEntity>().Load();//加载内存数据?
+            return lt;
+        }
+
+        //AsnoTracking后, 需要再执行EntitiesToList
+        public virtual IQueryable<TEntity> EntitiesAsNoTracking
+        {
+            get { return EFContext.Set<TEntity>().AsNoTracking<TEntity>(); }
+        }
+        public virtual IEnumerable<TEntity> EntitiesToList
+        {
+            get { return EFContext.Set<TEntity>().ToList(); }
+        }
         #endregion
 
         #region 公共方法
@@ -165,22 +217,57 @@ namespace Quick.Framework.EFData
             EFContext.RegisterModified<TEntity>(entity);
             return isSave ? EFContext.Commit() : 0;
         }
-
-        public virtual int UpdateState(TEntity entity, bool isSave = true)
+        /// <summary>
+        /// 解决使用ExecuteSqlCommand更新出现无效的解决方案
+        /// ExecuteSqlCommand("update  test set name='111' where id=1");
+        /// 但数据集没有变化; 关键是要使用:dbContext.Set<TEntity>().AsNoTracking()
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="updateAction"></param>
+        /// <returns></returns>
+        public int Update(Expression<Func<TEntity, bool>> predicate, Action<TEntity> updateAction)
         {
-            PublicHelper.CheckArgument(entity, "entity");
-            EFContext.RegisterModifiedState<TEntity>(entity);
-            return isSave ? EFContext.Commit() : 0;
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+            if (updateAction == null)
+                throw new ArgumentNullException("updateAction");
+            var dbContext = this.EFContext.DbContext;
+            //dbContext.Configuration.AutoDetectChangesEnabled = true;
+            var _model = dbContext.Set<TEntity>().AsNoTracking().Where(predicate).ToList();
+            if (_model == null) return 0;
+            _model.ForEach(p =>
+            {
+                updateAction(p);
+                DetachExistsEntity(p);
+                dbContext.Entry<TEntity>(p).State = System.Data.Entity.EntityState.Modified;
+            });
+            return EFContext.Commit(false);
+        }
+        private Boolean DetachExistsEntity(TEntity entity)
+        {
+            var objContext = ((IObjectContextAdapter)this.EFContext.DbContext).ObjectContext;
+            var objSet = objContext.CreateObjectSet<TEntity>();
+            var entityKey = objContext.CreateEntityKey(objSet.EntitySet.Name, entity);
+
+            Object foundEntity;
+            var exists = objContext.TryGetObjectByKey(entityKey, out foundEntity);
+
+            if (exists)
+            {
+                objContext.Detach(foundEntity);
+            }
+
+            return (exists);
         }
 
         /// <summary>
-        /// 使用附带新值的实体信息更新指定实体属性的值
+        /// 使用附带新值的实体信息更新指定实体属性的值(把原来的记录都删除,再添加一条)
         /// </summary>
         /// <param name="propertyExpression">属性表达式</param>
         /// <param name="isSave">是否执行保存</param>
         /// <param name="entity">附带新值的实体信息，必须包含主键</param>
         /// <returns>操作影响的行数</returns>
-        public int Update(Expression<Func<TEntity, object>> propertyExpression, TEntity entity, bool isSave = true)
+        /*public int Update(Expression<Func<TEntity, object>> propertyExpression, TEntity entity, bool isSave = true)
         {
             //throw new NotSupportedException("上下文公用，不支持按需更新功能。");
             PublicHelper.CheckArgument(propertyExpression, "propertyExpression");
@@ -194,6 +281,16 @@ namespace Quick.Framework.EFData
                 return EFContext.Commit(false);
             }
             return 0;
+        }*/
+
+        public int Update(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities)
+        {
+            PublicHelper.CheckArgument(propertyExpression, "propertyExpression");
+            PublicHelper.CheckArgument(entities, "entity");
+            DbContextExtensions.Update<TEntity>(this.EFContext.DbContext, propertyExpression, entities);
+            return DbContextExtensions.SaveChanges(this.EFContext.DbContext, false);
+            //EFContext.Update<TEntity>(propertyExpression, entities);
+            //return EFContext.Commit(false);
         }
 
 
@@ -236,6 +333,8 @@ namespace Quick.Framework.EFData
 
         /// <summary>
         /// 修改操作
+        /// 方法调用方式：
+        /// db.Update<Member>(m => new { m.Password}, member);
         /// </summary>
         /// <param name="funWhere">查询条件-谓语表达式</param>
         /// <param name="funUpdate">实体-谓语表达式</param>
@@ -244,6 +343,7 @@ namespace Quick.Framework.EFData
         {
             return Entities.Where(funWhere).Update(funUpdate);
         }
+
 
         /// <summary>
         /// 分页查询
@@ -386,7 +486,7 @@ namespace Quick.Framework.EFData
             var detachFlag = false;
             var propertiesChangedLog = string.Empty;
             var entry = EFContext.DbContext.Entry(model);
-            if (entry.State == EntityState.Detached)
+            if (entry.State == System.Data.Entity.EntityState.Detached)
             {
                 detachFlag = true;
                 var keyNames = ((IObjectContextAdapter)EFContext.DbContext).ObjectContext.CreateObjectSet<TEntity>().EntitySet.ElementType.KeyMembers.Select(k => k.Name);
@@ -412,11 +512,258 @@ namespace Quick.Framework.EFData
 
             if (detachFlag)
             {
-                entry.State = EntityState.Detached;
+                entry.State = System.Data.Entity.EntityState.Detached;
             }
             #endregion
 
             return result;
         }
+
+
+
+        /// <summary>
+        ///  执行不带参数的sql语句，返回一个对象
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        public T GetSingle<T>(string sqlText)
+        {
+            try
+            {
+                return EFContext.DbContext.Database.SqlQuery<T>(sqlText).Cast<T>().First();
+            }
+            catch
+            {
+                return default(T);
+            }
+        }
+        /// <summary>
+        ///  执行带参数的sql语句，返回一个对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        public T GetSingle<T>(string sqlText, params DbParameter[] parms)
+        {
+            try
+            {
+                return EFContext.DbContext.Database.SqlQuery<T>(sqlText, parms).Cast<T>().First();
+            }
+            catch
+            {
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        /// 执行不带参数的sql语句，返回list
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        public List<T> GetList<T>(string sqlText)
+        {
+            try
+            {
+                return EFContext.DbContext.Database.SqlQuery<T>(sqlText).ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// 执行带参数的sql语句，返回List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        public List<T> GetList<T>(string sqlText, params DbParameter[] parms)
+        {
+            try
+            {
+                return EFContext.DbContext.Database.SqlQuery<T>(sqlText, parms).ToList();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 执行SQL命令
+        /// </summary>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        public int ExecuteSqlCommand(string sqlText, TransactionalBehavior behavior = TransactionalBehavior.DoNotEnsureTransaction)
+        {
+            //if (EFContext.DbContext.Database.CurrentTransaction == null)
+            //{
+            //    EFContext.DbContext.Database.BeginTransaction();
+            //}
+
+            return EFContext.DbContext.Database.ExecuteSqlCommand(behavior,sqlText);
+        }
+
+        /// <summary>
+        /// 执行带参数SQL命令
+        /// </summary>
+        /// <param name="sqlText"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        public int ExecuteSqlCommand(string sqlText, TransactionalBehavior behavior = TransactionalBehavior.DoNotEnsureTransaction, params DbParameter[] parms)
+        {
+            //if (EFContext.DbContext.Database.BeginTransaction)
+            //{
+            //    if (EFContext.DbContext.Database.CurrentTransaction == null)
+            //    {
+            //        EFContext.DbContext.Database.BeginTransaction();
+            //    }
+            //}
+
+            return EFContext.DbContext.Database.ExecuteSqlCommand(behavior,sqlText, parms);
+        }
+
+        /// <summary>
+        /// 通过Out参数返回要获取的值
+        /// </summary>
+        /// <param name="procName"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        public object[] ExecuteProc(string procName, params DbParameter[] parms)
+        {
+            var dbContext = this.EFContext.DbContext;
+            List<DbParameter> outParms = parms.Where(p => p.Direction == System.Data.ParameterDirection.Output || p.Direction == System.Data.ParameterDirection.ReturnValue).ToList();
+            DbParameter returnParm = parms.FirstOrDefault(p => p.Direction == System.Data.ParameterDirection.ReturnValue);
+            StringBuilder procBuilder = new StringBuilder(procName);
+            foreach (DbParameter parm in parms)
+            {
+                if (parm.Direction == System.Data.ParameterDirection.Input)
+                {
+                    procBuilder.AppendFormat(" {0}{1}", parm.ParameterName, ",");
+                }
+                else if (parm.Direction == System.Data.ParameterDirection.Output)
+                {
+                    procBuilder.AppendFormat(" {0} {1}{2}", parm.ParameterName, "OUT", ",");
+                }
+            }
+            string proc = procBuilder.ToString().TrimEnd(',');
+            if (returnParm != null)
+            {
+                proc = "EXEC " + returnParm.ParameterName + "=" + proc;
+            }
+            else
+            {
+                proc = "EXEC " + proc;
+            }
+            //if (dbContext.IsTransaction)
+            //{
+            //    if (dbContext.Database.CurrentTransaction == null)
+            //    {
+            //        dbContext.Database.BeginTransaction();
+            //    }
+            //}
+            var results = dbContext.Database.ExecuteSqlCommand(proc, parms);
+            object[] values = outParms.Select(r => r.Value).ToArray();
+            return values;
+        }
+
+        public int ExecuteProcNo(string procName, params DbParameter[] parms)
+        {
+            var dbContext = this.EFContext.DbContext;
+            List<DbParameter> outParms = parms.Where(p => p.Direction == System.Data.ParameterDirection.Output || p.Direction == System.Data.ParameterDirection.ReturnValue).ToList();
+            DbParameter returnParm = parms.FirstOrDefault(p => p.Direction == System.Data.ParameterDirection.ReturnValue);
+            StringBuilder procBuilder = new StringBuilder(procName);
+            foreach (DbParameter parm in parms)
+            {
+                if (parm.Direction == System.Data.ParameterDirection.Input)
+                {
+                    procBuilder.AppendFormat(" {0}{1}", parm.ParameterName, ",");
+                }
+                else if (parm.Direction == System.Data.ParameterDirection.Output)
+                {
+                    procBuilder.AppendFormat(" {0} {1}{2}", parm.ParameterName, "OUT", ",");
+                }
+            }
+            string proc = procBuilder.ToString().TrimEnd(',');
+            if (returnParm != null)
+            {
+                proc = "EXEC " + returnParm.ParameterName + "=" + proc;
+            }
+            else
+            {
+                proc = "EXEC " + proc;
+            }
+            //if (dbContext.IsTransaction)
+            //{
+            //    if (dbContext.Database.CurrentTransaction == null)
+            //    {
+            //        dbContext.Database.BeginTransaction();
+            //    }
+            //}
+            return dbContext.Database.ExecuteSqlCommand(proc, parms);
+        }
+
+        /// <summary>
+        /// 返回结果集的存储过程
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="procName"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        public List<T> ExecuteProc<T>(string procName, params DbParameter[] parms)
+        {
+            var dbContext = this.EFContext.DbContext;
+            StringBuilder procBuilder = new StringBuilder(procName);
+            foreach (DbParameter parm in parms)
+            {
+                if (parm.Direction == System.Data.ParameterDirection.Input)
+                {
+                    procBuilder.AppendFormat(" {0}{1}", parm.ParameterName, ",");
+                }
+                else if (parm.Direction == System.Data.ParameterDirection.Output)
+                {
+                    procBuilder.AppendFormat(" {0} {1}{2}", parm.ParameterName, "OUT", ",");
+                }
+            }
+            string proc = procBuilder.ToString().TrimEnd(',');
+            return dbContext.Database.SqlQuery<T>(proc, parms).ToList();
+        }
+
+        /// <summary>
+        /// 创建参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public SqlParameter GetParameter(string name, object value)
+        {
+            return new SqlParameter("@" + name, value);
+        }
+
+        /// <summary>
+        /// 创建参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public SqlParameter GetParameterOut(string name, DbType type, int size)
+        {
+            return new SqlParameter
+            {
+                ParameterName = "@" + name,
+                Direction = ParameterDirection.Output,
+                DbType = type,
+                Size = size
+
+            };
+        }
+
     }
 }
