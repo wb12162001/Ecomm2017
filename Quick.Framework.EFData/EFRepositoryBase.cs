@@ -77,6 +77,8 @@ namespace Quick.Framework.EFData
         /// </summary>
         public virtual void Load()
         {
+            var dbContext = ((IObjectContextAdapter)EFContext.DbContext).ObjectContext;
+            dbContext.Refresh(System.Data.Entity.Core.Objects.RefreshMode.ClientWins, EFContext.Set<TEntity>());
             EFContext.Set<TEntity>().Load();
         }
 

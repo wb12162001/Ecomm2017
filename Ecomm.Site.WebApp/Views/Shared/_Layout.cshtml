@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Snell packaging & safety</title>
-    @Styles.Render("~/Content/snell")
+    @Styles.Render("~/bundles/snell")
     @Scripts.Render("~/bundles/modernizr")
 
     @RenderSection("header", false)
@@ -33,9 +33,9 @@
 
     <!--Login-part-->
     @Html.Partial("_Login")
-    @Styles.Render("~/Content/plugins/bootstrapvalidator")
+    @Styles.Render("~/bundles/plugins/bootstrapvalidator/css")
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/index", "~/bundles/plugins/bootstrapvalidator")
+    @Scripts.Render("~/bundles/index", "~/bundles/plugins/bootstrapvalidator/js")
     @RenderSection("scripts", required: false)
     @RenderSection("footer", false)
     <script type="text/javascript">

@@ -39,16 +39,16 @@ namespace Ecomm.Site.WebApp
                       "~/Scripts/respond.js"));
             //Plugins
             //bootstrapValidator
-            bundles.Add(new ScriptBundle("~/bundles/plugins/bootstrapvalidator").Include(
+            bundles.Add(new ScriptBundle("~/bundles/plugins/bootstrapvalidator/js").Include(
                 "~/Content/plugins/bootstrapvalidator/js/bootstrapValidator.min.js"
                 ));
-            bundles.Add(new StyleBundle("~/Content/plugins/bootstrapvalidator").Include(
+            bundles.Add(new StyleBundle("~/bundles/plugins/bootstrapvalidator/css").Include(
                      "~/Content/plugins/bootstrapvalidator/css/bootstrapValidator.min.css"));
             //OwlCarousel
-            bundles.Add(new ScriptBundle("~/bundles/plugins/owl-carousel").Include(
+            bundles.Add(new ScriptBundle("~/bundles/plugins/owl-carousel/js").Include(
                 "~/Content/plugins/OwlCarousel/owl.carousel.min.js"
                 ));
-            bundles.Add(new StyleBundle("~/Content/plugins/owl-carousel").Include(
+            bundles.Add(new StyleBundle("~/bundles/plugins/owl-carousel/css").Include(
                      "~/Content/plugins/OwlCarousel/owl.carousel.css",
                      "~/Content/plugins/OwlCarousel/owl.theme.css"
                      ));
@@ -69,13 +69,13 @@ namespace Ecomm.Site.WebApp
                 "~/Content/snell/js/bootbox.min.js"
                 ));
 
-            bundles.Add(new StyleBundle("~/Content/snell").Include(
+            bundles.Add(new StyleBundle("~/bundles/snell").Include(
                       "~/Content/snell/css/reset.min.css",
                       "~/Content/snell/css/bootstrap.min.css",
                       "~/Content/snell/css/font-awesome.css",
                       "~/Content/snell/css/index.css"));
 
-            bundles.Add(new StyleBundle("~/Content/login").Include(
+            bundles.Add(new StyleBundle("~/bundles/login").Include(
                      "~/Content/snell/css/login.css"));
             //---Admin Site---
 
@@ -84,18 +84,18 @@ namespace Ecomm.Site.WebApp
                       "~/Content/admin/css/bootstrap.min.css",
                       "~/Content/admin/css/bootstrap-theme.min.css",
                       "~/Content/admin/css/bootstrap-responsive.min.css"));
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/bootstrap/css/bootstrap.min.css",
                       "~/Content/Site.css"));
 
-            bundles.Add(new StyleBundle("~/bundles/css/admin").Include(					  
-					  "~/Content/admin/css/uniform.css",
-					  "~/Content/admin/css/select2.css",			  
-					  "~/Content/admin/css/matrix-style.css",
-					  "~/Content/admin/css/matrix-media.css",
-					  "~/Content/admin/css/font.css",
-					  "~/Content/admin/font-awesome/css/font-awesome.css"
-					  ));
+            bundles.Add(new StyleBundle("~/bundles/css/admin")
+                      .Include("~/Content/admin/css/uniform.css", new CssRewriteUrlTransform())
+                      .Include("~/Content/admin/css/select2.css", new CssRewriteUrlTransform())
+                      .Include("~/Content/admin/css/matrix-style.css", new CssRewriteUrlTransform())
+                      .Include("~/Content/admin/css/matrix-media.css", new CssRewriteUrlTransform())
+                      .Include("~/Content/admin/css/font.css", new CssRewriteUrlTransform())
+                      .Include("~/Content/admin/font-awesome/css/font-awesome.css", new CssRewriteUrlTransform())
+                      ); //mvc 加载字体不一样
 
 			bundles.Add(new StyleBundle("~/bundles/css/jqueryui").Include(
 					  "~/Content/themes/base/jquery.ui.core.css",

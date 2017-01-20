@@ -113,31 +113,46 @@
         });
     });
     
-
-    //删除购物车
-    $('.del-cart').on('click', function () {
-        var $id = $(this).data('list-id');
-        $('.list-id-' + $id).remove();
-        if ($('.cart-list li').length == 0) {
-            $('.cart-list').hide();
-            $('.cart-layer-fun').hide();
-            $('.empty-cart').show();
-        }
-    })
-
-
 });
 
-
-//add cart
-function addCart(pro) {
+function checkLogin() {
     if ($("#hdUserid").val() == '') {
         bootbox.alert({ message: "Please login the site!" });
         return;
     }
+}
+
+function deleCart(id) {
+    checkLogin();
+    if (id == '' || id == undefined) {
+        bootbox.alert({ message: "Product sku is empty!" });
+        return;
+    }
+    var post_data = { id: id };
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        url: "/Home/DeleCart",
+        data: post_data,
+        success: function (d) {
+            bootbox.alert(d.message, function () {
+                //bind shopping cart
+                $("#shopping_cart").load('/Home/ShoppingCart' + '?ts=' + Math.random());
+            });
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
+}
+
+
+//add cart
+function addCart(pro) {
+    checkLogin();
     //var pro = $(this).attr("data-pno");
     //console.log($(this));
-    console.log(pro);
+    //console.log(pro);
     if (pro == '' || pro == undefined) {
         bootbox.alert({ message: "Product sku is empty!" });
         return;

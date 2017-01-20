@@ -115,7 +115,7 @@ namespace Ecomm.Core.Service.MyOffice.Impl
         /// <returns></returns>
         public int ModificationByProce(SALES_EBASKETModel model)
         {
-            var entity = SALES_EBASKETRepository.Entities.Where(t =>
+            var entity = SALES_EBASKETRepository.EntitiesToList.Where(t =>
             t.CustomerID == model.CustomerID
             && t.ContactID == model.ContactID
             && t.ProductNo == model.ProductNo && t.Status == 0).FirstOrDefault();
@@ -168,7 +168,7 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             //{
             //    SALES_EBASKETRepository.Add(entity);
             //}
-            //SALES_EBASKETRepository.Load();
+            SALES_EBASKETRepository.Load();
             //---------------------------------------
             return ret;
         }
@@ -233,6 +233,13 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
             SALES_EBASKETRepository.Delete(model);
             return new OperationResult(OperationResultType.Success, "successfully deleted");
+        }
+
+        public int DeleteItem(string ID)
+        {
+            var model = SALES_EBASKETList.FirstOrDefault(t => t.ID == ID);
+
+            return SALES_EBASKETRepository.Delete(model);
         }
 
         #endregion

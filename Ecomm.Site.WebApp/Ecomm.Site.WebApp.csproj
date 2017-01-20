@@ -388,8 +388,12 @@
     <Content Include="Content\snell\images\sellers-2.jpg" />
     <Content Include="Content\snell\images\sellers-3.jpg" />
     <Content Include="Content\snell\images\show-1.jpg" />
+    <Content Include="Content\snell\images\star-0.png" />
     <Content Include="Content\snell\images\star-1.png" />
     <Content Include="Content\snell\images\star-2.png" />
+    <Content Include="Content\snell\images\star-3.png" />
+    <Content Include="Content\snell\images\star-4.png" />
+    <Content Include="Content\snell\images\star-5.png" />
     <Content Include="Content\snell\images\text-head-gray.jpg" />
     <Content Include="Content\snell\images\text-head.jpg" />
     <Content Include="Content\snell\js\bootbox.min.js" />

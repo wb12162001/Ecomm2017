@@ -11,6 +11,7 @@ using Quick.Framework.EFData;
 using Ecomm.Domain.Models.MyOffice;
 using System.Text;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 
 namespace Ecomm.Core.Repository.MyOffice
 {
@@ -23,7 +24,6 @@ namespace Ecomm.Core.Repository.MyOffice
         public SALES_EBASKETRepository() : base("default")
         {
         }
-
         public IEnumerable<SALES_EBASKET> GetEntitiesBySql()
         {
             return base.EFContext.DbContext.Database.SqlQuery<SALES_EBASKET>("select * from dbo.SALES_EBASKET");

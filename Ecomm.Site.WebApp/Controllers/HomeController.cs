@@ -139,19 +139,23 @@ namespace Ecomm.Site.WebApp.Controllers
                 if (!string.IsNullOrEmpty(item.Item01))
                 {
                     sb_item.AppendFormat(@"
-<div class='pull-left'>
+<div class='col-md-3 col-xs-3 col-lg-3'>
         <a href=''>
             <img src='{0}'>
         </a>
-    </div>", item.Item01).AppendLine();
+    </div>
+", item.Item01).AppendLine();
                 }
             }
             if (!string.IsNullOrEmpty(sb_item.ToString()))
             {
-                sb.AppendFormat(@"<div class='middle-adv'>
+                sb.AppendFormat(@"
+ <div class='middle-adv'>
+            <div class='row'>
                     {0}
-                        </div>
-            <div class='clearfix'></div>
+            </div>
+ </div>
+<div class='clearfix'></div>
 ", sb_item.ToString()).AppendLine();
                 ViewBag.mid_Ad = sb.ToString();
             }
@@ -234,7 +238,7 @@ namespace Ecomm.Site.WebApp.Controllers
                 <div class='clearfix'></div>
                 <span class='label label-danger is-sale'>SALE!</span>
             </div>
-", item.Picture, item.Product.ProductName, item.Product.ListPrice, item.Product.StndCost,"#", item.Product.ProductNo.Trim()).AppendLine();
+", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.ListPrice.Value.ToString("N2"), "#", item.Product.ProductNo.Trim()).AppendLine();
                 }
             }
             if (!string.IsNullOrEmpty(sb_item.ToString()))
@@ -590,7 +594,7 @@ namespace Ecomm.Site.WebApp.Controllers
                                 }
                             }
                         }
-                        ret = SALES_EBASKETService.ModificationCart(model); 
+                        ret = SALES_EBASKETService.ModificationCart(model); //成功了
                         //ret = SALES_EBASKETService.ModificationByProce(model);//有问题不可以使用
                     }
                 }
@@ -604,6 +608,27 @@ namespace Ecomm.Site.WebApp.Controllers
             else
             {
                 return Json(new { success = false, message = "added to cart failed." });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleCart(string id)
+        {
+            int ret = 0;
+            if (!string.IsNullOrEmpty(id) && base.CurrentUser != null)
+            {
+                if (base.CurrentUser.AccountInfo != null)
+                {
+                    ret = SALES_EBASKETService.DeleteItem(id);
+                }
+            }
+            if (ret > 0)
+            {
+                return Json(new { success = true, message = "successfull delete cart item" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "delete cart item failed." });
             }
         }
 

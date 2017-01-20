@@ -53,7 +53,8 @@ namespace Ecomm.Site.WebApp.Common
                         Status = t.Status,
                         ProductNo = t.ProductNo,
                         Unit = t.Unit,
-                        UnitPType = t.UnitPType
+                        UnitPType = t.UnitPType,
+                        ID = t.ID,
                     });
                     
                 StringBuilder sb = new StringBuilder();

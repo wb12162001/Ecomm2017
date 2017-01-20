@@ -29,10 +29,10 @@
                     <img src="/Content/snell/images/sellers-1.jpg">
                 </div>
                 <div class="cart-item-detail pull-right">
-                    <a href="#" class="product-name">@item.ProductNo</a>
+                    <a href="/Product/View" class="product-name">@item.ProductNo.Trim()</a>
                     <div>
                         <span><span>@item.Quantity.ToString("N1")</span> <i class="fa fa-times" style="font-size:12px;"></i> <span style="color:#777">$@item.UnitPrice.Value.ToString("N2")</span></span>
-                        <span class="del-cart pull-right" data-list-id="1"><i class="fa fa-times" style="font-size:18px;color:#000"></i></span>
+                        <span class="del-cart pull-right" onclick="deleCart('@item.ID');"><i class="fa fa-times" style="font-size:18px;color:#000"></i></span>
                     </div>
                 </div>
             </div>

@@ -71,7 +71,7 @@ a:hover{text-decoration: none}
 .banner .carousel .carousel-inner img{width: 100%;}
 /* 中间广告 */
 .middle-adv{width: 1074px;margin: 0 auto;margin-top: 30px;}
-.middle-adv div{width: 252px;margin-right: 22px}
+/*.middle-adv div{width: 252px;margin-right: 22px}*/
 .middle-adv div:last-child{margin-right: 0}
 .middle-adv img{width: 100%;}
 /* 今日交易 和 受欢迎的产品 */
@@ -187,7 +187,12 @@ a:hover{text-decoration: none}
 .container .main .subcribe .subcribe-box .subcribe-box-right .subcribe-box-right-ul li:first-child{border: none;}
 .container .main .subcribe .subcribe-box .subcribe-box-right .subcribe-box-right-ul li span{color: #f9fafc;font-weight: 600}
 /* 底部footer */
-.container .footer{width: 1074px;margin: 0 auto;height: 200px;margin-top: 30px;}
+.container .footer{width: 1074px;margin: 0 auto;}
+.container .footer .sitemap {
+background-color: #fff;
+    height: 250px;
+    padding-top: 25px;
+}
 .container .footer .sitemap .sitemap-box{margin-right: 84px;}
 .container .footer .sitemap .about-us{max-width: 247px;margin-right: 0}
 .container .footer .sitemap .about-us p{line-height: 25px;color: #a5a5a5}
@@ -250,4 +255,5 @@ a:hover{text-decoration: none}
 
 #cartCarousel .carousel-control.left,#cartCarousel .carousel-control.right{
     background:none;
+    height: 30px;
 }

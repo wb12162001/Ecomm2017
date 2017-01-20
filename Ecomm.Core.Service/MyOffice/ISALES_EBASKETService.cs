@@ -41,7 +41,8 @@ namespace Ecomm.Core.Service.MyOffice
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(string  ID);
+        int DeleteItem(string ID);
         #endregion
-	}
+    }
 }
 
