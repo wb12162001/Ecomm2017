@@ -60,6 +60,7 @@
     <Compile Include="MyOffice\SALES_INTERNETPRICE.cs" />
     <Compile Include="MyOffice\SALES_QUOTE.cs" />
     <Compile Include="MyOffice\SALES_VIEWED.cs" />
+    <Compile Include="Product\PROD_CATEGORIES.cs" />
     <Compile Include="Product\PROD_GROUP_INDEX.cs" />
     <Compile Include="Product\PROD_GROUP_ITEM.cs" />
     <Compile Include="Product\PROD_MASTER.cs" />

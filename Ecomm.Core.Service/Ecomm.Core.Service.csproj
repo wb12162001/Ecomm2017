@@ -89,9 +89,11 @@
     <Compile Include="MyOffice\ISALES_INTERNETPRICEService.cs" />
     <Compile Include="MyOffice\ISALES_QUOTEService.cs" />
     <Compile Include="MyOffice\ISALES_VIEWEDService.cs" />
+    <Compile Include="Product\Impl\PROD_CATEGORIESService.cs" />
     <Compile Include="Product\Impl\PROD_GROUP_INDEXService.cs" />
     <Compile Include="Product\Impl\PROD_GROUP_ITEMService.cs" />
     <Compile Include="Product\Impl\PROD_MASTERService.cs" />
+    <Compile Include="Product\IPROD_CATEGORIESService.cs" />
     <Compile Include="Product\IPROD_GROUP_INDEXService.cs" />
     <Compile Include="Product\IPROD_GROUP_ITEMService.cs" />
     <Compile Include="Product\IPROD_MASTERService.cs" />

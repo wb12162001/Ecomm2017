@@ -40,6 +40,10 @@ namespace Ecomm.Core.Service.Product
         PROD_MASTER GetProduct(string prono);
 
         void GetSellingPrice(string itemnmbr, string custnmbr, out double sellPrice, out string priceType);
+        double GetSellPrice(string itemnmbr, string custnmbr, double listPrice, out string priceType);
+        double GetSellPrice(string itemnmbr, double listPrice, double SpecialPrice, out string priceType);
+        double GetSellPrice(string itemnmbr, double listPrice, double SpecialPrice);
+
         #endregion
     }
 }

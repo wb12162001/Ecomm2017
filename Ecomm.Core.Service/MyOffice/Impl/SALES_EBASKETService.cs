@@ -242,6 +242,11 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             return SALES_EBASKETRepository.Delete(model);
         }
 
+
+        public Domain.Models.EpSnell.Rela_contact GetUser()
+        {
+            return GetCurrentUser();
+        }
         #endregion
     }
 }

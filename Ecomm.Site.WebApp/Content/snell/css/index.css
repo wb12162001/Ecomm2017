@@ -58,7 +58,7 @@ a:hover{text-decoration: none}
 .header .nav-bar .nav .navitems li a{display: block;color: #000;font-size: 15px;}
 .header .nav-bar .nav .navitems li a:hover{color: #0091d0;background: url(../images/line.png) no-repeat 0px 42px;}
 .header .nav-bar .nav .navitems i{font-size: 12px;margin-left: 7px;}
-.header .nav-bar .nav .navitems .nav-box{top: 95%;border: none;border-radius: inherit;min-width: 0px;}
+.header .nav-bar .nav .navitems .nav-box{top: 95%;border: none;border-radius: inherit;min-width: 0px; white-space:nowrap;}
 .header .nav-bar .nav .navitems .nav-box li{float: none;margin: 0 30px;}
 .header .nav-bar .nav .navitems .nav-box li a{font-size: 12px;}
 .header .nav-bar .nav .navitems .nav-box li a:hover{background: none}

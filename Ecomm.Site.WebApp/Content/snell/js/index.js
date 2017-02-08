@@ -174,3 +174,42 @@ function addCart(pro) {
         }
     });
 }
+
+/*******初始化*********/
+function InitDatatables(dataTableObj, actionUrl, aoColumns, oTable) {
+    oTable = dataTableObj.dataTable({
+        "bJQueryUI": true,
+        "sPaginationType": "full_numbers",
+        'bLengthChange': true,
+        "bFilter": false,
+        "bInfo": false,
+        'bPaginate': true,
+        "bProcessing": true,
+        "bAutoWidth": false,
+        "bServerSide": true,
+        "bStateSave": false,
+        "iDisplayLength": 10,
+        "aLengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]],
+        "oLanguage": {
+            "sLengthMenu": "Show _MENU_ Items",
+            "sZeroRecords": "对不起，查询不到任何相关数据",
+            "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+            "sInfoEmtpy": "找不到相关数据",
+            "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+            "sProcessing": "Loading...",
+            "sSearch": "Search",
+            "oPaginate": {
+                "sFirst": "First",
+                "sPrevious": " Previous ",
+                "sNext": " Next ",
+                "sLast": " Last "
+            }
+        },
+        "sAjaxSource": actionUrl,
+        "aoColumns": aoColumns
+    });
+    //初始化下拉框
+    //$('select').select2();
+
+    return oTable;
+}

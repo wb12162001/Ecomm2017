@@ -89,9 +89,11 @@
     <Compile Include="MyOffice\ISALES_INTERNETPRICERepository.cs" />
     <Compile Include="MyOffice\ISALES_QUOTERepository.cs" />
     <Compile Include="MyOffice\ISALES_VIEWEDRepository.cs" />
+    <Compile Include="Product\Impl\PROD_CATEGORIESRepository.cs" />
     <Compile Include="Product\Impl\PROD_GROUP_INDEXRepository.cs" />
     <Compile Include="Product\Impl\PROD_GROUP_ITEMRepository.cs" />
     <Compile Include="Product\Impl\PROD_MASTERRepository.cs" />
+    <Compile Include="Product\IPROD_CATEGORIESRepository.cs" />
     <Compile Include="Product\IPROD_GROUP_INDEXRepository.cs" />
     <Compile Include="Product\IPROD_GROUP_ITEMRepository.cs" />
     <Compile Include="Product\IPROD_MASTERRepository.cs" />

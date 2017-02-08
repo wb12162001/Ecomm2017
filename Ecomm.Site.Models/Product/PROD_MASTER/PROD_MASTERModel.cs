@@ -14,6 +14,31 @@ using Quick.Site.Common;
 
 namespace Ecomm.Site.Models.Product.PROD_MASTER
 {
+    public class ProductModel
+    {
+        [Display(Name = "ID")]
+        public string ID { get; set; }
+        [Display(Name = "ProductNo")]
+        public string ProductNo { get; set; }
+        [Display(Name = "ProductName")]
+        public string ProductName { get; set; }
+        [Display(Name = "ProductType")]
+        public int? ProductType { get; set; }
+
+        public string BigPic { get; set; }
+        public string SmallPic { get; set; }
+        public string MiddlePic { get; set; }
+        public string StockType { get; set; }
+        public string ProdCategoryCode { get; set; }
+        public string BaseUOFM { get; set; }
+        public bool IsSpecialPrice { get; set; }
+        public double ListPrice { get; set; }
+
+        public double SellPrice { get; set; }
+
+        public string Item01 { get; set; }
+        public string Item04 { get; set; }
+    }
     public class PROD_MASTERModel : EntityCommon
     {
         public PROD_MASTERModel()

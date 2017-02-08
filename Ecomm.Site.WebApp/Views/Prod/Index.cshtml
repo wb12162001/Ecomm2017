@@ -1,0 +1,37 @@
+﻿@using Ecomm.Site.Models.Product.PROD_CATEGORIES
+@using Ecomm.Site.Models.Product.PROD_MASTER;
+@using Webdiyer.WebControls.Mvc;
+@{
+    ViewBag.Title = "Product List Page";
+    MenuViewModel Leftmenus = (MenuViewModel)ViewBag.LeftMenusModel;
+}
+
+<div>
+<br />
+<br />
+<p>
+    This is Product page.
+</p>
+<br />
+<br />
+<br />
+    @if (Leftmenus != null)
+    {
+        <br />
+        <p>
+            @Ecomm.Site.WebApp.Common.CommonHelper.GetCateName(Leftmenus.Category.MenuAlias, Leftmenus.Category.CategoryName)
+        </p>
+        foreach (var item in Leftmenus.Menus)
+        {
+    <a href="@Url.Action("Index", "Prod", new { categorycode = item.CategoryCode })">@Ecomm.Site.WebApp.Common.CommonHelper.GetCateName(item.MenuAlias, item.CategoryName)</a><br />
+        }
+    }
+    </div>
+<!--List-->
+<div id="articles">
+    @Html.Partial("_ProductsList", (PagedList<ProductModel>)ViewBag.PagedListProductModel)
+</div>
+@section scripts
+{
+    @{ Html.RegisterMvcPagerScriptResource();}
+}

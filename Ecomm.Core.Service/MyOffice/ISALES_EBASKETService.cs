@@ -42,6 +42,8 @@ namespace Ecomm.Core.Service.MyOffice
         /// <returns></returns>
         OperationResult Delete(string  ID);
         int DeleteItem(string ID);
+
+        Domain.Models.EpSnell.Rela_contact GetUser();
         #endregion
     }
 }

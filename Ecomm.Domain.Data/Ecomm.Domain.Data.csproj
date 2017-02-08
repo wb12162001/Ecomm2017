@@ -93,9 +93,11 @@
     <Compile Include="Mapping\MyOffice\SALES_INTERNETPRICEMap.cs" />
     <Compile Include="Mapping\MyOffice\SALES_QUOTEMap.cs" />
     <Compile Include="Mapping\MyOffice\SALES_VIEWEDMap.cs" />
+    <Compile Include="Mapping\Product\Configuration\PROD_CATEGORIESMap.generated.cs" />
     <Compile Include="Mapping\Product\Configuration\PROD_GROUP_INDEXMap.generated.cs" />
     <Compile Include="Mapping\Product\Configuration\PROD_GROUP_ITEMMap.generated.cs" />
     <Compile Include="Mapping\Product\Configuration\PROD_MASTERMap.generated.cs" />
+    <Compile Include="Mapping\Product\PROD_CATEGORIESMap.cs" />
     <Compile Include="Mapping\Product\PROD_GROUP_INDEXMap.cs" />
     <Compile Include="Mapping\Product\PROD_GROUP_ITEMMap.cs" />
     <Compile Include="Mapping\Product\PROD_MASTERMap.cs" />

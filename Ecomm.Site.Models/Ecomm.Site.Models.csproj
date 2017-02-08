@@ -116,6 +116,8 @@
     <Compile Include="MyOffice\SALES_QUOTE\UpdateSALES_QUOTEModel.cs" />
     <Compile Include="MyOffice\SALES_VIEWED\SALES_VIEWEDModel.cs" />
     <Compile Include="MyOffice\SALES_VIEWED\UpdateSALES_VIEWEDModel.cs" />
+    <Compile Include="Product\PROD_CATEGORIES\PROD_CATEGORIESModel.cs" />
+    <Compile Include="Product\PROD_CATEGORIES\UpdatePROD_CATEGORIESModel.cs" />
     <Compile Include="Product\PROD_GROUP_INDEX\PROD_GROUP_INDEXModel.cs" />
     <Compile Include="Product\PROD_GROUP_INDEX\UpdatePROD_GROUP_INDEXModel.cs" />
     <Compile Include="Product\PROD_GROUP_ITEM\PROD_GROUP_ITEMModel.cs" />

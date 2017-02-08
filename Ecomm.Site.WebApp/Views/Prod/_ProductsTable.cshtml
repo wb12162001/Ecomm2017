@@ -1,0 +1,39 @@
+﻿@using Ecomm.Site.Models.Product.PROD_MASTER;
+@using Webdiyer.WebControls.Mvc;
+@{
+    PagedList<ProductModel> PagedListProductModel = (PagedList<ProductModel>)ViewBag.PagedListProductModel;
+}
+<table class="table table-bordered table-striped">
+    <tr>
+        
+        <th>
+            ProductNo
+        </th>
+        <th>
+            ProductName
+        </th>
+        <th>
+            ProductType
+        </th>
+        <th>
+            Price
+        </th>
+    </tr>
+    @foreach (var item in PagedListProductModel)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SellPrice)
+            </td>
+        </tr>
+    }
+</table>

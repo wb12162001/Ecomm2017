@@ -291,6 +291,7 @@ namespace Ecomm.Core.Service.Product.Impl
         }
         #endregion
 
+
         public void GetSellingPrice(string itemnmbr, string custnmbr, out double sellPrice, out string priceType)
         {
             try
@@ -302,6 +303,50 @@ namespace Ecomm.Core.Service.Product.Impl
                 sellPrice = 0;
                 priceType = string.Empty;
             }
+        }
+
+        public double GetSellPrice(string itemnmbr, string custnmbr, double listPrice, out string priceType)
+        {
+            double price = 0;
+            try
+            {
+                //string ptype = string.Empty;
+                GetSellingPrice(itemnmbr, custnmbr, out price, out priceType);
+                if (price == 0)
+                {
+                    price = listPrice;
+                }
+            }
+            catch (Exception ex)
+            {
+                priceType = "";
+            }
+            return price;
+        }
+
+        /// <summary>
+        /// 用户登陆未登录，显示不同的产品价格
+        /// </summary>
+        public double GetSellPrice(string itemnmbr, double listPrice, double SpecialPrice, out string priceType)
+        {
+            priceType = "L";
+            double price = listPrice;
+            //如果用户未登陆
+            if (GetCurrentUser() == null)
+            {
+                if (SpecialPrice > 0 && SpecialPrice < listPrice)
+                {
+                    priceType = "S";
+                    price = SpecialPrice;
+                }
+                return price;
+            }
+            return GetSellPrice(itemnmbr, GetCurrentUser().AccountInfo.Account_no, listPrice, out priceType);
+        }
+        public double GetSellPrice(string itemnmbr, double listPrice, double SpecialPrice)
+        {
+            string priceType = "L";
+            return GetSellPrice(itemnmbr, listPrice, SpecialPrice, out priceType);
         }
     }
 }

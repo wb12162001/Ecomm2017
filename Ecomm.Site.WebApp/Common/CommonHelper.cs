@@ -142,5 +142,19 @@ namespace Ecomm.Site.WebApp.Common
                 return returnValue;
             }
         }
+
+        public static string GetCateName(string desc, string categoryName)
+        {
+            if (string.IsNullOrEmpty(desc)) return categoryName;
+
+            desc = desc.Replace("/", " & ");
+            desc = desc.Trim();
+            if (desc.Length > 25)
+            {
+                desc = desc.Replace("Products", "");
+                desc = desc.Replace("products", "");
+            }
+            return desc;
+        }
     }
 }
