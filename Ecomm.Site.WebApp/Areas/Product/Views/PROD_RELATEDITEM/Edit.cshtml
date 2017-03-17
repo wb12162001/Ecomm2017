@@ -1,0 +1,48 @@
+﻿@using Ecomm.Site.Models.Product.PROD_RELATEDITEM
+@using Quick.Site.Common.Models
+@model UpdatePROD_RELATEDITEMModel
+
+@Html.HiddenFor(t => t.ProductNot.RelatedID)
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ProductNo) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProductNo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProductNo)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.RelatedID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.RelatedID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.RelatedID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Ranking) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Ranking, new { @class = "form-control" })
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

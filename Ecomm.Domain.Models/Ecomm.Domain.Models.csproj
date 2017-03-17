@@ -49,6 +49,7 @@
     <Compile Include="EpSnell\Rela_contact.cs" />
     <Compile Include="EpSnell\Rela_contact_location.cs" />
     <Compile Include="EpSnell\Rela_location_limit.cs" />
+    <Compile Include="GPSPS\RM00102.cs" />
     <Compile Include="MyOffice\SALES_CLEARANCE.cs" />
     <Compile Include="MyOffice\SALES_CONTRACTPRICE.cs" />
     <Compile Include="MyOffice\SALES_EBASKET.cs" />
@@ -64,6 +65,12 @@
     <Compile Include="Product\PROD_GROUP_INDEX.cs" />
     <Compile Include="Product\PROD_GROUP_ITEM.cs" />
     <Compile Include="Product\PROD_MASTER.cs" />
+    <Compile Include="Product\PROD_MASTERCOMMON.cs" />
+    <Compile Include="Product\PROD_PHOTO.cs" />
+    <Compile Include="Product\PROD_PROMOTIONS.cs" />
+    <Compile Include="Product\PROD_PROPERTIES.cs" />
+    <Compile Include="Product\PROD_RELATEDITEM.cs" />
+    <Compile Include="Product\PROD_RELATED_PROPERTY.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SysConfig\INFOR_CATEGORIES.cs" />
     <Compile Include="SysConfig\INFOR_MASTER.cs" />

@@ -32,6 +32,9 @@ namespace Ecomm.Core.Service.EpSnell.Impl
         [Import]
         public IRela_contactRepository Rela_contactRepository { get; set; }
 
+        [Import]
+        protected Ecomm.Core.Repository.GPSPS.IDBRepository GPSPDBRepository { get; set; }
+
         public IQueryable<Rela_contact> Rela_contactList
         {
             get { return Rela_contactRepository.Entities; }
@@ -40,6 +43,10 @@ namespace Ecomm.Core.Service.EpSnell.Impl
         #endregion
 
         #region 公共方法
+        public void GetFreightByCust(string cust, out float freight, out float admincost)
+        {
+            GPSPDBRepository.GetFreightByCust(cust, out freight, out admincost);
+        }
 
         public OperationResult Insert(Rela_contactModel model)
         {

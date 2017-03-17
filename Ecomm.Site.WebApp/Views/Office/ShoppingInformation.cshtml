@@ -1,0 +1,168 @@
+﻿@using Ecomm.Site.Models.EpSnell.Rela_account_location;
+@using Ecomm.Domain.Models.EpSnell;
+@using Ecomm.Site.Models.MyOffice.SALES_EBASKET;
+@model ShoppingInformationViewModel
+@{
+    IQueryable<Rela_account_locationModel> ShopTos = (IQueryable<Rela_account_locationModel>)ViewBag.ShoppingInfor_Shoptos;
+    Rela_contact userInfo = (Rela_contact)ViewBag.ShoppingInfor_User;
+}
+
+@section Header  {
+    @Styles.Render("~/bundles/cart")
+}
+<div class="clearfix"></div>
+<!-- Shopping Information -->
+@using (Html.BeginForm("ConfirmOrder", "Office", FormMethod.Post, new { @class = "editForm", @onsubmit = @ViewBag.form_js }))
+{
+    @Html.AntiForgeryToken()
+<div class="products">
+    <div class="cart-top">
+        <div class="sub_cart_tit">Shipping Information</div>
+        <div class="sub_cart_guage cart_f2"></div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="cart-content">
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <table class="purchase-table">
+                        <tr>
+                            <td class="textalign-right redcolor">My Purchase Order number:</td>
+                            <td>
+                                @Html.TextBoxFor(t => t.PurchaseNO, new { @class = "form-control purchaseNo", @placeholder = "Purchase No.", @tabindex = "1" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textalign-right redcolor">My Name:</td>
+                            <td>
+                                @Html.TextBoxFor(t => t.PurchaseName, new { @class = "form-control", @placeholder = "Name", @tabindex = "2" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textalign-right redcolor">My Phone:</td>
+                            <td>
+                                @Html.TextBoxFor(t => t.PurchaseTel, new { @class = "form-control ", @placeholder = "Phone", @tabindex = "3" })
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table class="purchase-table">
+                        <tr>
+                            <td class="textalign-right redcolor">User Id:</td>
+                            <td>
+                                <label>@userInfo.UserName</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textalign-right redcolor">User Name:</td>
+                            <td>
+                                <label>@userInfo.Name</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textalign-right redcolor">Contact Phone:</td>
+                            <td>
+                                <label>@userInfo.Phone1</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        @if (ShopTos.Count() > 0)
+        {
+        <table class="table table-striped">
+            <thead>
+                <tr class="redcolor">
+                    <th>Branch</th>
+                    <th>ShipToCode</th>
+                    <th>Contact</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Please Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ShopTos)
+                {
+                <tr>
+                    <td class="bluecolor">@item.Address1</td>
+                    <td>@item.Address_id</td>
+                    <td>@item.Contact_id</td>
+                    <td>@item.Address2</td>
+                    <td>@item.Country @item.City @item.State @item.Phone1</td>
+                    <td>
+                        <input type="radio" name="ShipTo" onclick="clickShipTo(true);" value="@item.Address_id.Trim()" />
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        }
+        <div class="new-info">
+            <div class="pull-left">
+                <span class="bluecolor">Or <input type="radio" name="ShipTo" onclick="clickShipTo(false);" value="SHIPTONEW" /> Enter new shipping address:</span>
+                <table class="purchase-table">
+                    <tr>
+                        <td class="textalign-right">Company:</td>
+                        <td>
+                            @Html.TextBoxFor(t => t.Company, new { @class = "form-control company", @placeholder = "Company", @tabindex = "5" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="textalign-right">Contact:</td>
+                        <td>
+                            @Html.TextBoxFor(t => t.Contact, new { @class = "form-control contact", @placeholder = "Contact", @tabindex = "6" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="textalign-right">City:</td>
+                        <td>
+                            @Html.TextBoxFor(t => t.City, new { @class = "form-control city", @placeholder = "City", @tabindex = "7" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="textalign-right">Suburb:</td>
+                        <td>
+                            @Html.TextBoxFor(t => t.Suburb, new { @class = "form-control suburb", @placeholder = "Suburb", @tabindex = "8" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="textalign-right">Address:</td>
+                        <td>
+                            @Html.TextBoxFor(t => t.Address, new { @class = "form-control address", @placeholder = "Address", @tabindex = "9" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="special pull-right">
+                <p class="bluecolor">Special instructions:</p>
+                @Html.TextAreaFor(t => t.CommonText, new { @class = "form-control", @cols = "50", @rows=3, @tabindex = "10" })
+                <p class="p-c">Your order will be delivered within 24 hours.If you have any special instructions please enter them in the box above.</p>
+                <p class="p-c">Click the button below to continue with your order.</p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="cart-bottom">
+        <div class="checkout">
+            <a href="@Url.Action("ShoppingCart", "Office")" class="btn btn-default">
+                <span class="glyphicon glyphicon-chevron-left"></span>Go Back
+            </a>
+            <button type="submit" class="btn btn-primary pull-right">
+                Continue<span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
+        </div>
+    </div>
+</div>
+}
+@section scripts
+{
+    <script>
+    $(function() {
+        $('.cart').unbind("mouseover").unbind("mouseout");
+        $("input[name='ShipTo'][value='@Model.ShipTo']").attr("checked", true);
+    });
+    </script>
+}

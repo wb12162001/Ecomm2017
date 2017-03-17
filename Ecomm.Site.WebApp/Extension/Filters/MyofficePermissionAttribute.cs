@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Ecomm.Domain.Models.EpSnell;
 
 
 namespace Ecomm.Site.WebApp.Extension.Filters
@@ -16,7 +17,7 @@ namespace Ecomm.Site.WebApp.Extension.Filters
         private PermissionCustomMode CustomMode;
         public MyofficePermissionAttribute(PermissionCustomMode mode)
         {
-
+            CustomMode = mode;
         }
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -26,7 +27,14 @@ namespace Ecomm.Site.WebApp.Extension.Filters
                 return;
             }
 
-            base.OnAuthorization(filterContext);
+            var user = filterContext.HttpContext.Session["CurrentSnellUser"] as Rela_contact;
+            if (user == null)
+            {
+                //跳转到登录页面
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index" }));
+            }
+
+            //base.OnAuthorization(filterContext);
         }
     }
 }

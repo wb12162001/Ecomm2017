@@ -19,9 +19,11 @@ namespace Ecomm.Core.Repository.EpSnell
     [Export(typeof(IRela_contactRepository))]
     public class Rela_contactRepository : EFRepositoryBase<Rela_contact>, IRela_contactRepository
     {
-        public Rela_contactRepository() : base("ep_snell")
+        public Rela_contactRepository() : base("default")
         {
         }
+
+       
     }
 }
 

@@ -21,6 +21,8 @@ namespace Ecomm.Core.Repository.MyOffice
         IEnumerable<SALES_EBASKET> GetEntitiesBySql();
         int UpdateEBasketQuantity(string custId, string contactId, string proNo, float quantity);
         int ModificationByProce(SALES_EBASKET oSALES_EBASKETInfo);
+
+        IEnumerable<SALES_EBASKET_MASTER> QueryEntities(int count, string strWhere, string strOrder);
     }
 }
 

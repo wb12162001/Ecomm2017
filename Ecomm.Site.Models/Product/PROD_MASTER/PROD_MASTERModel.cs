@@ -14,6 +14,15 @@ using Quick.Site.Common;
 
 namespace Ecomm.Site.Models.Product.PROD_MASTER
 {
+    public class AvailableStock
+    {
+        public string AucklandStock { get; set; }
+        public string HamiltonStock { get; set; }
+        public string WellingtonStock { get; set; }
+        public string ChristchurchStock { get; set; }
+
+        public string TOTALStock { get; set; }
+    }
     public class ProductModel
     {
         [Display(Name = "ID")]
@@ -32,12 +41,45 @@ namespace Ecomm.Site.Models.Product.PROD_MASTER
         public string ProdCategoryCode { get; set; }
         public string BaseUOFM { get; set; }
         public bool IsSpecialPrice { get; set; }
-        public double ListPrice { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double ListPrice { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         public double SellPrice { get; set; }
+
+        public string PriceType { get; set; }
 
         public string Item01 { get; set; }
         public string Item04 { get; set; }
+    }
+
+    public class ProductDetailModel : PROD_MASTERModel
+    {
+        public ProductDetailModel()
+        {
+            PhotoList = new List<PROD_PHOTO.PROD_PHOTOModel>();
+            CommonItems = new List<PROD_MASTERCOMMON.PROD_MASTERCOMMONModel>();
+            SubItems = new List<PROD_PROPERTIES.PROD_PROPERTIESModel>();
+            RecommonItems = new List<ProductModel>();
+        }
+        public string PDF_file { get; set; }
+
+        public string PriceType { get; set; }
+
+        public string PriceTypeCss { get; set; }
+
+        public string Information { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double SellPrice { get; set; }
+
+        public AvailableStock AvailableStock { get; set; }
+        public List<Ecomm.Site.Models.Product.PROD_PHOTO.PROD_PHOTOModel> PhotoList { get; set; }
+        public List<Ecomm.Site.Models.Product.PROD_MASTERCOMMON.PROD_MASTERCOMMONModel> CommonItems { get; set; }
+
+        public List<ProductModel> RecommonItems { get; set; }
+
+        public List<Ecomm.Site.Models.Product.PROD_PROPERTIES.PROD_PROPERTIESModel> SubItems { get; set; }
     }
     public class PROD_MASTERModel : EntityCommon
     {
@@ -76,15 +118,15 @@ namespace Ecomm.Site.Models.Product.PROD_MASTER
         [Display(Name = "CurrCost")]
 		public double? CurrCost  { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         [Display(Name = "ListPrice")]
 		public double? ListPrice  { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         [Display(Name = "SpecialPrice")]
 		public double? SpecialPrice  { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         [Display(Name = "ClearPrice")]
 		public double? ClearPrice  { get; set; }
 

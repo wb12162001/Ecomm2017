@@ -1,0 +1,108 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EBASKET
+@{
+    ShoppingCartViewModel ShoppingCart = (ShoppingCartViewModel)ViewBag.ShoppingCartModel;
+}
+@section Header  {
+    @Styles.Render("~/bundles/cart")
+}
+<div class="clearfix"></div>
+<!-- Shopping Cart -->
+<div class="products">
+    <div class="cart-top">
+        <div class="sub_cart_tit">Your Cart</div>
+        <div class="sub_cart_guage cart_f1"></div>
+    </div>
+    <div class="clearfix"></div>
+<input type="hidden" id="hdItemcount" value="@ShoppingCart.ItemCount" />
+@if (ShoppingCart.ItemCount > 0)
+{
+    <div class="cart-content">
+        <table class="table table-hover">
+            <thead>
+                <tr class="redcolor">
+                    <th>Product</th>
+                    <th>Unit</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+@foreach (var item in ShoppingCart.Sales_Ebaskets)
+{
+                <tr>
+                    <td>
+                        <a href="###">
+                            <img class="tips" src="@Html.DisplayFor(modelItem => item.ProductPic)" alt="" />
+                        </a>
+                        <div class="desc">
+                            <a href="##" class="pro-name bluecolor">@item.ProductName.Trim()</a>
+                            <p>StockType: <span class="bluecolor">@item.UnitPType</span> Code: <span class="bluecolor">@item.ProductNo.Trim()</span></p>
+                        </div>
+                    </td>
+                    <td>@item.Unit</td>
+                    <td class="redcolor">$@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+                    <td>
+                        <input type="number" class="form-control quantity" min="1" value="@Html.DisplayFor(modelItem => item.Quantity)" />
+                    </td>
+                    <td>
+                        <button class="btn btn-default" onclick="RemoveCartItem('@item.ID',this);" ><span class="glyphicon glyphicon-trash"></span></button>
+                    </td>
+                </tr>
+}
+            </tbody>
+        </table>
+    </div>
+    <div class="cart-bottom">
+        <div class="count pull-right">
+            <table class="count-table">
+                <tr>
+                    <td class="textalign-right">Subtotal:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.CartTotal)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right">Freight Fee:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.Freight)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right">Miscellaneous:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.Miscellaneous)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right">GST:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.GST)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right redcolor">Total:</td>
+                    <td class="redcolor textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.Total)</td>
+                </tr>
+            </table>
+        </div>
+        <div class="clearfix"></div>
+        <div class="checkout">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                <span class="glyphicon glyphicon-chevron-left"></span>Continue Shopping
+            </a>
+            <a href="@Url.Action("ShoppingInformation", "Office",new { act = "post"})" class="btn btn-danger pull-right">
+                Check Out<span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+    </div>
+}
+    <div class="no_purchase">
+        There is no purchase of any product
+    </div>
+</div>
+@section scripts
+{
+    <script>
+    $(function() {
+        $('.cart').unbind("mouseover").unbind("mouseout");
+        if ($("#hdItemcount").val() == 0) {
+            $("div.cart-content").hide();
+            $("div.cart-bottom").hide();
+            $("div.no_purchase").show();
+        }
+    });
+    </script>
+}

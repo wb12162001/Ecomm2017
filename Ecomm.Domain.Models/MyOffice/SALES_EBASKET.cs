@@ -64,11 +64,19 @@ namespace Ecomm.Domain.Models.MyOffice
 
 		public string UnitPType  { get; set; }
 
-        [ForeignKey("ProductNo")]
-        public virtual Models.Product.PROD_MASTER ProductInfo { get; set; }
+        //[ForeignKey("ProductNo")]
+        //public virtual Models.Product.PROD_MASTER ProductInfo { get; set; }
 
     }
-    
-    
+    /// <summary>
+    /// 因为是SP去使用的数据对象,所以要使用NotMapped,不然它会EF加载映射表,但其实没有;
+    /// </summary>
+    [NotMapped]
+    public class SALES_EBASKET_MASTER: SALES_EBASKET
+    {
+        public string ProductName { get; set; }
+        public string ProductPic { get; set; }
+        public string ProductID { get; set; }
+    }
 }
 

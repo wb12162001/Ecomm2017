@@ -1,0 +1,112 @@
+﻿@using Ecomm.Site.Models.Product.PROD_MASTERCOMMON
+@using Ecomm.Site.Models.AdminCommon
+@model PROD_MASTERCOMMONModel
+
+<div id="content-body" class="row-fluid">
+    <div class="span22">
+        <div class="widget-box">
+            <div class="widget-title">
+                <span class="icon"><i class="icon-info-sign"></i></span>
+                <h5>Display Information</h5>
+            </div>
+            <div class="widget-content nopadding">
+                    <div class="form-horizontal search-form">
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.ProductNo) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.ProductNo
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.CommTitle) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.CommTitle
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.CommSummary) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.CommSummary
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.CommContent) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.CommContent
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Creator) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Creator
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.CreateDate) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.CreateDate
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Modifier) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Modifier
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.ModiDate) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.ModiDate
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Status) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Status
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Item01) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Item01
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Item02) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Item02
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Item03) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Item03
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Item04) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Item04
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Item05) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Item05
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions form-operate">
+                        <a class="btn btn-default" href="@Url.Action("Index", "PROD_MASTERCOMMON", new { Area = "Product" })" role="button">Back</a>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    </script>
+}
+

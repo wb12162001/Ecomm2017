@@ -1,0 +1,132 @@
+﻿@using Ecomm.Site.Models.Product.PROD_MASTER;
+@{
+    ViewBag.Title = "Product Detail Page";
+    ProductDetailModel DetailModel = (ProductDetailModel)ViewBag.ProductDetailModel;
+}
+@section Header  {
+    @Scripts.Render("~/bundles/chart")
+    @Styles.Render("~/bundles/productdetail")
+}
+<div class="clearfix"></div>
+<!-- Product Deatil -->
+<div class="products">
+    <div class="p_head">
+        <div class="p_img">
+            <div class="big_img">
+                <span class="zoom" id="exm1">
+                    <img src="@DetailModel.BigPic" alt="" />
+                </span>
+            </div>
+            @if (DetailModel.PhotoList.Count>0) {
+            <ul class="sm_img">
+                @foreach (var item in DetailModel.PhotoList)
+                {
+                    <li>
+                        <img src="@item.SmallPic" alt="" />
+                    </li>
+                }
+            </ul>
+            }
+        </div>
+        <div class="p_desc">
+            <h4 class="title">@DetailModel.ProductName</h4>
+            <div class="p_info">
+                @Html.Raw(DetailModel.Description)
+            </div>
+            @Html.Raw(DetailModel.Information)
+            @Html.Raw(DetailModel.PDF_file)
+            <div class="pro_code">
+                Code: <span>@DetailModel.ProductNo</span>
+            </div>
+            @if (DetailModel.SubItems.Count > 0)
+            {
+            <div class="clearfloat" id="pro_subitems">
+                <input name="sku_MastItemNo" id="sku_MastItemNo" type="hidden" value="">
+                <div data-gilt-attribute-name="Size" class="sku-attribute" style="z-index: 0;">
+                    <div class="attribute-info">
+                           Choose your Size:
+                    </div>
+                    <ul class="sku-attribute-values">
+                        @foreach (var item in DetailModel.SubItems)
+                        {
+                            <li data-gilt-value="@item.ProductNo" class="attribute-value forsale @if (item.ProductNo == DetailModel.ProductNo) { Html.Raw("selected"); }" data-gilt-attribute-parent-id="" data-gilt-attribute-base_level="True">
+                                <label class="value-label primary trigger">@item.PropertyValue</label>
+                                <input type="radio" value="@item.ProductNo" name="P_Size" class="value" @if (item.ProductNo == DetailModel.ProductNo) { Html.Raw("checked=\"checked\""); } >
+                            </li>
+                        }
+                        
+                    </ul>
+                </div>
+            </div>
+            }
+            <div class="clearfix"></div>
+            <div class="pro_price">
+                <span>$@Html.DisplayFor(modelItem => DetailModel.SellPrice) @DetailModel.BaseUOFM</span>
+                <span class="prodprice_ioc @DetailModel.PriceTypeCss"></span>
+                <p class="gst">(+GST)</p>
+                <div class="add_cart">
+                    <input type="number" class="form-control" min="1" value="1" />
+                    <a href="##" class="btn btn-danger">Add to cart</a>
+                    <a href="##" class="btn btn-warning">Add to favourite</a>
+                </div>
+            </div>
+        </div>
+    </div>
+@if (!string.IsNullOrEmpty(ViewBag.UserName))
+{
+    <div class="clearfix"></div>
+    <div class="p_body">
+        <div class="detail_chart pull-left">
+            @{ Html.RenderPartial("_Chart"); }
+        </div>
+        <div class="product_detail_info_price pull-left">
+            <span>Available Stock</span>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="red-blod">TOTAL</th>
+                        <th>Auckland</th>
+                        <th>Hamilton</th>
+                        <th>Wellington</th>
+                        <th>Christchurch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="red-blod">@DetailModel.LocationStocks1</td>
+                        <td>@DetailModel.LocationStocks2</td>
+                        <td>@DetailModel.LocationStocks3</td>
+                        <td>@DetailModel.LocationStocks4</td>
+                        <td>@DetailModel.LocationStocks5</td>
+                    </tr>
+                </tbody>
+            </table>
+            @if (DetailModel.RecommonItems.Count > 0)
+            {
+            <p class="recommend-p">We Recommend</p>
+            <ul class="recommend_list">
+                @foreach (var item in DetailModel.RecommonItems)
+                {
+                    <li>
+                        <div class="reco-box">
+                            <a href="@Url.Action("Detail", "Prod", new { id = item.ID })"><img src="@item.SmallPic" alt="" /><span>$@Html.DisplayFor(modelItem => item.SellPrice)</span></a>
+                        </div>
+                    </li>
+                }
+            </ul>
+            }
+        </div>
+        <div class="clearfix"></div>
+    </div>
+}
+
+</div>
+@section scripts
+{
+
+<script>
+    $(function() {
+        $("#exm1").zoom();
+    });
+</script>
+}

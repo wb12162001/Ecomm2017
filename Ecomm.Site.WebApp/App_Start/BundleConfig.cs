@@ -29,6 +29,10 @@ namespace Ecomm.Site.WebApp
                 "~/Scripts/ajaxfileupload.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include(
+                "~/Scripts/Chart.js"
+                ));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -66,7 +70,8 @@ namespace Ecomm.Site.WebApp
             //---Snell Site---
             bundles.Add(new ScriptBundle("~/bundles/index").Include(
                 "~/Content/snell/js/index.js",
-                "~/Content/snell/js/bootbox.min.js"
+                "~/Content/snell/js/bootbox.min.js",
+                "~/Content/snell/js/jquery.zoom.min.js"
                 ));
 
             bundles.Add(new StyleBundle("~/bundles/snell").Include(
@@ -74,6 +79,17 @@ namespace Ecomm.Site.WebApp
                       "~/Content/snell/css/bootstrap.min.css",
                       "~/Content/snell/css/font-awesome.css",
                       "~/Content/snell/css/index.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/product").Include(
+                     "~/Content/snell/css/products.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/productdetail").Include(
+                     "~/Content/snell/css/jqzoom.css",
+                     "~/Content/snell/css/product.css"
+                     ));
+            bundles.Add(new StyleBundle("~/bundles/cart").Include(
+                     "~/Content/snell/css/cart.css"
+                     ));
 
             bundles.Add(new StyleBundle("~/bundles/login").Include(
                      "~/Content/snell/css/login.css"));

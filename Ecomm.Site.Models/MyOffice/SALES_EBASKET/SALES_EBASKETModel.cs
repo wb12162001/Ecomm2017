@@ -14,15 +14,50 @@ using Quick.Site.Common;
 
 namespace Ecomm.Site.Models.MyOffice.SALES_EBASKET
 {
+    public class ShoppingOrderViewModel
+    {
+        public ShoppingOrderViewModel()
+        {
+            ShoppingCart = new ShoppingCartViewModel();
+            ShoppingInfo = new ShoppingInformationViewModel();
+        }
+        public ShoppingCartViewModel ShoppingCart { get; set; }
+        public ShoppingInformationViewModel ShoppingInfo { get; set; }
+    }
+
+    public class ShoppingInformationViewModel
+    {
+        public string PurchaseNO { get; set; }
+        public string PurchaseName { get; set; }
+        public string PurchaseTel { get; set; }
+
+        public string CommonText { get; set; }
+
+        public string ShipTo { get; set; }
+
+        public string Company { get; set; }
+        public string Contact { get; set; }
+        public string City { get; set; }
+        public string Suburb { get; set; }
+        public string Address { get; set; }
+    }
     public class ShoppingCartViewModel
     {
-        public IEnumerable<SALES_EBASKETModel> Sales_Ebaskets { get; set; }
+        public IEnumerable<SALES_EBASKET_RelaModel> Sales_Ebaskets { get; set; }
 
         public string CartTotal { get; set; }
 
         public int ItemCount { get; set; }
 
         public string Message { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double Freight { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double Miscellaneous { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double GST { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double Total { get; set; }
     }
     public class SALES_EBASKETModel : EntityCommon
     {
@@ -51,10 +86,11 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EBASKET
 
 
         [Display(Name = "Quantity")]
+        [DisplayFormat(DataFormatString = "{0:N0}")]
         [Required(ErrorMessage = "Quantity can not be empty")]
 		public double Quantity  { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         [Display(Name = "UnitPrice")]
 		public double? UnitPrice  { get; set; }
 
@@ -98,7 +134,15 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EBASKET
         
         public SearchModel SearchModel { get; set; }
     }
-    
+
+    public class SALES_EBASKET_RelaModel: SALES_EBASKETModel
+    {
+        public string ProductName { get; set; }
+        public string ProductPic { get; set; }
+        public string ProductID { get; set; }
+    }
+
+
     public class SearchModel
     {
         public SearchModel()

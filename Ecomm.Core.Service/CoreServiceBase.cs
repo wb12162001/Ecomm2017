@@ -22,6 +22,7 @@ namespace Ecomm.Core.Service
         [Import]
         protected IUnitOfWork UnitOfWork { get; set; }
 
+
         /// <summary>
         /// 登录用户
         /// </summary>

@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Chart.Mvc, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Chart.Mvc.1.0.0.2\lib\net45\Chart.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
       <Private>True</Private>
@@ -207,7 +211,13 @@
     <Compile Include="Areas\Product\Controllers\PROD_CATEGORIESController.cs" />
     <Compile Include="Areas\Product\Controllers\PROD_GROUP_INDEXController.cs" />
     <Compile Include="Areas\Product\Controllers\PROD_GROUP_ITEMController.cs" />
+    <Compile Include="Areas\Product\Controllers\PROD_MASTERCOMMONController.cs" />
     <Compile Include="Areas\Product\Controllers\PROD_MASTERController.cs" />
+    <Compile Include="Areas\Product\Controllers\PROD_PHOTOController.cs" />
+    <Compile Include="Areas\Product\Controllers\PROD_PROMOTIONSController.cs" />
+    <Compile Include="Areas\Product\Controllers\PROD_PROPERTIESController.cs" />
+    <Compile Include="Areas\Product\Controllers\PROD_RELATEDITEMController.cs" />
+    <Compile Include="Areas\Product\Controllers\PROD_RELATED_PROPERTYController.cs" />
     <Compile Include="Areas\Product\ProductAreaRegistration.cs" />
     <Compile Include="Areas\SysConfig\Controllers\AppendixController.cs" />
     <Compile Include="Areas\SysConfig\Controllers\INFOR_CATEGORIESController.cs" />
@@ -225,6 +235,7 @@
     <Compile Include="Common\Util.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OfficeController.cs" />
     <Compile Include="Controllers\ProdController.cs" />
     <Compile Include="Extension\Filters\AdminLayoutAttribute.cs" />
     <Compile Include="Extension\Filters\AdminOperateLogAttribute.cs" />
@@ -341,9 +352,14 @@
     <Content Include="Content\plugins\wysihtml5\wysihtml5-0.3.0.js" />
     <Content Include="Content\plugins\wysihtml5\wysihtml5x-toolbar.min.js" />
     <Content Include="Content\snell\css\bootstrap.min.css" />
+    <Content Include="Content\snell\css\cart.css" />
     <Content Include="Content\snell\css\font-awesome.css" />
+    <Content Include="Content\snell\css\icon.png" />
     <Content Include="Content\snell\css\index.css" />
+    <Content Include="Content\snell\css\jqzoom.css" />
     <Content Include="Content\snell\css\login.css" />
+    <Content Include="Content\snell\css\product.css" />
+    <Content Include="Content\snell\css\products.css" />
     <Content Include="Content\snell\css\reset.min.css" />
     <Content Include="Content\snell\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\snell\fonts\glyphicons-halflings-regular.svg" />
@@ -355,6 +371,7 @@
     <Content Include="Content\snell\images\banner1-1.png" />
     <Content Include="Content\snell\images\banner1.jpg" />
     <Content Include="Content\snell\images\banner2-1.png" />
+    <Content Include="Content\snell\images\basket_guage.png" />
     <Content Include="Content\snell\images\card-1.jpg" />
     <Content Include="Content\snell\images\card-2.jpg" />
     <Content Include="Content\snell\images\card-3.jpg" />
@@ -366,6 +383,7 @@
     <Content Include="Content\snell\images\card-9.jpg" />
     <Content Include="Content\snell\images\cart.png" />
     <Content Include="Content\snell\images\cart_03.png" />
+    <Content Include="Content\snell\images\daisy.jpg" />
     <Content Include="Content\snell\images\head-1.jpg" />
     <Content Include="Content\snell\images\head-2.jpg" />
     <Content Include="Content\snell\images\head-3.jpg" />
@@ -378,6 +396,7 @@
     <Content Include="Content\snell\images\line.png" />
     <Content Include="Content\snell\images\logo.png" />
     <Content Include="Content\snell\images\owned.jpg" />
+    <Content Include="Content\snell\images\pdf_infor.gif" />
     <Content Include="Content\snell\images\post-line.png" />
     <Content Include="Content\snell\images\press-1.jpg" />
     <Content Include="Content\snell\images\press-2.jpg" />
@@ -405,6 +424,7 @@
     <Content Include="Content\snell\images\text-head.jpg" />
     <Content Include="Content\snell\js\bootbox.min.js" />
     <Content Include="Content\snell\js\index.js" />
+    <Content Include="Content\snell\js\jquery.zoom.min.js" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -590,8 +610,45 @@
     <Content Include="Areas\Product\Views\PROD_CATEGORIES\Index.cshtml" />
     <Content Include="Areas\Product\Views\PROD_CATEGORIES\List.cshtml" />
     <Content Include="Areas\Product\Views\PROD_CATEGORIES\Search.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_MASTERCOMMON\Create.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_MASTERCOMMON\Display.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_MASTERCOMMON\Edit.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_MASTERCOMMON\Index.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_MASTERCOMMON\List.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_MASTERCOMMON\Search.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PHOTO\Create.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PHOTO\Display.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PHOTO\Edit.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PHOTO\Index.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PHOTO\List.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PHOTO\Search.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROMOTIONS\Create.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROMOTIONS\Display.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROMOTIONS\Edit.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROMOTIONS\Index.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROMOTIONS\List.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROMOTIONS\Search.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROPERTIES\Create.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROPERTIES\Display.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROPERTIES\Edit.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROPERTIES\Index.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROPERTIES\List.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_PROPERTIES\Search.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATED_PROPERTY\Create.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATED_PROPERTY\Display.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATED_PROPERTY\Edit.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATED_PROPERTY\Index.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATED_PROPERTY\List.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATED_PROPERTY\Search.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATEDITEM\Create.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATEDITEM\Display.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATEDITEM\Edit.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATEDITEM\Index.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATEDITEM\List.cshtml" />
+    <Content Include="Areas\Product\Views\PROD_RELATEDITEM\Search.cshtml" />
     <None Include="Properties\PublishProfiles\Web.config.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
@@ -636,6 +693,12 @@
     <Content Include="Views\Prod\List.cshtml" />
     <Content Include="Views\Prod\_ProductsTable.cshtml" />
     <Content Include="Views\Prod\_ProductsList.cshtml" />
+    <Content Include="Views\Office\ShoppingCart.cshtml" />
+    <Content Include="Views\Prod\Detail.cshtml" />
+    <Content Include="Views\Prod\_Chart.cshtml" />
+    <Content Include="Views\Office\ShoppingInformation.cshtml" />
+    <Content Include="Views\Office\ConfirmOrder.cshtml" />
+    <Content Include="Views\Office\PrintOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

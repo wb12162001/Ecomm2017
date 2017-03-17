@@ -31,6 +31,8 @@ namespace Ecomm.Domain.Data.Mapping.Product
             this.ToTable("PROD_MASTER");
             // Properties
             // Primary Key
+            //this.HasKey(t => t.ID);
+            //this.HasKey(t => t.ProductNo);
             // Relation
             this.HasRequired(p => p.CategoryInfo).WithMany(c => c.ProductList).HasForeignKey(c => c.CategoryCode);
         }

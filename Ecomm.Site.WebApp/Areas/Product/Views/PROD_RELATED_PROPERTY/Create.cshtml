@@ -1,0 +1,47 @@
+﻿@using Ecomm.Site.Models.Product.PROD_RELATED_PROPERTY
+@using Quick.Site.Common.Models
+@model PROD_RELATED_PROPERTYModel
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ProductNo) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProductNo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProductNo)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.PropertyID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PropertyID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PropertyID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.CLevel) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.CLevel, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CLevel)
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

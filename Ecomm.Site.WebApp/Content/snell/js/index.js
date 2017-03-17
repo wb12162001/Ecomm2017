@@ -115,6 +115,11 @@
     
 });
 
+function reloadWindow() {
+    window.location.href = window.location.href;
+    window.location.reload();
+}
+
 function checkLogin() {
     if ($("#hdUserid").val() == '') {
         bootbox.alert({ message: "Please login the site!" });
@@ -138,6 +143,7 @@ function deleCart(id) {
             bootbox.alert(d.message, function () {
                 //bind shopping cart
                 $("#shopping_cart").load('/Home/ShoppingCart' + '?ts=' + Math.random());
+                //reloadWindow();
             });
         },
         error: function (err) {
@@ -146,6 +152,22 @@ function deleCart(id) {
     });
 }
 
+function RemoveCartItem(id,me) {
+    deleCart(id);
+    $(me).parent().parent().remove();
+    var count = $("#hdItemcount").val();
+    count = count - 1;
+    $("#hdItemcount").val(count);
+    if (count == 0) {
+        $("div.cart-content").hide();
+        $("div.cart-bottom").hide();
+        $("div.no_purchase").show();
+    } else {
+        $("div.cart-content").show();
+        $("div.cart-bottom").show();
+        $("div.no_purchase").hide();
+    }
+}
 
 //add cart
 function addCart(pro) {
@@ -173,6 +195,54 @@ function addCart(pro) {
             alert(err);
         }
     });
+}
+
+
+function CheckShipTo() {
+    var pno = arguments[0] ? arguments[0] : false;
+    var v = $("input[name=ShipTo]:checked");
+    //alert(v + 'val: ' + v.val());
+    if (v == undefined || v.val() == '' || v.val() == undefined) {
+        alert("Please select deliver address.");
+        return false;
+    } else {
+        if (v.val() == "SHIPTONEW") {
+            if ($(".company").val().length <= 0) {
+                alert("Please enter the company!");
+                return false;
+            }
+            if ($(".city").val().length <= 0) {
+                alert("Please enter the city!");
+                return false;
+            }
+            if ($(".address").val().length <= 0) {
+                alert("Please enter the address!");
+                return false;
+            }
+        }
+    }
+
+    if (pno) {
+        if ($(".purchaseNo").val().length <= 0) {
+            alert("Please enter the purchase no.");
+            return false;
+        }
+    }
+    return true;
+}
+
+function disabledShipToNEW(t) {
+    $("div.new-info .purchase-table input[type=text]").each(function () {
+        if (t) {
+            $(this).attr("disabled", true);
+        } else {
+            $(this).removeAttr("disabled");
+        }
+    });
+}
+
+function clickShipTo(v) {
+    disabledShipToNEW(v);
 }
 
 /*******初始化*********/

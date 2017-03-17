@@ -1,0 +1,76 @@
+﻿@using Ecomm.Site.Models.Product.PROD_PROMOTIONS
+@using Ecomm.Site.Models.AdminCommon
+@model PROD_PROMOTIONSModel
+
+<div id="content-body" class="row-fluid">
+    <div class="span22">
+        <div class="widget-box">
+            <div class="widget-title">
+                <span class="icon"><i class="icon-info-sign"></i></span>
+                <h5>Display Information</h5>
+            </div>
+            <div class="widget-content nopadding">
+                    <div class="form-horizontal search-form">
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.ProductNo) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.ProductNo
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Title) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Title
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.ImgFile) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.ImgFile
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Description) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Description
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.FootNote) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.FootNote
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.SortNo) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.SortNo
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.CreateDate) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.CreateDate
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="search-label">@Html.DisplayNameFor(t => t.Status) :</label>
+                        <div class="span3 search-label-input">
+                            @Model.Status
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions form-operate">
+                        <a class="btn btn-default" href="@Url.Action("Index", "PROD_PROMOTIONS", new { Area = "Product" })" role="button">Back</a>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    </script>
+}
+

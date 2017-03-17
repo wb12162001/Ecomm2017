@@ -36,8 +36,6 @@
     @Styles.Render("~/bundles/plugins/bootstrapvalidator/css")
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/js/jqdataTables")
     @Scripts.Render("~/bundles/index", "~/bundles/plugins/bootstrapvalidator/js")
-    @RenderSection("scripts", required: false)
-    @RenderSection("footer", false)
     <script type="text/javascript">
         function logout() {
             bootbox.alert({
@@ -132,5 +130,7 @@
         });
 
     </script>
+    @RenderSection("scripts", required: false)
+    @RenderSection("footer", false)
 </body>
 </html>

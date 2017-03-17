@@ -15,6 +15,7 @@ using System.ComponentModel.Composition.Hosting;
 using Ecomm.Site.Models.MyOffice.SALES_EBASKET;
 using Ecomm.Site.Models.Product.PROD_CATEGORIES;
 using Ecomm.Core.Service.Product;
+using Ecomm.Core.Service.SysConfig;
 using System.Linq.Expressions;
 using Ecomm.Domain.Models.Product;
 
@@ -22,6 +23,7 @@ namespace Ecomm.Site.WebApp.Common
 {
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
+    [MyofficePermission(PermissionCustomMode.Enforce)]
     public class BaseController : Controller
     {
         [Import]
@@ -29,6 +31,9 @@ namespace Ecomm.Site.WebApp.Common
 
         [Import]
         protected IPROD_CATEGORIESService PROD_CATEGORIESService { get; set; }
+
+        [Import]
+        protected ISYS_CONFIGService SYS_CONFIGService { get; set; }
         public BaseController()
         {
             var container = System.Web.HttpContext.Current.Application["Container"] as CompositionContainer;
@@ -39,6 +44,10 @@ namespace Ecomm.Site.WebApp.Common
             if (PROD_CATEGORIESService == null)
             {
                 PROD_CATEGORIESService = container.GetExportedValueOrDefault<IPROD_CATEGORIESService>();
+            }
+            if (SYS_CONFIGService == null)
+            {
+                SYS_CONFIGService = container.GetExportedValueOrDefault<ISYS_CONFIGService>();
             }
 
             ViewBag.UserName = string.Empty;
@@ -59,9 +68,10 @@ namespace Ecomm.Site.WebApp.Common
             //var user = SessionHelper.GetSession("CurrentSnellUser") as Rela_contact;
             if (CurrentUser != null)
             {
-                var list = SALES_EBASKETService.SALES_EBASKETList.ToList()
-                    .Where(t => t.Status == 0 && t.ContactID == CurrentUser.Id && string.IsNullOrEmpty(t.MakeOrderID))
-                    .Select(t => new SALES_EBASKETModel
+                string strWhere = string.Format("a.Status = 0 and a.ContactID = '{0}' and a.MakeOrderID = ''", CurrentUser.Id);
+                var list = SALES_EBASKETService.QueryEntities(0, strWhere, "")
+                    //.Where(t => t.Status == 0 && t.ContactID == CurrentUser.Id && string.IsNullOrEmpty(t.MakeOrderID))
+                    .Select(t => new SALES_EBASKET_RelaModel
                     {
                         UnitPrice = t.UnitPrice,
                         Quantity = t.Quantity,
@@ -70,6 +80,9 @@ namespace Ecomm.Site.WebApp.Common
                         Unit = t.Unit,
                         UnitPType = t.UnitPType,
                         ID = t.ID,
+                        ProductID = t.ProductID,
+                        ProductName = t.ProductName,
+                        ProductPic = t.ProductPic
                     });
                     
                 StringBuilder sb = new StringBuilder();
@@ -80,6 +93,10 @@ namespace Ecomm.Site.WebApp.Common
                 cartModel.ItemCount = item_count;
                 cartModel.CartTotal = item_subtotal.ToString("N2");
                 cartModel.Sales_Ebaskets = list;
+                cartModel.Freight = SALES_EBASKETService.GetUserFreight(item_subtotal);
+                cartModel.Miscellaneous = this.CurrentUser.Miscellaneous;
+                cartModel.GST = SYS_CONFIGService.GetCalculatedGst(cartModel.Freight, cartModel.Miscellaneous, item_subtotal);
+                cartModel.Total = item_subtotal + cartModel.Freight + cartModel.Miscellaneous + cartModel.GST;
             }
             return cartModel;
         }
@@ -108,6 +125,13 @@ namespace Ecomm.Site.WebApp.Common
         protected MenuViewModel InitNavMenu(string catecode)
         {
             MenuViewModel model = new MenuViewModel();
+            var own = PROD_CATEGORIESService.PROD_CATEGORIESList.FirstOrDefault(t => t.CategoryCode.Equals(catecode));
+            model.CurrCateName = Ecomm.Site.WebApp.Common.CommonHelper.GetCateName(own.MenuAlias, own.CategoryName);
+            if (own.CLevel == 3)
+            {
+                own = own.ParentCategory;
+                catecode = own.CategoryCode;
+            }
             var list = PROD_CATEGORIESService.PROD_CATEGORIESList
                 .Where(BuildStairCategories(catecode))
                 .Select(t => new PROD_CATEGORIESModel
@@ -116,9 +140,10 @@ namespace Ecomm.Site.WebApp.Common
                     CategoryName = t.CategoryName,
                     CategoryCode = t.CategoryCode,
                     MenuAlias = t.MenuAlias,
+                    CLevel = t.CLevel,
                     DisplayOrder = t.DisplayOrder
                 }).OrderBy(t => t.DisplayOrder);
-            var own = PROD_CATEGORIESService.PROD_CATEGORIESList.FirstOrDefault(t => t.CategoryCode.Equals(catecode));
+            
             if (own != null)
             {
                 model.Category = new PROD_CATEGORIESModel
@@ -127,12 +152,14 @@ namespace Ecomm.Site.WebApp.Common
                     CategoryCode = own.CategoryCode,
                     CategoryName = own.CategoryName,
                     MenuAlias = own.MenuAlias,
+                    CLevel = own.CLevel,
                     DisplayOrder = own.DisplayOrder,
                     ParentID = own.ParentID
                 };
             }
             model.Menus = list;
             model.ItemCount = list.Count();
+            
             return model;
         }
         protected Rela_contact CurrentUser
@@ -140,7 +167,13 @@ namespace Ecomm.Site.WebApp.Common
             get { return SALES_EBASKETService.GetUser(); }
             set { Session["CurrentSnellUser"] = value; }
         }
-       
+
+        protected ShoppingOrderViewModel ShoppingOrder
+        {
+            get { return (ShoppingOrderViewModel)Session["ShoppingOrderViewModel"]; }
+            set { Session["ShoppingOrderViewModel"] = value; }
+        }
+
 
     }
 }

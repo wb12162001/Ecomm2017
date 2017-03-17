@@ -18,7 +18,8 @@ namespace Quick.Framework.EFData
     {
         appdb,
         inetapp,
-        ep_snell
+        ep_snell,
+        gpsps
     }
     /// <summary>
     /// 单元操作实现基类

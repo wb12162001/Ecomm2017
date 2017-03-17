@@ -28,6 +28,9 @@ namespace Ecomm.Core.Service.EpSnell
         #endregion
 
         #region 公共方法
+        void GetFreightByCust(string cust, out float freight, out float admincost);
+
+
         OperationResult Insert(Rela_contactModel model);
         OperationResult Update(UpdateRela_contactModel model);
         /// <summary>

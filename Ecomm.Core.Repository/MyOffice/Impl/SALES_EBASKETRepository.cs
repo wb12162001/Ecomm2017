@@ -60,6 +60,16 @@ namespace Ecomm.Core.Repository.MyOffice
             //return base.ExcuteNoQuery("USP_SALES_EBASKET_Modification", System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction, false, "", parameters);
             return base.ExecuteProcNo("USP_SALES_EBASKET_Modification", parameters);
         }
+
+        public IEnumerable<SALES_EBASKET_MASTER> QueryEntities(int count,string strWhere,string strOrder)
+        {
+            System.Data.SqlClient.SqlParameter[] parameters = {
+               new System.Data.SqlClient.SqlParameter("@count",count),
+               new System.Data.SqlClient.SqlParameter("@strWhere", strWhere),
+               new System.Data.SqlClient.SqlParameter("@strOrder",strOrder)
+            };
+            return base.ExecuteProc<SALES_EBASKET_MASTER>("USP_SALES_EBASKET_Query", parameters);
+        }
     }
 }
 

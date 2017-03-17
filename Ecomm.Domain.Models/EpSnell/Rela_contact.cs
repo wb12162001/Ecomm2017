@@ -266,6 +266,22 @@ namespace Ecomm.Domain.Models.EpSnell
 
         [ForeignKey("Account_id")]
         public virtual Rela_account AccountInfo { get; set; }
+        [NotMapped]
+        public double Freight = 0;
+        [NotMapped]
+        public double Miscellaneous = 0;
+        [NotMapped]
+        public int PageSize = 12;
+        [NotMapped]
+        public int EofPageSize = 8;
+        [NotMapped]
+        public double MinOrderSize;
+        [NotMapped]
+        public double MinOrderFreight;
+        [NotMapped]
+        public double MinOrderMisc;
+        [NotMapped]
+        public bool IsClearPrice;
 
     }
     

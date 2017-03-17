@@ -19,7 +19,7 @@ namespace Ecomm.Core.Repository.EpSnell
     [Export(typeof(IRela_location_limitRepository))]
     public class Rela_location_limitRepository : EFRepositoryBase<Rela_location_limit>, IRela_location_limitRepository
     {
-        public Rela_location_limitRepository() : base("ep_snell")
+        public Rela_location_limitRepository() : base("default")
         {
         }
     }

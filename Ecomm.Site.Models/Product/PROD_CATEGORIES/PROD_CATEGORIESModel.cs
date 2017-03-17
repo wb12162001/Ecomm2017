@@ -22,6 +22,8 @@ namespace Ecomm.Site.Models.Product.PROD_CATEGORIES
 
         public PROD_CATEGORIESModel Category { get; set; }
 
+        public string CurrCateName { get; set; }
+
     }
     public class PROD_CATEGORIESModel : EntityCommon
     {

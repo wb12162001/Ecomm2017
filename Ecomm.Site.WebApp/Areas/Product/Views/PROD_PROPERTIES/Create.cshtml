@@ -1,0 +1,128 @@
+﻿@using Ecomm.Site.Models.Product.PROD_PROPERTIES
+@using Quick.Site.Common.Models
+@model PROD_PROPERTIESModel
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#base" data-toggle="tab">Information</a></li>
+    <li><a href="#role" data-toggle="tab">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="base">
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.ProductNo) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ProductNo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProductNo)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.PropertyID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PropertyID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PropertyID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.PropertyValue) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PropertyValue, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.PLevel) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.PLevel, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.ParentID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.ParentID, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.RelationCode) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.RelationCode, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                <label class="red">*</label>@Html.DisplayNameFor(t => t.RowID) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.RowID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.RowID)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.RealProductNo) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.RealProductNo, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.DisplayOrder) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.DisplayOrder, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Remark) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Remark, new { @class = "form-control" })
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label-form">
+                @Html.DisplayNameFor(t => t.Status) :
+            </label>
+            <div class="controls">
+                @Html.TextBoxFor(t => t.Status, new { @class = "form-control" })
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="role">
+        <br>
+    </div>
+</div>
+

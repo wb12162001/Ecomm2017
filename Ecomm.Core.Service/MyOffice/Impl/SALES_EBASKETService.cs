@@ -53,6 +53,11 @@ namespace Ecomm.Core.Service.MyOffice.Impl
                 return SALES_EBASKETRepository.GetEntitiesBySql("dbo.SALES_EBASKET").ToList();
             }
         }
+
+        public IEnumerable<SALES_EBASKET_MASTER> QueryEntities(int count, string strWhere, string strOrder)
+        {
+            return SALES_EBASKETRepository.QueryEntities(count, strWhere, strOrder);
+        }
         #endregion
 
         #region 公共方法
@@ -227,6 +232,8 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             }
         }
 
+        
+
         public OperationResult Delete(string  ID)
         {
             var model = SALES_EBASKETList.FirstOrDefault(t => t.ID == ID);
@@ -246,6 +253,21 @@ namespace Ecomm.Core.Service.MyOffice.Impl
         public Domain.Models.EpSnell.Rela_contact GetUser()
         {
             return GetCurrentUser();
+        }
+
+        public double GetUserFreight(double subtotal)
+        {
+            var user = GetUser();
+            if (user.MinOrderSize > 0)
+            {
+                user.Freight = user.MinOrderFreight;
+                user.Miscellaneous = 0;
+                if (subtotal < user.MinOrderSize)
+                {
+                    user.Miscellaneous = user.MinOrderMisc;
+                }
+            }
+            return user.Freight;
         }
         #endregion
     }

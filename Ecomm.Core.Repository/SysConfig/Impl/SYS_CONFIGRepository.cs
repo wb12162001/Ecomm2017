@@ -21,6 +21,7 @@ namespace Ecomm.Core.Repository.SysConfig
     {
         public SYS_CONFIGRepository() : base("default")
         {
+
         }
     }
 }

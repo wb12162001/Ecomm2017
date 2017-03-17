@@ -19,7 +19,7 @@ namespace Ecomm.Core.Repository.EpSnell
     [Export(typeof(IRela_accountRepository))]
     public class Rela_accountRepository : EFRepositoryBase<Rela_account>, IRela_accountRepository
     {
-        public Rela_accountRepository() : base("ep_snell")
+        public Rela_accountRepository() : base("default")
         {
         }
     }

@@ -37,6 +37,49 @@ namespace Ecomm.Core.Service.SysConfig
         /// <returns></returns>
         OperationResult Delete(string  ID);
         #endregion
-	}
+
+        object GetSysConfigContent(string confiID);
+
+
+         object GetSysConfigContentByname(string confiName);
+
+
+        /// <summary>
+        /// From SysConfig Table for "E3E0E0F3-1CF7-480A-96DB-F42BE94C006C" ID
+        /// </summary>
+        /// <returns></returns>
+         double GetFreight();
+
+        /// <summary>
+        /// From SysConfig Table for "CD183AD3-2BA0-4F16-A7F8-805ECAFFFEC1" ID
+        /// </summary>
+        /// <returns></returns>
+         double GetGst();
+
+
+         double GetCalculatedGst(double freight, double misc, double subtotal);
+
+         int GetPageSize();
+
+
+         string GetRepEmail();
+
+
+         string GetGstNo();
+
+
+         string GetHomePageBanner();
+
+
+         string GetHomePageBannerUrl();
+
+         bool IsOpenEOFBanner();
+
+         string GetEofPageBanner();
+
+
+         string GetEofPageBannerUrl();
+
+    }
 }
 

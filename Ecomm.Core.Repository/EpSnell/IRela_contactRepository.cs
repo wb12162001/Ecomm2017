@@ -17,6 +17,8 @@ namespace Ecomm.Core.Repository.EpSnell
     /// 仓储操作层接口 —— Rela_contact 
     /// </summary>
     public interface IRela_contactRepository : IRepository<Rela_contact>
-    { }
+    {
+        
+    }
 }
 

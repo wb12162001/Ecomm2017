@@ -14,11 +14,14 @@ using System.Web.UI;
 using System.IO;
 using System.Text;
 using Ecomm.Site.Models.MyOffice.SALES_EBASKET;
+using Quick.Site.Common.Models;
+using Ecomm.Site.WebApp.Extension.Filters;
 
 namespace Ecomm.Site.WebApp.Controllers
 {
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
+    [MyofficePermission(PermissionCustomMode.Ignore)]
     public class HomeController : Ecomm.Site.WebApp.Common.BaseController
     {
         [Import]
@@ -215,7 +218,7 @@ namespace Ecomm.Site.WebApp.Controllers
                 {
                     sb_item.AppendFormat(@"
 <div class='item pull-left product-box'>
-                <a href='#'><img class='pro-img lazyOwl' data-src='{0}' /></a>
+                <a href='{4}'><img class='pro-img lazyOwl' data-src='{0}' /></a>
                 <p class='star-line'>
                     <img src='/Content/snell/images/star-4.png'>
                 </p>
@@ -283,7 +286,7 @@ namespace Ecomm.Site.WebApp.Controllers
                     </div>
                 </div>
             </div>
-", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.StndCost.Value.ToString("N2"), "#").AppendLine();
+", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.StndCost.Value.ToString("N2"), Url.Action("Detail", "Prod", new { id = item.Product.ID })).AppendLine();
                 }
             }
             if (!string.IsNullOrEmpty(sb_item.ToString()))
@@ -486,7 +489,7 @@ namespace Ecomm.Site.WebApp.Controllers
                     <div class='clearfix'></div>
                     <span class='label label-danger is-sale'>SALE!</span>
                 </div>
-", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.StndCost.Value.ToString("N2"), "#").AppendLine();
+", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.StndCost.Value.ToString("N2"), Url.Action("Detail", "Prod", new { id = item.Product.ID })).AppendLine();
                 }
             }
             return sb_item.ToString();
@@ -517,6 +520,12 @@ namespace Ecomm.Site.WebApp.Controllers
                     result = new OperationResult(OperationResultType.Success, "login successful");
                     Session["CurrentSnellUser"] = user;
                     Session.Timeout = 20;
+
+                    float frt = 0;
+                    float acost = 0;
+                    Rela_contactService.GetFreightByCust(user.AccountInfo.Account_no, out frt, out acost);
+                    user.Freight = frt;
+                    user.Miscellaneous = acost;
                 }
             }
             return Json(result, JsonRequestBehavior.AllowGet);

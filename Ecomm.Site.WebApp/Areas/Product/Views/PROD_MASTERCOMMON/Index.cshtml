@@ -1,0 +1,119 @@
+﻿@using Ecomm.Site.Models.Product.PROD_MASTERCOMMON
+@using Ecomm.Site.Models.AdminCommon
+@model PROD_MASTERCOMMONModel
+@{
+    ViewBag.Title = ViewBag.CurrentTitle + "- Snell Admin";
+    var editButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    var deleteButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    var displayButton = new Ecomm.Site.Models.AdminCommon.ButtonModel();
+    editButton = ViewBag.Edit;
+    deleteButton = ViewBag.Delete;
+    displayButton = ViewBag.Display;
+}
+@section css{
+     @Styles.Render("~/bundles/css/jqueryui")   
+}
+
+<div id="content-body" class="row-fluid">
+    <div class="span22">
+        <!--Action -->
+        @Html.Partial("Search", Model.SearchModel)
+
+        <!--List-->
+        @Html.Partial("List")
+
+        <!--Add & Edit-->
+        @Html.Partial("_FormModal")
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    <script type="text/javascript">
+        var oTable = null;
+        $(function () {
+            var actionUrl = "@Url.Action("List")?rand=" + Math.random();
+            var aoColumns = [
+                    { "sName": "SortId", "bSortable": false },
+                    { "sName": "ID", "bSortable": true },
+                    { "sName": "ProductNo", "bSortable": true },
+                    { "sName": "CommTitle", "bSortable": true },
+                    { "sName": "CommSummary", "bSortable": true },
+                    { "sName": "CommContent", "bSortable": true },
+                    { "sName": "Creator", "bSortable": true },
+                    { "sName": "CreateDate", "bSortable": true },
+                    { "sName": "Modifier", "bSortable": true },
+                    { "sName": "ModiDate", "bSortable": true },
+                    { "sName": "Status", "bSortable": true },
+                    { "sName": "Item01", "bSortable": true },
+                    { "sName": "Item02", "bSortable": true },
+                    { "sName": "Item03", "bSortable": true },
+                    { "sName": "Item04", "bSortable": true },
+                    { "sName": "Item05", "bSortable": true },
+                    {
+                        "sName": "Id",
+                        "bSortable": false,
+                        "fnRender": function (oObj) {
+                            var btnArray = "";
+                            @if (displayButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-normal" title="@displayButton.Text" onclick="View(\'' + oObj.aData[oObj.aData.length - 1] + '\')"><span class="@displayButton.Icon"></span></button>'</text>
+                            }
+                            @if (editButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-primary btn-normal" title="@editButton.Text" onclick="Edit(\'' + oObj.aData[oObj.aData.length - 1] + '\')"><span class="@editButton.Icon"></span></button>'</text>
+                            }
+                            @if (deleteButton != null)
+                            {
+                                <text>btnArray += '<button type="submit" class="btn btn-danger btn-normal" title="@deleteButton.Text" onclick="Delete(\'' + oObj.aData[oObj.aData.length - 1] + '\')"><span class="@deleteButton.Icon"></span></button>'</text>
+                            }
+                            return btnArray;
+                        }
+                    }
+            ];
+            //InitData tables
+            oTable = InitDatatables($(".data-table"), actionUrl, aoColumns, oTable);
+        });
+
+        //Query
+        function Search() {
+            var filterdata = $(".search-form").serialize();
+            oTable.fnReloadAjax("@Url.Action("List")?rand=" + Math.random() + "&" + filterdata);
+        }
+
+        //Create
+        function Create() {
+            var actionUrl = "@Url.Action("Create")";
+            var param = {};
+            ShowModal(actionUrl, param, "Add PROD_MASTERCOMMON");
+        }
+        
+        //View
+        function View(id) {
+            if (id == "" || id == null) {
+                bootbox.alert("ID is empty.");
+            }
+            location.href = "@Url.Action("Display")" + "?Id=" + id;
+        }
+
+        //Edit
+        function Edit(id) {
+            var actionUrl = "@Url.Action("Edit")";
+            var param = { Id: id }
+            ShowModal(actionUrl, param, "Edit PROD_MASTERCOMMON");
+        }
+
+        //Save
+        function Save() {
+            SaveModal(oTable);
+        }
+
+        //Delete
+        function Delete(id) {
+            var actionUrl = "@Url.Action("Delete")";
+            var param = { Id: id }
+            DeleteRecord(actionUrl, param, oTable);
+        }
+
+    </script>
+}

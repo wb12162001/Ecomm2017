@@ -1,0 +1,148 @@
+﻿@using Ecomm.Site.Models.EpSnell.Rela_account_location;
+@using Ecomm.Domain.Models.EpSnell;
+@using Ecomm.Site.Models.MyOffice.SALES_EBASKET
+@{
+    ShoppingOrderViewModel ShoppingOrder = (ShoppingOrderViewModel)ViewBag.ShoppingOrderModel;
+
+    IQueryable<Rela_account_locationModel> ShopTos = (IQueryable<Rela_account_locationModel>)ViewBag.ShoppingInfor_Shoptos;
+    Rela_contact userInfo = (Rela_contact)ViewBag.ShoppingInfor_User;
+}
+@section Header  {
+    @Styles.Render("~/bundles/cart")
+}
+<div class="clearfix"></div>
+<!-- Confirm Order -->
+<div class="products">
+    <div class="cart-top">
+        <div class="sub_cart_tit">Thank you for your order. Snell Order# is INT1672832 </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="cart-content">
+        <div class="order_form_list">
+            <table class="table table-hover">
+                <tr class="redcolor">
+                    <td>Item No.</td>
+                    <td>Description</td>
+                    <td>Unit</td>
+                    <td>Qty</td>
+                    <td>Price</td>
+                    <td>Total</td>
+                </tr>
+                @foreach (var item in ShoppingOrder.ShoppingCart.Sales_Ebaskets)
+                {
+                    var total = item.UnitPrice * item.Quantity;
+                    <tr>
+                        <td>@item.ProductNo</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Unit</td>
+                        <td>@item.Quantity</td>
+                        <td>$@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+                        <td>$@total</td>
+                    </tr>
+                }
+            </table> 
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_form_title">
+            <div class="title_summ">
+                <div class="pull-left p3">
+                    <table class="table">
+                        <tr>
+                            <td class="bluecolor">My purchase No.:</td>
+                            <td>@ShoppingOrder.ShoppingInfo.PurchaseNO</td>
+                        </tr>
+                        <tr>
+                            <td class="bluecolor">My name:</td>
+                            <td>@ShoppingOrder.ShoppingInfo.PurchaseName</td>
+                        </tr>
+                        <tr>
+                            <td class="bluecolor">My Phone:</td>
+                            <td>@ShoppingOrder.ShoppingInfo.PurchaseTel</td>
+                        </tr>
+                        <tr>
+                            <td class="bluecolor">Delivery:</td>
+                            <td>
+                                @ShoppingOrder.ShoppingInfo.Company
+                                <br> @ShoppingOrder.ShoppingInfo.Contact
+                                <br> @ShoppingOrder.ShoppingInfo.City
+                                <br> @ShoppingOrder.ShoppingInfo.Suburb
+                                <br> @ShoppingOrder.ShoppingInfo.Address
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="pull-left p4">
+                    <div class="p4-title bluecolor">Snell Packaging & Safety Ltd: </div>
+                    8 Goodman Place, Penrose,Auckland,
+                    <br /> New Zealand.
+                    <br /> PO BOX 12 215 Penrose.
+                    <br />
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="title_summ">
+                <div class="p3 pull-left">
+                    <div class="p-title"><span class="bluecolor">Comment: </span></div>
+                    <div>@ShoppingOrder.ShoppingInfo.CommonText</div>
+                </div>
+                <div class="pull-left">
+                    <div class="p4 p-title">
+                        <p class="bluecolor">Phone: (09)622-4144, Facsimile: (09)622-4146:</p>
+                        <span>http://www.snell.co.nz</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="pull-right">
+            <table class="count-table">
+                <tr>
+                    <td class="textalign-right">Subtotal:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingOrder.ShoppingCart.CartTotal)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right">Freight Fee:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingOrder.ShoppingCart.Freight)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right">Miscellaneous:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingOrder.ShoppingCart.Miscellaneous)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right">GST:</td>
+                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingOrder.ShoppingCart.GST)</td>
+                </tr>
+                <tr>
+                    <td class="textalign-right redcolor">Total:</td>
+                    <td class="textalign-right redcolor">$@Html.DisplayFor(modelItem => ShoppingOrder.ShoppingCart.Total)</td>
+                </tr>
+            </table>
+        </div>
+        <div class="pull-left">
+            <div class="pull-left print_infor">
+                <p>Order confirmation has been emailed to XX@company.com To resend 
+                please enter email:@Html.TextBox("emailto","", new { @class = "form-control print_email", @placeholder = "Your email"})</p>
+                <p>If you wish to make any changes to this order or you have any queries,
+please contact Snell Packaning & Sfety by email or phone(09)622-4144
+and quote this order number : INT34536346345</p>
+                <p>All prices are excluding GST.</p>
+            </div>
+            <div class="pull-right print_btn">
+                <a href="@Url.Action("PrintOrder", "Office")" class="btn btn-primary pull-right">
+                    Print Order<span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+@section scripts
+{
+    <script>
+    $(function() {
+        $('.cart').unbind("mouseover").unbind("mouseout");
+    });
+    </script>
+}
+
+

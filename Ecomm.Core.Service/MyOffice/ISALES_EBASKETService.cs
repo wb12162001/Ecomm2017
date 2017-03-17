@@ -29,6 +29,7 @@ namespace Ecomm.Core.Service.MyOffice
         #endregion
 
         #region 公共方法
+        IEnumerable<SALES_EBASKET_MASTER> QueryEntities(int count, string strWhere, string strOrder);
         OperationResult Insert(SALES_EBASKETModel model);
         OperationResult Update(UpdateSALES_EBASKETModel model);
 
@@ -44,6 +45,8 @@ namespace Ecomm.Core.Service.MyOffice
         int DeleteItem(string ID);
 
         Domain.Models.EpSnell.Rela_contact GetUser();
+
+        double GetUserFreight(double subtotal);
         #endregion
     }
 }

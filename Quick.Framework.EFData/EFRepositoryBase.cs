@@ -40,6 +40,10 @@ namespace Quick.Framework.EFData
             {
                 this.ConnectionString = EFWorkContext.ep_snell;
             }
+            if (connectionString == "gpsps")
+            {
+                this.ConnectionString = EFWorkContext.gpsps;
+            }
         }
         /// <summary>
         ///     获取 仓储上下文的实例

@@ -36,6 +36,10 @@ namespace Quick.Framework.EFData
                 {
                     return EFEpsnellDbContext.Value;
                 }
+                if (base.WorkContext == EFWorkContext.gpsps)
+                {
+                    return EFGPSPSDbContext.Value;
+                }
                 else
                 {
                     return EFDbContext.Value;
@@ -51,5 +55,8 @@ namespace Quick.Framework.EFData
 
         [Import("EFEPSNELL", typeof(DbContext))]
         private Lazy<EFEpsnellDbContext> EFEpsnellDbContext { get; set; } //延迟初始化的对象的类型。
+
+        [Import("EFGPSPS", typeof(DbContext))]
+        private Lazy<EFGPSPSDbContext> EFGPSPSDbContext { get; set; } //延迟初始化的对象的类型。
     }
 }

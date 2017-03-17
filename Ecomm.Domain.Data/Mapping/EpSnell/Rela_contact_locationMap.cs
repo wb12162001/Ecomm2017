@@ -29,13 +29,13 @@ namespace Ecomm.Domain.Data.Mapping.EpSnell
             this.ToTable("rela_contact_location");
             // Properties
             // Primary Key
-            this.HasKey(t => t.Account_no);   		
+            this.HasKey(t =>new { t.Account_no, t.Contact_id, t.Address_no });   		
             
             this.Property(t => t.Account_no).HasColumnName("Account_no").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            this.HasKey(t => t.Contact_id);   		
+            //this.HasKey(t => t.Contact_id);   		
             
             this.Property(t => t.Contact_id).HasColumnName("Contact_id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            this.HasKey(t => t.Address_no);   		
+            //this.HasKey(t => t.Address_no);   		
             
             this.Property(t => t.Address_no).HasColumnName("Address_no").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             // Relation
