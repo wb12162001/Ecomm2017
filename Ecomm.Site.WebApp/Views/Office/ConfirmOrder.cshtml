@@ -6,12 +6,27 @@
 
     IQueryable<Rela_account_locationModel> ShopTos = (IQueryable<Rela_account_locationModel>)ViewBag.ShoppingInfor_Shoptos;
     Rela_contact userInfo = (Rela_contact)ViewBag.ShoppingInfor_User;
+
+    var CurrentUser = (Ecomm.Domain.Models.EpSnell.Rela_contact)ViewBag.CurrentUser;
+    var btnVisible = true;
+    string msg = string.Empty;
+    //Ben 2014-08-20 For the MinOrderValue
+    if (CurrentUser.MinOrderValue > 0 && CurrentUser.MinOrderValue > double.Parse(ShoppingOrder.ShoppingCart.CartTotal))
+    {
+        msg = string.Format("We are unable to process as below ${0}/order threshold, please increase your order or contact the customers service team on 0800736557 to discuss options.", CurrentUser.MinOrderValue.ToString("N2"));
+
+        //base.ShowMessage(msg, "ShoppingCart.aspx");
+        btnVisible = false;
+    }
 }
 @section Header  {
     @Styles.Render("~/bundles/cart")
 }
 <div class="clearfix"></div>
 <!-- Confirm Order -->
+@using (Html.BeginForm("PrintOrder", "Office", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
 <div class="products">
     <div class="cart-top">
         <div class="sub_cart_tit">Order Confirmation</div>
@@ -90,7 +105,7 @@
                     <td>@item.Unit</td>
                     <td>@item.Quantity</td>
                     <td>$@Html.DisplayFor(modelItem => item.UnitPrice)</td>
-                    <td>$@total</td>
+                    <td>$@total.Value.ToString("N2")</td>
                 </tr>
 }
             </table>
@@ -123,20 +138,33 @@
     </div>
     <div class="cart-bottom">
         <div class="checkout">
-            <a href="@Url.Action("ShoppingInformation", "Office",new { act = "view"})" class="btn btn-default">
+            <a href="@Url.Action("ShoppingInformation", "Office", new { act = "view" })" class="btn btn-default">
                 <span class="glyphicon glyphicon-chevron-left"></span>Go Back
             </a>
-            <a href="@Url.Action("PrintOrder", "Office")" class="btn btn-primary pull-right">
+            <button type="submit" class="btn btn-primary pull-right @if (!btnVisible){ @Html.Raw("disabled");} ">
                 Confirm Order<span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
+            </button>
+            
         </div>
     </div>
 </div>
+}
 @section scripts
 {
     <script>
     $(function() {
         $('.cart').unbind("mouseover").unbind("mouseout");
+         @if (!btnVisible && !string.IsNullOrEmpty(msg))
+         {
+             var url = Url.Action("ShoppingInformation", "Office");
+             @Html.Raw("showMessage('" + msg + "','" + url + "')");
+         }
+
+        @if (ShoppingOrder == null) //非法进入
+        {
+             @Html.Raw("showMessage('The page you requested could not be reached！','" + Url.Action("ShoppingCart", "Office") + "')");
+        }
+        
     });
     </script>
 }

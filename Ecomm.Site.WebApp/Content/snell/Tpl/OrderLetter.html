@@ -1,0 +1,299 @@
+<html>
+<head>
+    <style type="text/css">
+        body
+        {
+            FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+            background-color: #ececec;
+            color: #0a3366;
+        }
+        a
+        {
+            text-decoration:underline;
+        }
+        table
+        {
+            font-size: 11px;
+        }
+
+        .clstablebody
+        {
+            background: #fff;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .clstableheadlogo img
+        {
+            border: solid 0px;
+        }
+
+        .headertd
+        {
+            color: #396397;
+            font-weight: 500;
+            font-size: 16px;
+            font-style: italic;
+            vertical-align: top;
+            padding:0 3px;
+        }
+
+        .footertable
+        {
+            width: 100%;
+            font-size: 10px;
+        }
+
+        .clstableheadlogo
+        {
+            margin: 15px 0 5px 0;
+        }
+
+        .tablenav td
+        {
+            padding: 0 25px 0 0px;
+        }
+
+            .tablenav td a
+            {
+                text-decoration: none;
+            }
+
+                .tablenav td a.homeimage
+                {
+                    background: url($url$Images/home.png) no-repeat 0px 0px;
+                    display: block;
+                    width: 20px;
+                    height: 26px;
+                    line-height: 26px;
+                }
+
+                    .tablenav td a.homeimage:hover
+                    {
+                        background: url($url$Images/home_hover.png) no-repeat 0px 0px;
+                    }
+
+        .navphone
+        {
+            color: #ce1d1f;
+            font-size: 14px;
+        }
+
+        .footercontact
+        {
+            margin-top: 10px;
+        }
+
+            .footercontact tr
+            {
+                line-height: 30px;
+                height: 30px;
+            }
+
+            .footercontact td
+            {
+                font-size: 14px;
+                color: #0c4080;
+            }
+
+        .footertablecontent tr td
+        {
+            font-size: 8px;
+        }
+
+        .footertablecontent .footertr td
+        {
+            font-size: 12px;
+            color: #0c4080;
+        }
+
+        .tdbgiamge
+        {
+            background: url($url$Images/safetybg.png) no-repeat 0px 0px;
+            height: 230px;
+            width: 100%;
+            padding-bottom: 20px;
+            padding-left: 16px;
+        }
+
+        .content_body_title
+        {
+            color: #cd0824;
+        }
+
+        .content_body_desc
+        {
+            color: #707070;
+            font-size: 10px;
+        }
+
+        .content_body_code
+        {
+            font-size: 10px;
+            color: #486f9f;
+        }
+
+        .nowprice
+        {
+            color: #cd0824;
+            font-size: 14px;
+        }
+
+        .fontStyle
+        {
+            color: #0c4080;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <table width="670" border="0" align="center" cellpadding="0" cellspacing="0">
+        <!--content begin-->
+        <tr>
+            <td>
+                <table class="clstablebody">
+                    <tr>
+                        <td>
+                            <table class="clstableheadlogo" width="95%" align="center">
+                                <tr>
+                                    <td width="40%" align="left"><a href="$url$">
+                                        <img src="$url$Images/logo.png" width="124" height="50" alt="Snell Logo" border="0" /></a></td>
+                                    <td align="right" class="headertd">$month  </td>
+                                </tr>
+                            </table>
+                            <br />
+                            <table width="95%" align="center">
+                                <tr>
+                                    <td width="78%">
+                                        <table class="tablenav">
+                                            <tr>
+                                                <td><a href="$url$products.aspx?categorycode=STATIONERY&clevel=0">Packaging</a></td>
+                                                <td><a href="$url$products.aspx?categorycode=81&clevel=1">Safety</a></td>
+                                                <td><a href="$url$About.aspx">About Us</a></td>
+                                                <td><a href="$url$ContactUs.aspx">Contact Us</a></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="3%">
+                                        <img src="$url$Images/phone.png" width="14" height="20" alt="Phone" border="0" /></td>
+                                    <td width="19%" class="navphone">0800 763 557</td>
+                                </tr>
+                            </table>
+                            <hr width="94%" />
+                            <table align="center" style="width: 95%; margin: 0 auto; padding-top: 13px; padding-bottom: 10px; font-family: Tahoma,Arial,sans-serif;">
+                                <tr style="width: 95%;">
+                                    <td style="width: 95%; font-size: 12px;">Thank you for your order.</td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 22px; height: 22px;">Your order number is $orderNumber</td>
+                                </tr>
+                            </table>
+                            <table align="center" style="width: 95%; margin: 0 auto; font-family: Tahoma,Arial,sans-serif; font-size: 12px; line-height: 22px;">
+                                <tr>
+                                    <td style="width: 25%; color: #074A84; font-weight: bold;">Your purchase No.:</td>
+                                    <td style="width: 30%;">$purchaseNo</td>
+                                    <td style="width: 45%; color: #074A84; font-weight: bold;">Comment:</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #074A84; font-weight: bold;">Your Company name:</td>
+                                    <td style="">$CUSTNAME</td>
+                                    <td style="vertical-align:top;" rowspan="5">$Comment</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #074A84; font-weight: bold;">Your name:</td>
+                                    <td style="">$name</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #074A84; font-weight: bold;">Delivery:</td>
+                                    <td style="">$company</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #074A84; font-weight: bold;"></td>
+                                    <td style="">$Address</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #074A84; font-weight: bold;"></td>
+                                    <td style="">$city</td>
+                                </tr>
+                            </table>
+                            <table align="center" style="width: 95%; margin: 0 auto; font-family: Tahoma,Arial,sans-serif; font-size: 14px; border-collapse: collapse; margin-top: 10px; *border-collapse: collapse;">
+                                <tr style="border: 1px solid #EBEBEB; width: 95%; height: 46px; color: #CD0824;">
+                                    <td style="width: 15%; padding: 0;">Item No</td>
+                                    <td style="width: 45%;">Description</td>
+                                    <td style="width: 8%;">Unit</td>
+                                    <td style="text-align: center; width: 5%;">Qty</td>
+                                    <td style="text-align: right; width: 8%;">Price</td>
+                                </tr>
+                               $productlist
+                                <tr style="text-align: right; line-height: 22px; height: 22px;">
+                                    <td colspan="4" style="width: 90%; text-align: right;">Subtotal:</td>
+                                    <td style="text-align: right; ">$Subtotal</td>
+                                </tr>
+                                <tr style="text-align: right; line-height: 22px; height: 22px;">
+                                    <td colspan="4">Freight Fee:</td>
+                                    <td style="text-align: right; ">$Freight</td>
+                                </tr>
+                                <tr style="text-align: right; line-height: 22px; height: 22px;">
+                                    <td colspan="4">Miscellaneous:</td>
+                                    <td style="text-align: right; ">$Miscellaneous</td>
+                                </tr>
+                                <tr style="text-align: right; line-height: 22px; height: 22px;">
+                                    <td colspan="4">GST:</td>
+                                    <td style="text-align: right; ">$Get</td>
+                                </tr>
+                                <tr style="text-align: right; color: #cd0824; line-height: 22px; height: 22px;">
+                                    <td colspan="4">TOTAL:</td>
+                                    <td style="text-align: right; ">$TOTAL</td>
+                                </tr>
+                            </table>
+                            <br />
+                            <hr width="95%" />
+                            <table align="center" class="footercontact" width="95%">
+                                <tr>
+                                    <td width="35%" style="vertical-align: bottom">
+                                        <img src="$url$Images/footer_logo.png" width="83" height="34" alt="Snell Logo" border="0" /></td>
+                                    <td width="35%" style="vertical-align: bottom">Website:</td>
+                                    <td style="vertical-align: bottom; line-height: 30px; height: 30px;">Email:</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 11px;">We are there for you nationwide.</td>
+                                    <td><font style="font-size: 11px;">$url$</font></td>
+                                    <td><font style="font-size: 11px;">cssales@snell.co.nz</font></td>
+                                </tr>
+                            </table>
+                            <br />
+                            <table width="95%" align="center" class="footertablecontent">
+                                <tr class="footertr">
+                                    <td>Auckland</td>
+                                    <td>Hamilton</td>
+                                    <td>Wellington</td>
+                                    <td>Christchurch</td>
+                                </tr>
+                                <tr>
+                                    <td>6-8 Goodman Place, Penrose, Auckland</td>
+                                    <td>2 Maui Street, Te Rapa, Hamilton</td>
+                                    <td>133 Gracefield Rd, Gracefield</td>
+                                    <td>Waterloo Road, Sockburn, Christchurch</td>
+                                </tr>
+                                <tr>
+                                    <td>Ph: 09 622 4141 | Fax: 09 622 4146</td>
+                                    <td>Ph: 07 850 1077 | Fax: 07 850 1022</td>
+                                    <td>Ph: 04 566 9456 | Fax: 04 566 9457</td>
+                                    <td>Ph: 03 344 1995 | Fax: 03 344 1997</td>
+                                </tr>
+                                <tr>
+                                    <td>PO Box 12 215, Penrose, Auckland</td>
+                                    <td>PO Box 10 053, Te Rapa, Hamilton</td>
+                                    <td>PO Box 33178, Petone, Wellington</td>
+                                    <td>PO Box 21230, Edgeware, Christchurch</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <!--content end-->
+    </table>
+</body>
+</html>

@@ -69,6 +69,10 @@
     <Compile Include="EpSnell\IRela_location_limitRepository.cs" />
     <Compile Include="GPSPS\IDBRepository.cs" />
     <Compile Include="GPSPS\Impl\DBRepository.cs" />
+    <Compile Include="InetApp\IEOrderDetailRepository.cs" />
+    <Compile Include="InetApp\IEOrderRepository.cs" />
+    <Compile Include="InetApp\Impl\EOrderDetailRepository.cs" />
+    <Compile Include="InetApp\Impl\EOrderRepository.cs" />
     <Compile Include="MyOffice\Impl\SALES_CLEARANCERepository.cs" />
     <Compile Include="MyOffice\Impl\SALES_CONTRACTPRICERepository.cs" />
     <Compile Include="MyOffice\Impl\SALES_EBASKETRepository.cs" />

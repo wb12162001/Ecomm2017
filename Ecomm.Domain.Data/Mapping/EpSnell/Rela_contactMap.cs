@@ -33,6 +33,8 @@ namespace Ecomm.Domain.Data.Mapping.EpSnell
             
             this.Property(t => t.Id).HasColumnName("Id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             // Relation
+            //设置外键
+            this.HasRequired(p => p.AccountInfo).WithMany().HasForeignKey(a => a.Account_id);
         }
 
 		

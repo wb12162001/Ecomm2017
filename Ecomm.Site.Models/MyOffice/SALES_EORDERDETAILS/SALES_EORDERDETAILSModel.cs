@@ -147,5 +147,16 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EORDERDETAILS
 
         public List<SelectListItem> EnabledItems { get; set; }
     }
+
+    public class SALES_EORDERDETAILS_RelaModel : SALES_EORDERDETAILSModel
+    {
+        public string ProductName { get; set; }
+        public string ProductPic { get; set; }
+        public string ProductID { get; set; }
+        public double? StndCost { get; set; }
+        public string StockType { get; set; }
+
+        public double? PTotal { get; set; }
+    }
 }
 

@@ -71,6 +71,10 @@
     <Compile Include="Mapping\EpSnell\Rela_contactMap.cs" />
     <Compile Include="Mapping\EpSnell\Rela_contact_locationMap.cs" />
     <Compile Include="Mapping\EpSnell\Rela_location_limitMap.cs" />
+    <Compile Include="Mapping\InetApp\Configuration\EOrderDetailMap.generated.cs" />
+    <Compile Include="Mapping\InetApp\Configuration\EOrderMap.generated.cs" />
+    <Compile Include="Mapping\InetApp\EOrderDetailMap.cs" />
+    <Compile Include="Mapping\InetApp\EOrderMap.cs" />
     <Compile Include="Mapping\MyOffice\Configuration\SALES_CLEARANCEMap.generated.cs" />
     <Compile Include="Mapping\MyOffice\Configuration\SALES_CONTRACTPRICEMap.generated.cs" />
     <Compile Include="Mapping\MyOffice\Configuration\SALES_EBASKETMap.generated.cs" />

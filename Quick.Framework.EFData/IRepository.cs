@@ -282,5 +282,7 @@ namespace Quick.Framework.EFData
         /// <param name="size"></param>
         /// <returns></returns>
         SqlParameter GetParameterOut(string name, DbType type, int size);
+
+        object ExecuteScalar<T>(string sqlText, params DbParameter[] parms);
     }
 }

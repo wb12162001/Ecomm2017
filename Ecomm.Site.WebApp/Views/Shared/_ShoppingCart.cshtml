@@ -19,37 +19,46 @@
 {
     int c = 0;
         <div id="cartCarousel" class="carousel slide vertical">
-            <div class="cart-list carousel-inner">
-                <ul class="active item">
-    @foreach (var item in ShoppingCart.Sales_Ebaskets)
-    {
-        <li>
-            <div class="cart-item">
-                <div class="cart-item-img pull-left">
-                    <img src="@Html.DisplayFor(modelItem => item.ProductPic)">
+                <!-- Carousel nav up -->
+                <div class="carousel-up">
+                <a class="carousel-control left" href="#cartCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-up"></span>
+                </a>
                 </div>
-                <div class="cart-item-detail pull-right">
-                    <a href="/Product/View" class="product-name">@item.ProductName</a>
-                    <div>
-                        <span><span>@Html.DisplayFor(modelItem => item.Quantity)</span> <i class="fa fa-times" style="font-size:12px;"></i> <span style="color:#777">$@Html.DisplayFor(modelItem => item.UnitPrice)</span></span>
-                        <span class="del-cart pull-right" onclick="deleCart('@item.ID');"><i class="fa fa-times" style="font-size:18px;color:#000"></i></span>
-                    </div>
-                </div>
-            </div>
-        </li>
-        if (c % 3 > 1)
-        {
-           @Html.Raw("</ul><ul class='item'>") 
-        }
-        c = c + 1;
-    }
+                <div class="cart-list carousel-inner">
+                    <ul class="active item">
+                        @foreach (var item in ShoppingCart.Sales_Ebaskets)
+                        {
+                            <li>
+                                <div class="cart-item">
+                                    <div class="cart-item-img pull-left">
+                                        <img src="@Html.DisplayFor(modelItem => item.ProductPic)">
+                                    </div>
+                                    <div class="cart-item-detail pull-right">
+                                        <a href="@Url.Action("Detail", "Prod", new { id = item.ProductID })" class="product-name">@item.ProductName</a>
+                                        <div>
+                                            <span><span>@Html.DisplayFor(modelItem => item.Quantity)</span> <i class="fa fa-times" style="font-size:12px;"></i> <span style="color:#777">$@Html.DisplayFor(modelItem => item.UnitPrice)</span></span>
+                                            <span class="del-cart pull-right" onclick="deleCart('@item.ID');"><i class="fa fa-times" style="font-size:18px;color:#000"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            if (c % 3 > 1)
+                            {
+                                @Html.Raw("</ul><ul class='item'>")
+                            }
+                            c = c + 1;
+                        }
 
-                </ul>
+                    </ul>
+                </div>
+                <!-- Carousel nav down -->
+                <div class="carousel-down">
+                    <a class="carousel-control right" href="#cartCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                </div>
             </div>
-            <!-- Carousel nav -->
-            <a class="carousel-control left" href="#cartCarousel" data-slide="prev">‹</a>
-            <a class="carousel-control right" href="#cartCarousel" data-slide="next">›</a>
-        </div>
         <div class="cart-layer-fun">
             <p class="pull-right" style="margin-bottom:30px;"><b>Subtotal:</b>$@ShoppingCart.CartTotal</p>
             <div class="clearfix"></div>

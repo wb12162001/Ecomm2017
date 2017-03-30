@@ -11,14 +11,69 @@ using System.ComponentModel.DataAnnotations;
 using Quick.Site.Common.Models;
 using System.Web.Mvc;
 using Quick.Site.Common;
+using Ecomm.Site.Models.MyOffice.SALES_EBASKET;
 
 namespace Ecomm.Site.Models.MyOffice.SALES_EORDERS
 {
     public class SALES_EORDERSModel : EntityCommon
     {
+
         public SALES_EORDERSModel()
         {
             SearchModel = new SearchModel();
+        }
+
+        public SALES_EORDERSModel(ShoppingOrderViewModel model)
+        {
+            SearchModel = new SearchModel();
+            //ID = model.ShoppingInfo.ID;
+            //RowID = model.ShoppingInfo.RowID;
+            OrderType = 1;
+            CustomerID = model.Customer;
+            ShipID = model.ShoppingInfo.ShipTo;
+            Freight = model.ShoppingCart.Freight;
+            ShipName = model.ShoppingInfo.Company;
+            ShipAddress = model.ShoppingInfo.Address;
+            ShipCity = model.ShoppingInfo.City;
+            //ShipZip = model.ShoppingInfo.ShipZip;
+            //ShipCountry = model.ShoppingInfo.Suburb;
+            ShipState = model.ShoppingInfo.Suburb;
+            //ShipPhone = model.ShoppingInfo.;
+            AuthCode = model.ShoppingInfo.Contact;
+            //BillTitle = model.ShoppingInfo.BillTitle;
+            //BillName = model.ShoppingInfo.BillName;
+            //BillAddress = model.ShoppingInfo.BillAddress;
+            //BillCity = model.ShoppingInfo.BillCity;
+            //BillState = model.ShoppingInfo.BillState;
+            //BillZip = model.ShoppingInfo.BillZip;
+            //BillCountry = model.ShoppingInfo.BillCountry;
+            //BillPhone = model.ShoppingInfo.BillPhone;
+            CommText = model.ShoppingInfo.CommonText;
+            //CreditCard = model.ShoppingInfo.CreditCard;
+            //CcName = model.ShoppingInfo.CcName;
+            //CcExpMonth = model.ShoppingInfo.CcExpMonth;
+            //CcExpYear = model.ShoppingInfo.CcExpYear;
+            //CcNumber = model.ShoppingInfo.CcNumber;
+            //CcType = model.ShoppingInfo.CcType;
+            //VerifyWith = model.ShoppingInfo.VerifyWith;
+            PurchaseNo = model.ShoppingInfo.PurchaseNO;
+            OrderDate = model.OrderDate;
+            //RequiredDate = model.ShoppingInfo.RequiredDate;
+            //ShippedDate = model.ShoppingInfo.ShippedDate;
+            CreateDate = model.CreateDate;
+            ModiDate = model.ModiDate;
+            Creator = model.Creator;
+            Modifier = model.Modifier;
+            IsPrint = model.IsPrint;
+            ProcStatus = model.ProcStatus;
+            Status = model.Status;
+            //Item01 = model.ShoppingInfo.Item01;
+            //Item02 = model.ShoppingInfo.Item02;
+            //Item03 = model.ShoppingInfo.Item03;
+            //Item04 = model.ShoppingInfo.Item04;
+            //Item05 = model.ShoppingInfo.Item05;
+            ContactID = model.ContactID;
+            Miscellaneous = model.ShoppingCart.Miscellaneous;
         }
 
         [Display(Name = "ID")]

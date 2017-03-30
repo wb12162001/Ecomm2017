@@ -80,6 +80,7 @@ namespace Ecomm.Site.Models.Product.PROD_MASTER
         public List<ProductModel> RecommonItems { get; set; }
 
         public List<Ecomm.Site.Models.Product.PROD_PROPERTIES.PROD_PROPERTIESModel> SubItems { get; set; }
+
     }
     public class PROD_MASTERModel : EntityCommon
     {

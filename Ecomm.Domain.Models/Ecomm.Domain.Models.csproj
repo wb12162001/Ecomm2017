@@ -50,6 +50,8 @@
     <Compile Include="EpSnell\Rela_contact_location.cs" />
     <Compile Include="EpSnell\Rela_location_limit.cs" />
     <Compile Include="GPSPS\RM00102.cs" />
+    <Compile Include="InetApp\EOrder.cs" />
+    <Compile Include="InetApp\EOrderDetail.cs" />
     <Compile Include="MyOffice\SALES_CLEARANCE.cs" />
     <Compile Include="MyOffice\SALES_CONTRACTPRICE.cs" />
     <Compile Include="MyOffice\SALES_EBASKET.cs" />

@@ -106,9 +106,26 @@
 
     //add to cart
     $('a.cart').each(function (index) {
-        $(this).bind('click', function () {
+        $(this).on('click', function () {
             var pro = $(this).attr("data-pno");
             addCart(pro);
+            return false;
+        });
+    });
+    //add to cart
+    $('span.glyphicon-shopping-cart').each(function (index) {
+        $(this).on('click', function () {
+            var pro = $(this).attr("data-pno");
+            addCart(pro);
+            return false;
+        });
+    });
+
+    //add to fav
+    $('a.add_fav').each(function (index) {
+        $(this).on('click', function () {
+            var pro = $(this).attr("data-pno");
+            addFav(pro);
             return false;
         });
     });
@@ -123,12 +140,14 @@ function reloadWindow() {
 function checkLogin() {
     if ($("#hdUserid").val() == '') {
         bootbox.alert({ message: "Please login the site!" });
-        return;
+        return false;
     }
+    return true;
 }
 
 function deleCart(id) {
-    checkLogin();
+    var cl = checkLogin();
+    if (!cl) return;
     if (id == '' || id == undefined) {
         bootbox.alert({ message: "Product sku is empty!" });
         return;
@@ -171,7 +190,8 @@ function RemoveCartItem(id,me) {
 
 //add cart
 function addCart(pro) {
-    checkLogin();
+    var cl = checkLogin();
+    if (!cl) return;
     //var pro = $(this).attr("data-pno");
     //console.log($(this));
     //console.log(pro);
@@ -195,6 +215,40 @@ function addCart(pro) {
             alert(err);
         }
     });
+}
+
+//add fav 
+//redo ben 2017/3/27
+function addFav(pro) {
+    var cl = checkLogin();
+    if (!cl) return;
+    //var pro = $(this).attr("data-pno");
+    //console.log($(this));
+    //console.log(pro);
+    if (pro == '' || pro == undefined) {
+        bootbox.alert({ message: "Product sku is empty!" });
+        return;
+    }
+    var post_data = { pno: pro, qty: 1 };
+    bootbox.alert("Add Favorites Success!", function () {
+    });
+    /*
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        url: "/Home/AddCart",
+        data: post_data,
+        success: function (d) {
+            bootbox.alert(d.message, function () {
+                //bind shopping cart
+                $("#shopping_cart").load('/Home/ShoppingCart' + '?ts=' + Math.random());
+            });
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
+    */
 }
 
 
@@ -243,6 +297,33 @@ function disabledShipToNEW(t) {
 
 function clickShipTo(v) {
     disabledShipToNEW(v);
+}
+
+function showMessage(msg, url) {
+    bootbox.alert({
+        buttons: {
+            ok: {
+                label: 'OK'
+            }
+        },
+        message: msg,
+        callback: function () {
+            //alert('关闭了alert');
+            if (url != "") {
+                window.location.href = url;
+            }
+        },
+        title: "Note",
+    });
+}
+
+function CheckMail(mail) {
+    var filter = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})+$/;
+    if (filter.test(mail)) return true;
+    else {
+        //alert('Please enter the correct email address');
+        return false;
+    }
 }
 
 /*******初始化*********/

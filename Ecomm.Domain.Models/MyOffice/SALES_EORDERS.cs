@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ecomm.Domain.Models.MyOffice
 {
@@ -20,8 +22,8 @@ namespace Ecomm.Domain.Models.MyOffice
 
 		public string ID  { get; set; }
 
-
-		public int RowID  { get; set; }
+        [NotMapped]
+        public int RowID  { get; set; }
 
 
 		public int? OrderType  { get; set; }

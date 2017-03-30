@@ -266,6 +266,7 @@ namespace Ecomm.Domain.Models.EpSnell
 
         [ForeignKey("Account_id")]
         public virtual Rela_account AccountInfo { get; set; }
+
         [NotMapped]
         public double Freight = 0;
         [NotMapped]
@@ -275,11 +276,56 @@ namespace Ecomm.Domain.Models.EpSnell
         [NotMapped]
         public int EofPageSize = 8;
         [NotMapped]
-        public double MinOrderSize;
+        public double MinOrderValue {
+            get
+            {
+                if (this.AccountInfo != null)
+                {
+                    return (double)this.AccountInfo.MinOrderValue;
+                }
+                return 0;
+            }
+        }
         [NotMapped]
-        public double MinOrderFreight;
+        public double MinOrderSize
+        {
+            get
+            {
+                if (this.AccountInfo != null)
+                {
+                    return (double)this.AccountInfo.MinOrderSize;
+                }
+                return 0;
+            }
+            //set { _minOrderSize = value; }
+        }
         [NotMapped]
-        public double MinOrderMisc;
+        public double MinOrderFreight
+        {
+            get
+            {
+                if (this.AccountInfo != null)
+                {
+                    return (double)this.AccountInfo.MinOrderFreight;
+                }
+                return 0;
+            }
+            //set { _minOrderFreight = value; }
+        }
+
+        [NotMapped]
+        public double MinOrderMisc
+        {
+            get
+            {
+                if (this.AccountInfo != null)
+                {
+                    return (double)this.AccountInfo.MinOrderMisc;
+                }
+                return 0;
+            }
+            //set { _minOrderMisc = value; }
+        }
         [NotMapped]
         public bool IsClearPrice;
 

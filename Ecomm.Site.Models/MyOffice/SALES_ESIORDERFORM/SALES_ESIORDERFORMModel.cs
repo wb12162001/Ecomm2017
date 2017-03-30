@@ -283,5 +283,14 @@ namespace Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM
 
         public List<SelectListItem> EnabledItems { get; set; }
     }
+
+    public class SALES_ESIORDERFORM_RelaModel : SALES_ESIORDERFORMModel
+    {
+        public string ProductName { get; set; }
+        public string ProductPic { get; set; }
+        public string ProductID { get; set; }
+        public double? StndCost { get; set; }
+        public string StockType { get; set; }
+    }
 }
 

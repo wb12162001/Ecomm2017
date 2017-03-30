@@ -41,6 +41,62 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
         #region 公共方法
 
+        public int Insert2(SALES_EORDERSModel model)
+        {
+            var entity = new SALES_EORDERS
+            {
+                ID = model.ID,
+                RowID = model.RowID,
+                OrderType = model.OrderType,
+                CustomerID = model.CustomerID,
+                ShipID = model.ShipID,
+                Freight = model.Freight,
+                ShipName = model.ShipName,
+                ShipAddress = model.ShipAddress,
+                ShipCity = model.ShipCity,
+                ShipZip = model.ShipZip,
+                ShipCountry = model.ShipCountry,
+                ShipState = model.ShipState,
+                ShipPhone = model.ShipPhone,
+                AuthCode = model.AuthCode,
+                BillTitle = model.BillTitle,
+                BillName = model.BillName,
+                BillAddress = model.BillAddress,
+                BillCity = model.BillCity,
+                BillState = model.BillState,
+                BillZip = model.BillZip,
+                BillCountry = model.BillCountry,
+                BillPhone = model.BillPhone,
+                CommText = model.CommText,
+                CreditCard = model.CreditCard,
+                CcName = model.CcName,
+                CcExpMonth = model.CcExpMonth,
+                CcExpYear = model.CcExpYear,
+                CcNumber = model.CcNumber,
+                CcType = model.CcType,
+                VerifyWith = model.VerifyWith,
+                PurchaseNo = model.PurchaseNo,
+                OrderDate = model.OrderDate,
+                RequiredDate = model.RequiredDate,
+                ShippedDate = model.ShippedDate,
+                CreateDate = model.CreateDate,
+                ModiDate = model.ModiDate,
+                Creator = model.Creator,
+                Modifier = model.Modifier,
+                IsPrint = model.IsPrint,
+                ProcStatus = model.ProcStatus,
+                Status = model.Status,
+                Item01 = model.Item01,
+                Item02 = model.Item02,
+                Item03 = model.Item03,
+                Item04 = model.Item04,
+                Item05 = model.Item05,
+                ContactID = model.ContactID,
+                Miscellaneous = model.Miscellaneous,
+            };
+            return SALES_EORDERSRepository.Insert(entity);
+        }
+
         public OperationResult Insert(SALES_EORDERSModel model)
         {
             var entity = new SALES_EORDERS
@@ -98,7 +154,7 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             return new OperationResult(OperationResultType.Success, "Added successfully");
         }
 
-        public OperationResult Update(UpdateSALES_EORDERSModel model)
+        public OperationResult Update(SALES_EORDERSModel model)
         {
 			var entity = SALES_EORDERSList.First(t => t.ID == model.ID);
             entity.ID = model.ID;
@@ -160,6 +216,26 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
             SALES_EORDERSRepository.Delete(model);
             return new OperationResult(OperationResultType.Success, "successfully deleted");
+        }
+
+        /// <summary>
+        /// 获取custid, 当月在shipID下的订单总和
+        /// </summary>
+        /// <param name="custId"></param>
+        /// <param name="shipId"></param>
+        /// <returns></returns>
+        public double GetOrdersByCurrentMonth(string custId, string shipId)
+        {
+            double returnValue = 0;
+            try
+            {
+                returnValue = SALES_EORDERSRepository.GetOrdersByCurrentMonth(custId, shipId);
+            }
+            catch (Exception ex)
+            {
+                returnValue = 0;
+            }
+            return returnValue;
         }
         #endregion
     }

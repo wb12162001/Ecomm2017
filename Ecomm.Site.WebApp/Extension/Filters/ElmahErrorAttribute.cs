@@ -1,8 +1,4 @@
 ﻿using Elmah;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Ecomm.Site.WebApp.Extension.Filter
@@ -12,7 +8,7 @@ namespace Ecomm.Site.WebApp.Extension.Filter
         public void OnException(ExceptionContext context)
         {
             if (context.ExceptionHandled)
-                ErrorSignal.FromCurrentContext().Raise(context.Exception);
+                ErrorSignal.FromCurrentContext().Raise(context.Exception); // 使用ELMAH记录全局异常
         }
 	}
 }

@@ -254,6 +254,11 @@ namespace Ecomm.Core.Service.MyOffice.Impl
         {
             return GetCurrentUser();
         }
+        public void SetUser(object val)
+        {
+            SetCurrentUser(val);
+        }
+
 
         public double GetUserFreight(double subtotal)
         {
@@ -268,6 +273,24 @@ namespace Ecomm.Core.Service.MyOffice.Impl
                 }
             }
             return user.Freight;
+        }
+
+        public int UpdateEBasket(string id, string orderID,string modifier)
+        {
+            //Ecomm.BLL.SALES_EBASKET basket = Ecomm.BLL.BLLFactory<Ecomm.BLL.SALES_EBASKET>.Instance;
+            //Model.SALES_EBASKETInfo ebasketInfo = basket.Get(id);
+            //ebasketInfo.MakeOrderID = orderID;
+            //ebasketInfo.Status = 1;
+            //ebasketInfo.ModiDate = DateTime.Now;
+            //ebasketInfo.Modifier = base.UserInfo.Name;
+            //basket.UpdateByProce(ebasketInfo);
+
+            var entity = SALES_EBASKETList.First(t => t.ID == id);
+            entity.Modifier = modifier;
+            entity.ModiDate = DateTime.Now;
+            entity.MakeOrderID = orderID;
+            entity.Status = 1;
+            return  SALES_EBASKETRepository.Update(entity);
         }
         #endregion
     }

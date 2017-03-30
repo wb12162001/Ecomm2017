@@ -17,6 +17,7 @@ namespace Quick.Framework.EFData
     public enum EFWorkContext
     {
         appdb,
+        inetsnell,
         inetapp,
         ep_snell,
         gpsps

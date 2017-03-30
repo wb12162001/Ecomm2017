@@ -387,14 +387,14 @@ namespace Ecomm.Site.WebApp.Areas.Product.Controllers
                     {
                         //Save file in your desired location
                         fileName = System.IO.Path.GetFileName(file.FileName);
-                        string filePath = CommonHelper.UploadFilesRoot;
+                        string filePath = Util.UploadFilesRoot;
                         Quick.Framework.Common.FileHelper.DirFile.CreateDirectory(filePath);
                         var path = System.IO.Path.Combine(filePath, fileName);
                         file.SaveAs(path);
                         ModelState.Clear();
                         message = "File uploaded successfully";
                         err_code = 1;
-                        fileUrl = System.IO.Path.Combine(CommonHelper.UploadFilesRootURL, fileName);
+                        fileUrl = System.IO.Path.Combine(Util.UploadFilesRootURL, fileName);
                     }
                 }
             }

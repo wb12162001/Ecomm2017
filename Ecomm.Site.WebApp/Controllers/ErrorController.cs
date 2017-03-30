@@ -9,9 +9,10 @@ namespace Ecomm.Site.WebApp.Controllers
     public class ErrorController : Controller
     {
         // GET: Error
-        public ActionResult Index()
+        public ActionResult Index(string msg)
         {
             Response.StatusCode = 500;
+            ViewBag.Msg = msg;
             return View("Error");
         }
 

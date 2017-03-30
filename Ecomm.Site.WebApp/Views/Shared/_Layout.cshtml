@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - Snell packaging & safety</title>
     @Styles.Render("~/bundles/snell")
     @Scripts.Render("~/bundles/modernizr")
-
+   
     @RenderSection("header", false)
 </head>
 <body>
@@ -34,7 +34,7 @@
     <!--Login-part-->
     @Html.Partial("_Login")
     @Styles.Render("~/bundles/plugins/bootstrapvalidator/css")
-    @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/js/jqdataTables")
+    @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/angular", "~/bundles/js/jqdataTables")
     @Scripts.Render("~/bundles/index", "~/bundles/plugins/bootstrapvalidator/js")
     <script type="text/javascript">
         function logout() {
@@ -105,17 +105,17 @@
                     //console.log(result);
                     if (result.ResultType == 0) {
                         // You can reload the current location
-                        //window.location.reload();
-                        $("#top_menu").load('@Url.Action("Top", "Home")' + '?ts=' + Math.random());
                         $('#login-modal-form').modal('hide');
-
+                        window.location.reload();
+                        
+                        @*$("#top_menu").load('@Url.Action("Top", "Home")' + '?ts=' + Math.random());
                         //bind shopping cart
                         $("#shopping_cart").load('@Url.Action("ShoppingCart", "Home")' + '?ts=' + Math.random());
                         $('.cart').on('mouseover', function () {
                             $('.cart .cart-layer').show();
                         }).on('mouseout', function () {
                             $('.cart .cart-layer').hide();
-                        });
+                        });*@
                     } else {
                         // The account is not found
                         // Show the errors

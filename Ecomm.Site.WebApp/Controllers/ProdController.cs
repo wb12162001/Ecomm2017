@@ -1,4 +1,5 @@
 ﻿using Ecomm.Core.Service.Product;
+using Ecomm.Core.Service.MyOffice;
 using Ecomm.Site.Models.Product.PROD_MASTER;
 using Quick.Site.Common.Models;
 using Ecomm.Domain.Models.Product;
@@ -17,6 +18,8 @@ using System.Web.Mvc;
 using Webdiyer.WebControls.Mvc;
 using System.Text;
 using Ecomm.Site.WebApp.Extension.Filters;
+using Chart.Mvc.ComplexChart;
+using Chart.Mvc.Extensions;
 
 namespace Ecomm.Site.WebApp.Controllers
 {
@@ -38,6 +41,9 @@ namespace Ecomm.Site.WebApp.Controllers
 
         [Import]
         public IPROD_RELATEDITEMService PROD_RELATEDITEMService { get; set; }
+
+        [Import]
+        public ISALES_ESIORDERFORMService SALES_ESIORDERFORMService { get; set; }
 
         #endregion
 
@@ -286,6 +292,9 @@ namespace Ecomm.Site.WebApp.Controllers
             BindRecommend(model);
             BindDefalultPic(model);
             ViewBag.ProductDetailModel = model;
+            var barChart = new BarChart();
+            if (CurrentUser != null) Chart("Your most recently purchased quantities", model.ProductNo, barChart);
+            ViewBag.Chart = barChart;
             return View();
         }
 
@@ -295,7 +304,7 @@ namespace Ecomm.Site.WebApp.Controllers
             {
                 if (info.Trim().ToLower().LastIndexOf(".pdf") > -1)
                 {
-                    return string.Format("<div class='pro_pdf_info'><a title='Pdf Addtional Information' target='_blank' href='{0}'><img src='Themes/ecomm5/images/pdf_infor.gif' /></a></div>", Common.CommonHelper.UploadFilesRootURL + info.Trim());
+                    return string.Format("<div class='pro_pdf_info'><a title='Pdf Addtional Information' target='_blank' href='{0}'><img src='Themes/ecomm5/images/pdf_infor.gif' /></a></div>", Common.Util.UploadFilesRootURL + info.Trim());
                 }
             }
             return string.Empty;
@@ -303,7 +312,7 @@ namespace Ecomm.Site.WebApp.Controllers
 
         private void GetProductPrice(ProductDetailModel info)
         {
-            if (info != null)
+            if (info != null && info.ID != null)
             {
                 info.SellPrice = (double)info.ListPrice;
                 if (base.CurrentUser != null && base.CurrentUser.AccountInfo != null)
@@ -426,6 +435,62 @@ namespace Ecomm.Site.WebApp.Controllers
                 info.RecommonItems = items.ToList();
             }
         }
+
+        private void Chart(string ChartTitle, string pno, BarChart barChart)
+        {
+            var lst = SALES_ESIORDERFORMService.QueryEntities(0, string.Format("a.[CustomerID] ='{0}' and a.[ProductNo] ='{1}'", CurrentUser.AccountInfo.Account_no, pno), string.Empty);
+
+            string qty0 = Common.Util.GetMonthName(DateTime.Now.Month);
+            string qty1 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-1).Month);
+            string qty2 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-2).Month);
+            string qty3 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-3).Month);
+            string qty4 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-4).Month);
+            string qty5 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-5).Month);
+            string[] xMonths = { qty5, qty4, qty3, qty2, qty1, qty0 };
+
+            var Ser = from s in lst
+                      group s by s.ProductNo into g
+                      select new
+                      {
+                          ProductNo = g.Key,
+                          qty0 = g.Sum(p => p.Qty0),
+                          qty1 = g.Sum(p => p.Qty1),
+                          qty2 = g.Sum(p => p.Qty2),
+                          qty3 = g.Sum(p => p.Qty3),
+                          qty4 = g.Sum(p => p.Qty4),
+                          qty5 = g.Sum(p => p.Qty5),
+                      };//所有的Series
+
+            var sum = from t in Ser select (t.qty0 + t.qty1 + t.qty2 + t.qty3 + t.qty4 + t.qty5);
+            if (sum.Sum() > 0)
+            {
+                //var barChart = new BarChart();
+                barChart.ComplexData.Labels.AddRange(xMonths);
+
+                var Series = new List<ComplexDataset>();
+                foreach (var serie in Ser)
+                {
+                    var cd = new ComplexDataset
+                    {
+                        Data = new List<double> { serie.qty5.Value, serie.qty4.Value, serie.qty3.Value, serie.qty2.Value, serie.qty1.Value, serie.qty0.Value },
+                        Label = ChartTitle,
+                        FillColor = "rgba(220,220,220,0.2)",
+                        StrokeColor = "rgba(220,220,220,1)",
+                        PointColor = "rgba(220,220,220,1)",
+                        PointStrokeColor = "#fff",
+                        PointHighlightFill = "#fff",
+                        PointHighlightStroke = "rgba(220,220,220,1)",
+                    };
+                    Series.Add(cd);
+                }
+                barChart.ComplexData.Datasets.AddRange(Series);
+            }
+            else
+            {
+                //barChart = null;
+            }
+        }
+
 
         public ActionResult List(DataTableParameter param)
         {

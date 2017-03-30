@@ -73,6 +73,8 @@ namespace Ecomm.Site.WebApp.Common
                     //.Where(t => t.Status == 0 && t.ContactID == CurrentUser.Id && string.IsNullOrEmpty(t.MakeOrderID))
                     .Select(t => new SALES_EBASKET_RelaModel
                     {
+                        StockType = t.StockType,
+                        StndCost = t.StndCost,
                         UnitPrice = t.UnitPrice,
                         Quantity = t.Quantity,
                         Status = t.Status,
@@ -165,7 +167,10 @@ namespace Ecomm.Site.WebApp.Common
         protected Rela_contact CurrentUser
         {
             get { return SALES_EBASKETService.GetUser(); }
-            set { Session["CurrentSnellUser"] = value; }
+            set {
+                //Session["CurrentSnellUser"] = value;
+                SALES_EBASKETService.SetUser(value);
+            }
         }
 
         protected ShoppingOrderViewModel ShoppingOrder

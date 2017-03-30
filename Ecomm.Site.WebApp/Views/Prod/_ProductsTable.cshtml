@@ -17,7 +17,7 @@
 {
         <tr>
             <td>
-                <a href="#">
+                <a href="@Url.Action("Detail", "Prod", new { id = item.ID })">
                     <img src="@item.SmallPic" />
                 </a>
             </td>
@@ -28,7 +28,7 @@
                 </p>
                 <p class="p3">
                     Category: <span class="blue">@Html.DisplayFor(modelItem => item.ProdCategoryCode)</span> 　　&nbsp;&nbsp;&nbsp;
-                    <a href="@Url.Action("Detail", "Prod", new { id = item.ID })"><i class="fa fa-heart-o"></i></a>
+                    <a href="javascript:void(0);" onclick="addFav('@item.ProductNo');"><i class="fa fa-heart-o"></i></a>
                 </p>
             </td>
             <td>$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</td>
@@ -36,7 +36,7 @@
                 <input type="number" class="form-control" min="1" value="1" />
             </td>
             <td class="cart-col">
-                <span class="glyphicon glyphicon-shopping-cart"></span>
+                <span class="glyphicon glyphicon-shopping-cart" data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" ></span>
             </td>
         </tr>
 }
@@ -48,7 +48,7 @@
 @foreach (var item in PagedListProductModel)
 {
     <div class="pull-left product-box product-1">
-        <a href="#"><img class="pro-img" src="@item.BigPic" /></a>
+        <a href="@Url.Action("Detail", "Prod", new { id = item.ID })"><img class="pro-img" src="@item.MiddlePic" /></a>
         <p class='star-line'>
             <img src='/Content/snell/images/star-4.png'>
         </p>
@@ -61,17 +61,16 @@
                 <p class="new-price">$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</p>
             </div>
             <div class="pull-right">
-                <a href='javascript:void(0);' class='' data-pno='@Html.DisplayFor(modelItem => item.ProductNo)'>
+                <a href='javascript:void(0);' class='cart' data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" >
                     <img src='/Content/snell/images/cart_03.png'>
                 </a>
             </div>
         </div>
         <div class="wishlist-compare">
-            <div class="wishlist pull-left"><a href="#"><i class="fa fa-heart-o"></i> <span>wishlist</span></a></div>
-            <div class="compare pull-right"><a href="#"><i class="fa fa-exchange"></i> <span>compare</span></a></div>
+            <div class="wishlist pull-left"><a href="javascript:void(0);" onclick="addFav('@item.ProductNo');"><i class="fa fa-heart-o"></i> <span>wishlist</span></a></div>
         </div>
         <div class="clearfix"></div>
-        <span class="label label-danger is-sale">SALE!</span>
+        
     </div>
 }
 </div>

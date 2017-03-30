@@ -82,7 +82,8 @@ a:hover{text-decoration: none}
 .products .today-deals .product-show h4{text-align: right;padding-right: 13px;}
 .products .today-deals .product-show h4 .badge{background-color: #fb4949}
 .products .today-deals .product-show .product-img{width: 90%;margin-top: 39px;}
-.products .today-deals .product-show .star-line{margin-top: 70px}
+.products .today-deals .product-show .star-line{margin-top: 70px;}
+.star-line{display:none;}
 
 .products .today-deals .product-show .product-title{margin-top: 50px;color: #c6aa83;font-weight: 600;}
 .products .today-deals .product-show .old-price{text-decoration: line-through;margin-top: 16px;color: #c4c4c4;margin-bottom: 2px;}
@@ -99,7 +100,7 @@ a:hover{text-decoration: none}
 .products .popular-products .product-list{border: 1px solid #e4e4e4;width: 100%;height: 455px;}
 .products .popular-products .product-list .product-box{width: 247px;height: 453px;border-right: 1px solid #e4e4e4;padding: 55px 15px 15px 15px;}
 .products .popular-products .product-list .product-box:last-child{border-right: none;}
-.products .popular-products .product-list .product-box .pro-img{display: block;margin: 0 auto;margin-bottom: 20px;}
+.products .popular-products .product-list .product-box .pro-img{display: block;margin: 0 auto;margin-bottom: 20px; max-width:150px; }
 .products .popular-products .product-list .product-box .product-name{color: #4b7ca8;font-size: 12px;font-weight: 600}
 .products .popular-products .product-list .product-box .price-cart{border-bottom: 1px solid #e4e4e4;height: 65px;}
 .products .popular-products .product-list .product-box .price-cart .price .old-price{color: #d9d9d9;font-size: 13px;text-decoration: line-through;}
@@ -174,8 +175,8 @@ a:hover{text-decoration: none}
 .container .main .last-module .last-module-list .last-module-box .line-1{text-align: center;}
 .container .main .last-module .last-module-list .last-module-box .line-2{text-align: center;}
 .container .main .last-module .last-module-list .last-module-box .line-3{text-align: center;color: #999999}
-.container .main .subcribe{width: 1074px;height: 110px;background-color: #004684;margin: 0 auto}
-.container .main .subcribe .subcribe-box{padding: 32px 14px;}
+.container .main .subcribe{width: 1074px;/*height: 110px;background-color: #004684;*/margin: 0 auto}
+.container .main .subcribe .subcribe-box{padding: 15px 14px;}
 .container .main .subcribe .subcribe-box .subcribe-box-left{width: 508px;}
 .container .main .subcribe .subcribe-box .subcribe-box-left .control-label{padding-top: 12px;color: #f9fafc}
 .container .main .subcribe .subcribe-box .subcribe-box-left .sub-input-left input{border-radius: 6px 0 0 6px;border-right: none}
@@ -214,6 +215,8 @@ background-color: #fff;
 
 .vertical .carousel-inner {
   height: 100%;
+  top: 30px;
+  padding-bottom: 30px;
 }
 
 .carousel.vertical .item {
@@ -252,10 +255,27 @@ background-color: #fff;
 .carousel.vertical .item {
     left: 0;
 }
+#cartCarousel .carousel-up{
+    top: 0px;
+    /* position: absolute; */
+}
+#cartCarousel .carousel-down{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
 
 #cartCarousel .carousel-control.left,#cartCarousel .carousel-control.right{
     background:none;
     height: 30px;
+    padding: 0 150px;
+}
+#cartCarousel .carousel-control.left{
+
+}
+#cartCarousel .carousel-control.right {
+    
+
 }
 
 #articles .pagination{

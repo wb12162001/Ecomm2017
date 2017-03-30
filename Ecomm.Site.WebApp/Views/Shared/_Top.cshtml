@@ -1,6 +1,6 @@
 ﻿<div class="links" id="top_menu">
     <input type="hidden" name="hdUserid" id="hdUserid" value="@ViewBag.UserName"> 
-    <img src="/Content/snell/images/logo.png" />
+    <a href="@Url.Action("Index", "Home")" ><img src="/Content/snell/images/logo.png" /></a>
     @if (!string.IsNullOrEmpty(ViewBag.UserName))
     {
         <ul class="top-ul-left">

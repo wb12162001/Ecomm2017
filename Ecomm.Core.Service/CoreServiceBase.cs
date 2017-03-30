@@ -32,5 +32,10 @@ namespace Ecomm.Core.Service
             var user = Quick.Framework.Common.ToolsHelper.SessionHelper.GetSession("CurrentSnellUser") as Domain.Models.EpSnell.Rela_contact;
             return user;
         }
+
+        public void SetCurrentUser(object val)
+        {
+            Quick.Framework.Common.ToolsHelper.SessionHelper.SetSession("CurrentSnellUser", val);
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace Ecomm.Core.Service.MyOffice
         #endregion
 
         #region 公共方法
+        IEnumerable<SALES_EORDERDETAILS_MASTER> QueryEntities(int count, string strWhere, string strOrder);
         OperationResult Insert(SALES_EORDERDETAILSModel model);
         OperationResult Update(UpdateSALES_EORDERDETAILSModel model);
         /// <summary>

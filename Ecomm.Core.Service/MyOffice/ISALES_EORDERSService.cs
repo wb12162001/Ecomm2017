@@ -28,15 +28,18 @@ namespace Ecomm.Core.Service.MyOffice
         #endregion
 
         #region 公共方法
+        int Insert2(SALES_EORDERSModel model);
         OperationResult Insert(SALES_EORDERSModel model);
-        OperationResult Update(UpdateSALES_EORDERSModel model);
+        OperationResult Update(SALES_EORDERSModel model);
         /// <summary>
         /// 逻辑删除
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(string  ID);
+
+        double GetOrdersByCurrentMonth(string custId, string shipId);
         #endregion
-	}
+    }
 }
 

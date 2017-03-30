@@ -232,6 +232,7 @@
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Common\CommonHelper.cs" />
     <Compile Include="Common\ConfigSettingHelper.cs" />
+    <Compile Include="Common\SendEmailHelper.cs" />
     <Compile Include="Common\Util.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -425,6 +426,9 @@
     <Content Include="Content\snell\js\bootbox.min.js" />
     <Content Include="Content\snell\js\index.js" />
     <Content Include="Content\snell\js\jquery.zoom.min.js" />
+    <Content Include="Content\snell\Tpl\OrderLetter.html" />
+    <Content Include="Content\snell\Tpl\QuotaItemDetail.html" />
+    <Content Include="Content\snell\Tpl\QuotaSnell.html" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -511,6 +515,13 @@
     <Content Include="Areas\Common\Views\web.config" />
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\ajaxfileupload.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\AngularUI\ui-router.js" />
+    <Content Include="Scripts\AngularUI\ui-router.min.js" />
+    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\app\main.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Product\Views\PROD_MASTER\Create.cshtml" />
@@ -646,7 +657,29 @@
     <Content Include="Areas\Product\Views\PROD_RELATEDITEM\Index.cshtml" />
     <Content Include="Areas\Product\Views\PROD_RELATEDITEM\List.cshtml" />
     <Content Include="Areas\Product\Views\PROD_RELATEDITEM\Search.cshtml" />
+    <Content Include="Content\snell\Tpl\ClearanceLine.tpl" />
+    <Content Include="Content\snell\Tpl\ClearanceThumb.tpl" />
+    <Content Include="Content\snell\Tpl\ContractPricing.tpl" />
+    <Content Include="Content\snell\Tpl\cpLine.tpl" />
+    <Content Include="Content\snell\Tpl\cpThumb.tpl" />
+    <Content Include="Content\snell\Tpl\CustomizedLine.tpl" />
+    <Content Include="Content\snell\Tpl\CustomizedThumb.tpl" />
+    <Content Include="Content\snell\Tpl\eofLine.tpl" />
+    <Content Include="Content\snell\Tpl\eofprint.tpl" />
+    <Content Include="Content\snell\Tpl\eofThumb.tpl" />
+    <Content Include="Content\snell\Tpl\hspLine.tpl" />
+    <Content Include="Content\snell\Tpl\hspThumb.tpl" />
+    <Content Include="Content\snell\Tpl\myEofLine.tpl" />
+    <Content Include="Content\snell\Tpl\myEofThumb.tpl" />
+    <Content Include="Content\snell\Tpl\ProductLine.tpl" />
+    <Content Include="Content\snell\Tpl\ProductThumb.tpl" />
+    <Content Include="Content\snell\Tpl\ProductThumb_more.tpl" />
+    <Content Include="Content\snell\Tpl\SalesClearanceLine.tpl" />
+    <Content Include="Content\snell\Tpl\SalesClearanceThumb.tpl" />
+    <Content Include="Content\snell\Tpl\searchLine.tpl" />
+    <Content Include="Content\snell\Tpl\searchThumb.tpl" />
     <None Include="Properties\PublishProfiles\Web.config.pubxml" />
+    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -665,10 +698,14 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\r.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

@@ -8,13 +8,23 @@
     Rela_contact userInfo = (Rela_contact)ViewBag.ShoppingInfor_User;
 }
 @section Header  {
-    @Styles.Render("~/bundles/cart")
+    @Styles.Render("~/bundles/cart");
+
+<style media="print" type="text/css">
+    .Noprint {
+        display: none;
+    }
+
+    .PageNext {
+        page-break-after: always;
+    }
+</style> 
 }
 <div class="clearfix"></div>
 <!-- Confirm Order -->
 <div class="products">
     <div class="cart-top">
-        <div class="sub_cart_tit">Thank you for your order. Snell Order# is INT1672832 </div>
+        <div class="sub_cart_tit">Thank you for your order. Snell Order# is @ShoppingOrder.OrderID @if (ShoppingOrder.ProcStatus == 3) { @Html.Raw("The order is hold!"); }</div>
     </div>
     <div class="clearfix"></div>
     <div class="cart-content">
@@ -37,7 +47,7 @@
                         <td>@item.Unit</td>
                         <td>@item.Quantity</td>
                         <td>$@Html.DisplayFor(modelItem => item.UnitPrice)</td>
-                        <td>$@total</td>
+                        <td>$@total.Value.ToString("N2")</td>
                     </tr>
                 }
             </table> 
@@ -118,17 +128,20 @@
                 </tr>
             </table>
         </div>
-        <div class="pull-left">
+        <div class="pull-left Noprint">
             <div class="pull-left print_infor">
+                @Html.Hidden("hdOrderID", ShoppingOrder.OrderID)
                 <p>Order confirmation has been emailed to XX@company.com To resend 
-                please enter email:@Html.TextBox("emailto","", new { @class = "form-control print_email", @placeholder = "Your email"})</p>
+                please enter email:@Html.TextBox("emailto","", new { @class = "form-control print_email", @placeholder = "Your email"}) 
+                <button type="button" class="btn btn-primary send_em" id="send_em" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Email">Send Email</button>
+                </p>
                 <p>If you wish to make any changes to this order or you have any queries,
 please contact Snell Packaning & Sfety by email or phone(09)622-4144
-and quote this order number : INT34536346345</p>
+and quote this order number : @ShoppingOrder.OrderID</p>
                 <p>All prices are excluding GST.</p>
             </div>
             <div class="pull-right print_btn">
-                <a href="@Url.Action("PrintOrder", "Office")" class="btn btn-primary pull-right">
+                <a href="javascript:void(0);" onclick="return PrintOrder();" class="btn btn-primary pull-right">
                     Print Order<span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
             </div>
@@ -141,6 +154,50 @@ and quote this order number : INT34536346345</p>
     <script>
     $(function() {
         $('.cart').unbind("mouseover").unbind("mouseout");
+    });
+    function PrintOrder() {
+        $('div.header').addClass("Noprint");
+        $('div.footer').addClass("Noprint");
+        window.print();
+        return false;
+    }
+
+    $('#send_em').on('click', function () {
+
+        var emailto = $('#emailto').val();
+        if (emailto == null || emailto == "") {
+            bootbox.alert("Email address is required");
+            return false;
+        }
+        if (CheckMail(emailto)) {
+
+        }else{
+            bootbox.alert("Please enter the correct email address");
+            return false;
+        }
+        var oid = $('#hdOrderID').val();
+        var $this = $(this);
+        $this.button('loading');
+        setTimeout(function () {
+            var post_data = { orderId: oid, emailTo: emailto };
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/Office/SendUserEmail",
+                data: post_data,
+                success: function (d) {
+                    console.log(d);
+                    //bootbox.alert(d.Message, function () {});
+                    alert(d.Message);
+                    $this.button('reset');
+                },
+                error: function (err) {
+                    alert(err);
+                },
+                complete: function(msg) { $this.button('reset'); },
+            });
+            
+        }, 8000);
     });
     </script>
 }

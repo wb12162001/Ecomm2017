@@ -69,6 +69,10 @@
     <Compile Include="EpSnell\IRela_location_limitService.cs" />
     <Compile Include="GPSPS\IDBService.cs" />
     <Compile Include="GPSPS\Impl\DBService.cs" />
+    <Compile Include="InetApp\IEOrderDetailService.cs" />
+    <Compile Include="InetApp\IEOrderService.cs" />
+    <Compile Include="InetApp\Impl\EOrderDetailService.cs" />
+    <Compile Include="InetApp\Impl\EOrderService.cs" />
     <Compile Include="MyOffice\Impl\SALES_CLEARANCEService.cs" />
     <Compile Include="MyOffice\Impl\SALES_CONTRACTPRICEService.cs" />
     <Compile Include="MyOffice\Impl\SALES_EBASKETService.cs" />

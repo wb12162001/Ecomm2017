@@ -28,19 +28,23 @@ namespace Quick.Framework.EFData
         protected EFWorkContext ConnectionString;
         public EFRepositoryBase(string connectionString)
         {
-            if(connectionString == "appdb")
+            if (connectionString == "appdb")
             {
                 this.ConnectionString = EFWorkContext.appdb;
             }
-            if (connectionString == "default")
+            else if (connectionString == "default")
+            {
+                this.ConnectionString = EFWorkContext.inetsnell;
+            }
+            else if (connectionString == "inetapp")
             {
                 this.ConnectionString = EFWorkContext.inetapp;
             }
-            if (connectionString == "ep_snell")
+            else if (connectionString == "ep_snell")
             {
                 this.ConnectionString = EFWorkContext.ep_snell;
             }
-            if (connectionString == "gpsps")
+            else if (connectionString == "gpsps")
             {
                 this.ConnectionString = EFWorkContext.gpsps;
             }
@@ -749,7 +753,11 @@ namespace Quick.Framework.EFData
         /// <returns></returns>
         public SqlParameter GetParameter(string name, object value)
         {
-            return new SqlParameter("@" + name, value);
+            if(name.Substring(0,1) != "@")
+            {
+                name = "@" + name;
+            }
+            return new SqlParameter(name, value);
         }
 
         /// <summary>
@@ -761,14 +769,29 @@ namespace Quick.Framework.EFData
         /// <returns></returns>
         public SqlParameter GetParameterOut(string name, DbType type, int size)
         {
+            if (name.Substring(0, 1) != "@")
+            {
+                name = "@" + name;
+            }
             return new SqlParameter
             {
-                ParameterName = "@" + name,
+                ParameterName = name,
                 Direction = ParameterDirection.Output,
                 DbType = type,
                 Size = size
 
             };
+        }
+
+        /// <summary>
+        /// 返回查询的第一行第一列的值
+        /// </summary>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        public object ExecuteScalar<T>(string sqlText, params DbParameter[] parms)
+        {
+            var dbContext = this.EFContext.DbContext;
+            return dbContext.Database.SqlQuery<T>(sqlText, parms).FirstOrDefault();
         }
 
     }

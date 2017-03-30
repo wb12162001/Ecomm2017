@@ -1,6 +1,7 @@
 ﻿@using Ecomm.Site.Models.MyOffice.SALES_EBASKET
 @{
     ShoppingCartViewModel ShoppingCart = (ShoppingCartViewModel)ViewBag.ShoppingCartModel;
+    string MinOrderMsg = (string)ViewBag.MinOrderMsg;
 }
 @section Header  {
     @Styles.Render("~/bundles/cart")
@@ -16,6 +17,9 @@
 <input type="hidden" id="hdItemcount" value="@ShoppingCart.ItemCount" />
 @if (ShoppingCart.ItemCount > 0)
 {
+    <div class="cart-msg">
+        @MinOrderMsg
+    </div>
     <div class="cart-content">
         <table class="table table-hover">
             <thead>
@@ -32,11 +36,11 @@
 {
                 <tr>
                     <td>
-                        <a href="###">
+                        <a href="@Url.Action("Detail", "Prod", new { id = item.ProductID })">
                             <img class="tips" src="@Html.DisplayFor(modelItem => item.ProductPic)" alt="" />
                         </a>
                         <div class="desc">
-                            <a href="##" class="pro-name bluecolor">@item.ProductName.Trim()</a>
+                            <a href="@Url.Action("Detail", "Prod", new { id = item.ID })" class="pro-name bluecolor">@item.ProductName.Trim()</a>
                             <p>StockType: <span class="bluecolor">@item.UnitPType</span> Code: <span class="bluecolor">@item.ProductNo.Trim()</span></p>
                         </div>
                     </td>
@@ -83,7 +87,7 @@
             <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
                 <span class="glyphicon glyphicon-chevron-left"></span>Continue Shopping
             </a>
-            <a href="@Url.Action("ShoppingInformation", "Office",new { act = "post"})" class="btn btn-danger pull-right">
+            <a href="@Url.Action("ShoppingInformation", "Office")" id="a_checkout" class="btn btn-danger pull-right">
                 Check Out<span class="glyphicon glyphicon-chevron-right"></span>
             </a>
         </div>
@@ -96,13 +100,23 @@
 @section scripts
 {
     <script>
-    $(function() {
-        $('.cart').unbind("mouseover").unbind("mouseout");
-        if ($("#hdItemcount").val() == 0) {
-            $("div.cart-content").hide();
-            $("div.cart-bottom").hide();
-            $("div.no_purchase").show();
-        }
-    });
+        $(function () {
+            $('.cart').unbind("mouseover").unbind("mouseout");
+            if ($("#hdItemcount").val() == 0) {
+                $("div.cart-content").hide();
+                $("div.cart-bottom").hide();
+                $("div.no_purchase").show();
+            }
+            @if (!string.IsNullOrEmpty(MinOrderMsg))
+            {
+                @Html.Raw("$('div.cart-msg').show();");
+                @Html.Raw("$('#a_checkout').addClass('disabled');");
+            }
+            else
+            {
+                @Html.Raw("$('div.cart-msg').hide();");
+                @Html.Raw("$('#a_checkout').removeClass('disabled');");
+                }
+        });
     </script>
 }

@@ -247,6 +247,101 @@ namespace Ecomm.Site.WebApp.Common
             return monthName.Substring(0, 3);
         }
 
+        public static string SiteRootURL
+        {
+            get
+            {
+                string returnValue = System.Configuration.ConfigurationManager.AppSettings["SiteRootURL"];
+                if (!string.IsNullOrEmpty(returnValue))
+                {
+                    if (!returnValue.EndsWith("/"))
+                    {
+                        returnValue += "/";
+                    }
+                    if (returnValue.StartsWith("/") && returnValue.Length > 1)
+                    {
+                        returnValue = returnValue.TrimStart('/');
+                    }
+                }
+                else
+                {
+
+                    returnValue = System.Web.HttpContext.Current.Request.ApplicationPath;
+                }
+                return returnValue;
+            }
+        }
+        public static string UploadFilesSiteRootUrl
+        {
+            get
+            {
+                string returnValue = System.Configuration.ConfigurationManager.AppSettings["UploadFilesRootUrl"];
+                if (!string.IsNullOrEmpty(returnValue))
+                {
+                    if (!returnValue.EndsWith("/"))
+                    {
+                        returnValue += "/";
+                    }
+                    if (returnValue.StartsWith("/") && returnValue.Length > 1)
+                    {
+                        returnValue = returnValue.TrimStart('/');
+                    }
+                }
+                else
+                {
+
+                    returnValue = System.Web.HttpContext.Current.Request.ApplicationPath;
+                }
+                return returnValue;
+            }
+        }
+
+        public static string UploadFiles
+        {
+            get
+            {
+                string returnValue = System.Configuration.ConfigurationManager.AppSettings["UploadFiles"];
+                if (string.IsNullOrEmpty(returnValue))
+                {
+                    returnValue = "UploadFiles";
+                }
+                //if (!returnValue.EndsWith(@"\"))
+                //{
+                //    returnValue += @"\";
+                //}
+                if (!returnValue.EndsWith("/"))
+                {
+                    returnValue += "/";
+                }
+                return returnValue;
+            }
+        }
+
+        public static string UploadFilesRoot
+        {
+            get
+            {
+                string returnValue = System.Web.HttpContext.Current.Server.MapPath(string.Format(@"~/{0}", UploadFiles));
+                if (!returnValue.EndsWith(@"\"))
+                {
+                    returnValue += @"\";
+                }
+                return returnValue;
+            }
+        }
+        public static string UploadFilesRootURL
+        {
+            get
+            {
+                string returnValue = UploadFilesSiteRootUrl + UploadFiles;
+                if (returnValue.EndsWith(@"\"))
+                {
+                    returnValue = returnValue.Replace(@"\", "/");
+                }
+                return returnValue;
+            }
+        }
+
         public static string GetProductImgUrl(object productImg)
         {
             return GetProductImgUrl(productImg, true);
@@ -256,7 +351,7 @@ namespace Ecomm.Site.WebApp.Common
             string img = "images/none_snew.png";
             if (productImg != null && !string.IsNullOrEmpty(productImg.ToString()))
             {
-                img = CommonHelper.UploadFilesRootURL + productImg.ToString();
+                img = UploadFilesRootURL + productImg.ToString();
             }
             return img;
         }
@@ -264,7 +359,7 @@ namespace Ecomm.Site.WebApp.Common
         {
             if (productImg != null && !string.IsNullOrEmpty(productImg.ToString()))
             {
-                return CommonHelper.UploadFilesRootURL + productImg.ToString();
+                return UploadFilesRootURL + productImg.ToString();
             }
             string img = "images/none.png";
             if (isSmall)
@@ -272,6 +367,20 @@ namespace Ecomm.Site.WebApp.Common
                 img = "images/none_s.png";
             }
             return img;
+        }
+
+        public static bool IsTesting
+        {
+            get
+            {
+                bool ret = false;
+                if (System.Configuration.ConfigurationManager.AppSettings["IsTesting"] == null)
+                {
+                    return false;
+                }// end if
+                Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsTesting"].ToString(), out ret);
+                return ret;
+            }
         }
 
     }

@@ -33,6 +33,8 @@ namespace Ecomm.Core.Service.MyOffice
         OperationResult Insert(SALES_EBASKETModel model);
         OperationResult Update(UpdateSALES_EBASKETModel model);
 
+        int UpdateEBasket(string id, string orderID, string modifier);
+
         int UpdateEBasketQuantity(string custId, string contactId, string proNo, float quantity);
         int ModificationByProce(SALES_EBASKETModel model);
         int ModificationCart(SALES_EBASKETModel model);
@@ -45,6 +47,8 @@ namespace Ecomm.Core.Service.MyOffice
         int DeleteItem(string ID);
 
         Domain.Models.EpSnell.Rela_contact GetUser();
+
+        void SetUser(object val);
 
         double GetUserFreight(double subtotal);
         #endregion

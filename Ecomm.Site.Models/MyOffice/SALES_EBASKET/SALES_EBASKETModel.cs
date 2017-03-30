@@ -23,6 +23,25 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EBASKET
         }
         public ShoppingCartViewModel ShoppingCart { get; set; }
         public ShoppingInformationViewModel ShoppingInfo { get; set; }
+        public string OrderID { get; set; }
+        public string ContactID { get; set; }
+
+        public string Customer { get; set; }
+
+        public string Creator { get; set; }
+
+        public string Modifier { get; set; }
+
+        public DateTime? CreateDate { get; set; }
+
+        public DateTime? ModiDate { get; set; }
+
+        public DateTime? OrderDate { get; set; }
+
+        public bool IsPrint { get; set; }
+        public int? ProcStatus { get; set; }
+        public int? Status { get; set; }
+
     }
 
     public class ShoppingInformationViewModel
@@ -140,6 +159,8 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EBASKET
         public string ProductName { get; set; }
         public string ProductPic { get; set; }
         public string ProductID { get; set; }
+        public double? StndCost { get; set; }
+        public string StockType { get; set; }
     }
 
 

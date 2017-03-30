@@ -77,6 +77,9 @@ namespace Ecomm.Domain.Models.MyOffice
         public string ProductName { get; set; }
         public string ProductPic { get; set; }
         public string ProductID { get; set; }
+
+        public double? StndCost { get; set; }
+        public string StockType { get; set; }
     }
 }
 

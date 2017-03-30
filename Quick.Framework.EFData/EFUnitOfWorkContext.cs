@@ -24,12 +24,21 @@ namespace Quick.Framework.EFData
         {
             get
             {
-                if(base.WorkContext == EFWorkContext.inetapp)
+                if(base.WorkContext == EFWorkContext.inetsnell)
                 {
                     return EFDbContext.Value;
                 }
+                if (base.WorkContext == EFWorkContext.inetapp)
+                {
+                    if (EFInetAppDbContext.Value == null)
+                    {
+                        Quick.Framework.EFData.EFInetAppDbContext.GetInstance();
+                    }
+                    return EFInetAppDbContext.Value;
+                }
                 if (base.WorkContext == EFWorkContext.appdb)
                 {
+
                     return EFAPPDbContext.Value;
                 }
                 if (base.WorkContext == EFWorkContext.ep_snell)
@@ -58,5 +67,11 @@ namespace Quick.Framework.EFData
 
         [Import("EFGPSPS", typeof(DbContext))]
         private Lazy<EFGPSPSDbContext> EFGPSPSDbContext { get; set; } //延迟初始化的对象的类型。
+
+        [Import("EFINETAPP", typeof(DbContext))]
+        private Lazy<EFInetAppDbContext> EFInetAppDbContext {
+            get;
+            set;
+        } //延迟初始化的对象的类型。
     }
 }

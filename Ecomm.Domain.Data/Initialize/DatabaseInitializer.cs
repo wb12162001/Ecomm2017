@@ -28,6 +28,10 @@ namespace Ecomm.Domain.Data.Initialize
             //Database.SetInitializer(new MigrateDatabaseToLatestVersion<EFDbContext, Configuration>()); 
             //即可见数据库在不修改数据的情况下实现了字段的修改   
             Database.SetInitializer<EFDbContext>(null);
+            Database.SetInitializer<EFAppDbContext>(null);
+            Database.SetInitializer<EFEpsnellDbContext>(null);
+            Database.SetInitializer<EFGPSPSDbContext>(null);
+            Database.SetInitializer<EFInetAppDbContext>(null);
         }
     }
 }

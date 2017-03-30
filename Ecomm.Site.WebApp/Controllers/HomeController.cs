@@ -42,6 +42,12 @@ namespace Ecomm.Site.WebApp.Controllers
         [Import]
         public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
 
+        [Import]
+        public Ecomm.Core.Service.InetApp.IEOrderService EOrderService { get; set; }
+
+        [Import]
+        protected Ecomm.Core.Service.GPSPS.IDBService DBService { get; set; }
+
         public ActionResult Index()
         {
             //IndexPageModel model = new IndexPageModel();
@@ -171,11 +177,11 @@ namespace Ecomm.Site.WebApp.Controllers
             if(obj != null && obj.Product != null){
                 sb.AppendFormat(@"
             <h4><span class='badge'>-9%</span></h4>
-            <a href='#'><img class='product-img' src='{0}'></a>
+            <a href='{4}'><img class='product-img' src='{0}'></a>
             <p class='star-line'>
                 <img src='/Content/snell/images/star-4.png'>
             </p>
-            <a href='#'><p class='product-title'>{1}</p></a>
+            <a href='{4}'><p class='product-title'>{1}</p></a>
             <p class='old-price'>${2}</p>
             <p class='new-price'>${3}</p>
             <div class='countdown'>
@@ -196,7 +202,7 @@ namespace Ecomm.Site.WebApp.Controllers
                     <div class='date-text'>secs</div>
                 </div>
             </div>
-", obj.Picture, obj.Product.ProductName, obj.Product.ListPrice.Value.ToString("N2"), obj.Product.StndCost.Value.ToString("N2")).AppendLine();
+", obj.Picture, obj.Product.ProductName, obj.Product.ListPrice.Value.ToString("N2"), obj.Product.StndCost.Value.ToString("N2"), Url.Action("Detail", "Prod", new { id = obj.Product.ID })).AppendLine();
                 ViewBag.Today = sb.ToString();
             }
         }
@@ -235,13 +241,12 @@ namespace Ecomm.Site.WebApp.Controllers
                     </div>
                 </div>
                 <div class='wishlist-compare'>
-                    <div class='wishlist pull-left'><a href='{4}'><i class='fa fa-heart-o'></i> <span>wishlist</span></a></div>
-                    <div class='compare pull-right'><a href='{4}'><i class='fa fa-exchange'></i> <span>compare</span></a></div>
+                    <div class='wishlist pull-left'><a href='javascript:void(0);' class='add_fav' data-pno='{5}'><i class='fa fa-heart-o'></i> <span>wishlist</span></a></div>
                 </div>
                 <div class='clearfix'></div>
-                <span class='label label-danger is-sale'>SALE!</span>
+
             </div>
-", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.ListPrice.Value.ToString("N2"), "#", item.Product.ProductNo.Trim()).AppendLine();
+", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.ListPrice.Value.ToString("N2"), Url.Action("Detail", "Prod", new { id = item.Product.ID }), item.Product.ProductNo.Trim()).AppendLine();
                 }
             }
             if (!string.IsNullOrEmpty(sb_item.ToString()))
@@ -477,19 +482,17 @@ namespace Ecomm.Site.WebApp.Controllers
                             <p class='new-price'>${3}</p>
                         </div>
                         <div class='pull-right'>
-                            <a href='{4}' class='cart'>
+                            <a href='javascript:void(0);' class='cart' data-pno='{5}' >
                                 <img src='/Content/snell/images/cart_03.png'>
                             </a>
                         </div>
                     </div>
                     <div class='wishlist-compare'>
-                        <div class='wishlist pull-left'><a href='{4}'><i class='fa fa-heart-o'></i> <span>wishlist</span></a></div>
-                        <div class='compare pull-right'><a href='{4}'><i class='fa fa-exchange'></i> <span>compare</span></a></div>
+                        <div class='wishlist pull-left'><a href='javascript:void(0);' class='add_fav' data-pno='{5}'><i class='fa fa-heart-o'></i> <span>wishlist</span></a></div>
                     </div>
                     <div class='clearfix'></div>
-                    <span class='label label-danger is-sale'>SALE!</span>
                 </div>
-", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.StndCost.Value.ToString("N2"), Url.Action("Detail", "Prod", new { id = item.Product.ID })).AppendLine();
+", item.Picture, item.Product.ProductName, item.Product.ListPrice.Value.ToString("N2"), item.Product.StndCost.Value.ToString("N2"), Url.Action("Detail", "Prod", new { id = item.Product.ID }),item.Product.ProductNo.Trim()).AppendLine();
                 }
             }
             return sb_item.ToString();
@@ -523,7 +526,7 @@ namespace Ecomm.Site.WebApp.Controllers
 
                     float frt = 0;
                     float acost = 0;
-                    Rela_contactService.GetFreightByCust(user.AccountInfo.Account_no, out frt, out acost);
+                    DBService.GetFreightByCust(user.AccountInfo.Account_no, out frt, out acost);
                     user.Freight = frt;
                     user.Miscellaneous = acost;
                 }

@@ -1,4 +1,6 @@
 ﻿@using Ecomm.Site.Models.Product.PROD_MASTER;
+@using Chart.Mvc.ComplexChart;
+@using Chart.Mvc.Extensions
 @{
     ViewBag.Title = "Product Detail Page";
     ProductDetailModel DetailModel = (ProductDetailModel)ViewBag.ProductDetailModel;
@@ -14,7 +16,7 @@
         <div class="p_img">
             <div class="big_img">
                 <span class="zoom" id="exm1">
-                    <img src="@DetailModel.BigPic" alt="" />
+                    <img src="@DetailModel.BigPic" />
                 </span>
             </div>
             @if (DetailModel.PhotoList.Count>0) {
@@ -22,7 +24,7 @@
                 @foreach (var item in DetailModel.PhotoList)
                 {
                     <li>
-                        <img src="@item.SmallPic" alt="" />
+                        <img src="@item.SmallPic" data-bigPic="@item.BigPic" onclick="SwitchPic(this);" />
                     </li>
                 }
             </ul>
@@ -66,18 +68,21 @@
                 <p class="gst">(+GST)</p>
                 <div class="add_cart">
                     <input type="number" class="form-control" min="1" value="1" />
-                    <a href="##" class="btn btn-danger">Add to cart</a>
-                    <a href="##" class="btn btn-warning">Add to favourite</a>
+                    <a href="javascript:void(0);" onclick="addCart('@DetailModel.ProductNo');"class="btn btn-danger">Add to cart</a>
+                    <a href="javascript:void(0);" onclick="addFav('@DetailModel.ProductNo');" class="btn btn-warning">Add to favourite</a>
                 </div>
             </div>
         </div>
     </div>
 @if (!string.IsNullOrEmpty(ViewBag.UserName))
 {
+    var barChart = (BarChart)ViewBag.Chart;
     <div class="clearfix"></div>
     <div class="p_body">
         <div class="detail_chart pull-left">
-            @{ Html.RenderPartial("_Chart"); }
+            @*@{ Html.RenderPartial("_Chart"); }*@
+            <canvas id="myCanvas" width="380" height="290"></canvas>
+            @Html.CreateChart("myCanvas", barChart)
         </div>
         <div class="product_detail_info_price pull-left">
             <span>Available Stock</span>
@@ -128,5 +133,9 @@
     $(function() {
         $("#exm1").zoom();
     });
+    function SwitchPic(me) {
+        var pic = $(me).attr("data-bigPic");
+        $("#exm1 img").attr("src", pic);
+    }
 </script>
 }

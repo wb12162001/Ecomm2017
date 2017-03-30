@@ -17,6 +17,8 @@ namespace Ecomm.Core.Repository.MyOffice
     /// 仓储操作层接口 —— SALES_EORDERS 
     /// </summary>
     public interface ISALES_EORDERSRepository : IRepository<SALES_EORDERS>
-    { }
+    {
+        double GetOrdersByCurrentMonth(string custId, string shipId);
+    }
 }
 

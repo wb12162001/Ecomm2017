@@ -41,6 +41,11 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
         #region 公共方法
 
+        public IEnumerable<SALES_ESIORDERFORM_MASTER> QueryEntities(int count, string strWhere, string strOrder)
+        {
+            return SALES_ESIORDERFORMRepository.QueryEntities(count, strWhere, strOrder);
+        }
+
         public OperationResult Insert(SALES_ESIORDERFORMModel model)
         {
             var entity = new SALES_ESIORDERFORM

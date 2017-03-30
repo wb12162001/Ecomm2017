@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecomm.Domain.Models.MyOffice
 {
@@ -56,8 +57,8 @@ namespace Ecomm.Domain.Models.MyOffice
 
 		public DateTime? CreateDate  { get; set; }
 
-
-		public int RowID  { get; set; }
+        [NotMapped]
+        public int RowID  { get; set; }
 
 
 		public int? Status  { get; set; }
@@ -83,7 +84,16 @@ namespace Ecomm.Domain.Models.MyOffice
         
         
     }
-    
-    
+
+    [NotMapped]
+    public class SALES_EORDERDETAILS_MASTER : SALES_EORDERDETAILS
+    {
+        public string ProductName { get; set; }
+        public string ProductPic { get; set; }
+        public string ProductID { get; set; }
+
+        public double? StndCost { get; set; }
+        public string StockType { get; set; }
+    }
 }
 

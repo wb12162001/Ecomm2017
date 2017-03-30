@@ -96,6 +96,10 @@
     <Compile Include="EpSnell\Rela_location_limit\UpdateRela_location_limitModel.cs" />
     <Compile Include="GPSPS\RM00102\RM00102Model.cs" />
     <Compile Include="GPSPS\RM00102\UpdateRM00102Model.cs" />
+    <Compile Include="InetApp\EOrderDetail\EOrderDetailModel.cs" />
+    <Compile Include="InetApp\EOrderDetail\UpdateEOrderDetailModel.cs" />
+    <Compile Include="InetApp\EOrder\EOrderModel.cs" />
+    <Compile Include="InetApp\EOrder\UpdateEOrderModel.cs" />
     <Compile Include="MyOffice\SALES_CLEARANCE\SALES_CLEARANCEModel.cs" />
     <Compile Include="MyOffice\SALES_CLEARANCE\UpdateSALES_CLEARANCEModel.cs" />
     <Compile Include="MyOffice\SALES_CONTRACTPRICE\SALES_CONTRACTPRICEModel.cs" />
