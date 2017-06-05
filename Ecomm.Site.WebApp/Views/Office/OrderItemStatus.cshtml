@@ -1,0 +1,55 @@
+﻿
+<style>
+    .products .popular-products {
+        margin-left: 0px;
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 8px 8px;
+    }
+
+        .products .popular-products .product-list {
+            border: none;
+        }
+</style>
+<div class="clearfix"></div>
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li>Order Status</li>
+        <li class="active">Order Line Item Status</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>Order Line Item Status</h3>
+        </div>
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+            <form action="">
+                <table class="table table-striped">
+                    <tr style="color: #cd0824;">
+                        <th style="width: 20%">Product Code</th>
+                        <th style="width: 30%">Description</th>
+                        <th style="width: 10%">Qty BackOrdered.</th>
+                        <th style="width: 10%">Qty Ordered</th>
+                        <th style="width: 10%">Qty Shipped</th>
+                    </tr>
+@if (ViewBag.OrderModel != null)
+{
+    IEnumerable<Ecomm.Site.Models.MyOffice.SALES_EORDERS.Order_ItemModel> orders = (IEnumerable<Ecomm.Site.Models.MyOffice.SALES_EORDERS.Order_ItemModel>)ViewBag.OrderModel;
+    foreach (var order in orders)
+    {
+                    <tr style="color: #8B8770;font-size: 12px;">
+                        <td><a href="###">@order.ITEMNMBR</a></td>
+                        <td>@order.ITEMDESC</td>
+                        <td>@order.Qty_BackOrdered</td>
+                        <td>@order.Qty_Ordered</td>
+                        <td>@order.Qty_Shipped</td>
+                    </tr>
+    }
+}
+                </table>
+            </form>
+            <a href="###" class="btn btn-primary pull-right">Go Back</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

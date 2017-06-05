@@ -28,6 +28,7 @@ namespace Ecomm.Core.Service.SysConfig
         #endregion
 
         #region 公共方法
+        IEnumerable<INFOR_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder);
         OperationResult Insert(INFOR_MASTERModel model);
         OperationResult Update(INFOR_MASTERModel model);
         /// <summary>

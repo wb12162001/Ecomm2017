@@ -10,9 +10,16 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Webdiyer.WebControls.Mvc;
 using System.Text;
 using System.IO;
 using Quick.Framework.Tool;
+using Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM;
+using Ecomm.Site.Models.EpSnell.Rela_contact;
+using System.Threading;
+using Ecomm.Domain.Models.MyOffice;
+using Newtonsoft.Json;
+using Ecomm.Site.Models.EpSnell.Rela_contact_location;
 
 namespace Ecomm.Site.WebApp.Controllers
 {
@@ -20,6 +27,8 @@ namespace Ecomm.Site.WebApp.Controllers
     {
         [Import]
         public Ecomm.Core.Service.GPSPS.IDBService DBService { get; set; }
+        [Import]
+        public Ecomm.Core.Service.EpSnell.IRela_contactService Rela_contactService { get; set; }
 
         [Import]
         public Ecomm.Core.Service.EpSnell.IRela_account_locationService Rela_account_locationService { get; set; }
@@ -42,6 +51,21 @@ namespace Ecomm.Site.WebApp.Controllers
         [Import]
         public Ecomm.Core.Service.InetApp.IEOrderDetailService EOrderDetailService { get; set; }
 
+        [Import]
+        public Ecomm.Core.Service.MyOffice.ISALES_ESIORDERFORMService SALES_ESIORDERFORMService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.MyOffice.ISALES_FAVFOLDERService SALES_FAVFOLDERService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.MyOffice.ISALES_FAVORITEService SALES_FAVORITEService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.Product.IPROD_MASTERService PROD_MASTERService { get; set; }
+
         // GET: Office
         public ActionResult Index()
         {
@@ -56,12 +80,19 @@ namespace Ecomm.Site.WebApp.Controllers
             }
             ShoppingCartViewModel ShoppingCart = (ShoppingCartViewModel)ViewBag.ShoppingCartModel;
             string msg = string.Empty;
-            //Ben 2014-08-20 For the MinOrderValue
-            if (CurrentUser.MinOrderValue > 0 && CurrentUser.MinOrderValue > double.Parse(ShoppingCart.CartTotal))
+            string misc_msg = string.Empty;
+            //Ben 2014-08-20 For the MinOrderValue 页面一直有这个消息;只是判断是否显示;
+            if (CurrentUser.MinOrderValue > 0)
             {
                 msg = string.Format("We are unable to process as below ${0}/order threshold, please increase your order or contact the customers service team on 0800736557 to discuss options.", CurrentUser.MinOrderValue.ToString("N2"));
+
+            }
+            if (CurrentUser.MinOrderSize > 0)
+            {
+                misc_msg = string.Format("Save ${1}! Simply by increasing your orders to ${0}, your small orders fee will be waived!", CurrentUser.MinOrderSize.ToString("N0"), CurrentUser.MinOrderMisc.ToString("N0"));
             }
             ViewBag.MinOrderMsg = msg;
+            ViewBag.Misctitle = misc_msg;
             return View();
         }
 
@@ -140,8 +171,9 @@ namespace Ecomm.Site.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.ShipTo != "SHIPTONEW") {
-                    
+                if (model.ShipTo != "SHIPTONEW")
+                {
+
                     var info = Rela_account_locationService.Rela_account_locationList.FirstOrDefault(t => t.Account_no == CurrentUser.AccountInfo.Account_no && t.Address_id == model.ShipTo);
                     model.Company = info.Address1;
                     model.Contact = info.Contact_id;
@@ -150,11 +182,11 @@ namespace Ecomm.Site.WebApp.Controllers
                     model.Address = info.Address2;
                 }
                 ShoppingOrder.ShoppingInfo = model;
-                
+
             }
 
             ShoppingOrder.ShoppingCart = (ShoppingCartViewModel)ViewBag.ShoppingCartModel;
-            
+
             ViewBag.ShoppingOrderModel = ShoppingOrder;
             ViewBag.CurrentUser = CurrentUser;
             return View();
@@ -190,7 +222,7 @@ namespace Ecomm.Site.WebApp.Controllers
                     SALES_EORDERDETAILSModel detailInfo = new SALES_EORDERDETAILSModel();
 
                     detailInfo.ProductNo = drv.ProductNo;
-                    detailInfo.OrderQty = drv.Quantity; 
+                    detailInfo.OrderQty = drv.Quantity;
                     detailInfo.UnitPrice = drv.UnitPrice;
                     detailInfo.Unit = drv.Unit;
                     detailInfo.UnitPType = drv.UnitPType;
@@ -214,7 +246,7 @@ namespace Ecomm.Site.WebApp.Controllers
                 }
                 retsult = result_oid;
             }
-            
+
             //remove session eorder info
             //Response.Redirect("PrintOrder.aspx?state=ok&oid=" + base.EOrderInfo.ID, false);
             //RedirectToAction("PrintOrder", "Office", new { state = "ok", oid = eorderInfo.ID });
@@ -444,7 +476,7 @@ namespace Ecomm.Site.WebApp.Controllers
                     strhtml.Replace("$Get", Gst);
                     strhtml.Replace("$TOTAL", Total);
                     //0 为成功
-                   return  Common.SendEmailHelper.Send_Email(repEmail, repToEmail, strhtml.ToString(), Common.SendEmailHelper.Order_MailSubject + " " + InvoiceNo);
+                    return Common.SendEmailHelper.Send_Email(repEmail, repToEmail, strhtml.ToString(), Common.SendEmailHelper.Order_MailSubject + " " + InvoiceNo);
                 }
             }
             return -1;
@@ -470,7 +502,7 @@ namespace Ecomm.Site.WebApp.Controllers
                 return RedirectToAction("Index", "Error", new { msg = "There was an error accessing the page." });
                 //return;
             }
-                if (!ModelState.IsValid) //验证失败
+            if (!ModelState.IsValid) //验证失败
             {
                 return View();
             }
@@ -486,7 +518,7 @@ namespace Ecomm.Site.WebApp.Controllers
             ShoppingOrder.ProcStatus = 0;
 
             //其它逻辑增加 Aprove,Hold
-            if (!CurrentUser.IsManager && CurrentUser.AmountLimit > 0)//用户不是管理员，订单有总额限制
+            if (!(bool)CurrentUser.IsManager && CurrentUser.AmountLimit > 0)//用户不是管理员，订单有总额限制
             {
                 if (Double.Parse(ShoppingOrder.ShoppingCart.CartTotal) >= CurrentUser.AmountLimit)
                 {
@@ -529,11 +561,1063 @@ namespace Ecomm.Site.WebApp.Controllers
         [HttpPost]
         public ActionResult SendUserEmail(string orderId, string emailTo)
         {
-            orderId = orderId.Replace("INT","");
+            orderId = orderId.Replace("INT", "");
             OperationResult result = new OperationResult(OperationResultType.Warning, "send email fail.");
             int r = SendEmail(orderId, emailTo);
-            if(r ==0) result = new OperationResult(OperationResultType.Success, "send email success.");
+            if (r == 0) result = new OperationResult(OperationResultType.Success, "send email success.");
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        #region EOF
+        private List<string> getCategoryStrWhere()
+        {
+            var user = base.CurrentUser;
+            List<string> condition = new List<string>();
+            
+            condition.Add(string.Format(" CustomerID='{0}'", user.AccountInfo.Account_no));
+            //Ben 2013-08-29
+            //用户登录只能查看自己的ShipTo
+            if (user.AccountInfo != null)
+            {
+                var locations = Rela_account_locationService.Rela_account_locationList.Where(t => t.Account_no == user.AccountInfo.Account_no && t.Contact_id == user.Id).
+                    Select(t => new { address_no = t.Address_id });
+                var locs = from loc in locations.AsEnumerable()
+                           select "'" + loc.address_no.Trim() + "'";
+                if (locs.Count() > 0)
+                {
+                    string addressWhere = string.Join(",", locs.ToArray());
+                    condition.Add(string.Format("ShipTo in ({0})", addressWhere));
+                }
+            }
+            return condition;
+        }
+        private string getStrWhere(string category, string location ,string ctype)
+        {
+            string strWhrer = string.Empty;
+            List<string> condition = getCategoryStrWhere();
+
+            if (ctype == "1")
+            {
+                location = string.Empty;
+            }
+            if (ctype == "2")
+            {
+                category = string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(location) && !location.Contains("ALL"))
+            {
+                condition.Add(string.Format("ShipTo='{0}'", location));
+            }
+            if (!string.IsNullOrEmpty(category))
+            {
+                string cateWhere = string.Empty;
+
+                string[] cateArr = category.Split(',');
+                List<string> cateList = new List<string>();
+                foreach (string c in cateArr)
+                {
+                    cateList.Add("'" + c + "'");
+                }
+                cateWhere = string.Join(",", cateList.ToArray());
+
+                condition.Add(string.Format("a.CategoryCode in ({0})", cateWhere));
+            }
+
+            if (condition.Count > 0) strWhrer = " Where " + string.Join(" and ", condition.ToArray());
+            return strWhrer;
+            //locationList = GetEOFShipToCount(strWhrer);
+        }
+        public ActionResult EasiOrderForm(int id = 1)
+        {
+            //分页控件语言定义
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            string tab_type = Common.Util.GetCookie("snell_product_tab_type");
+            if (string.IsNullOrEmpty(tab_type))
+            {
+                Common.Util.SetCookie("snell_product_tab_type", "list");
+            }
+            var orderby = Request.Params["sortModle"] ?? " ProductName asc";
+            var category = Request.Params["category"] ?? "";
+            var location = Request.Params["location"] ?? "";
+            var ctype = Request.Params["ctype"] ?? "0"; //这里区分是:category, location
+            if (!string.IsNullOrEmpty(category))
+            {
+                var cates = JsonConvert.DeserializeObject<List<string>>(category);
+                category = string.Join(",", cates.ToArray());
+            }
+
+            if (!string.IsNullOrEmpty(location))
+            {
+                var locas = JsonConvert.DeserializeObject<List<string>>(location);
+                location = string.Join(",", locas.ToArray());
+            }
+
+            int pageSize = base.CurrentUser.EofPageSize;
+            int pageCount = 0;
+            
+            string strWhere = getStrWhere(category, location, ctype);
+            
+            var dt = SALES_ESIORDERFORMService.GetItems(base.CurrentUser.AccountInfo.Account_no,strWhere, location, orderby, id, pageSize, out pageCount);// Ben 2012-12-25
+            if (dt != null && dt.Count() > 0)
+            {
+                var items = dt.AsEnumerable()
+                            .Select(t => new EOF_PAGE_MASTER
+                            {
+                                ProductID = t.ProductID,
+                                ProductNo = t.ProductNo,
+                                ProductName = t.ProductName,
+                                BigPic = Common.Util.GetProductImgUrl(t.BigPic, false),
+                                SmallPic = Common.Util.GetProductImgUrl(t.SmallPic),
+                                MiddlePic = Common.Util.GetProductImgUrl(t.SmallPic).Replace("Small", "Middl"),
+                                StockType = t.StockType,
+                                SellPrice = SALES_ESIORDERFORMService.getCurrentPrice(t.CurrentPrice, t.ListPrice),//Ecomm.BLL.Snell_Hold.GetSellPrice(item.Field<string>("ProductNo"), item.Field<double>("ListPrice"), 0).ToString("N2"), //在EasiorderForm不需要对价格进行处理，因为已经登陆了
+
+                                Qty0 = t.Qty0,
+                                Qty1 = t.Qty1,
+                                Qty2 = t.Qty2,
+                                Qty3 = t.Qty3,
+                                Qty4 = t.Qty4,
+                                Forecast = t.Forecast,
+                                CategoryName = t.CategoryName,//Ben 2015-12-18 修改存储过程同时修改这个字段
+                                BaseUOFM = t.BaseUOFM,
+                                ListPrice = t.ListPrice,
+                                Item04 = string.IsNullOrEmpty(t.Item04) ? "" : t.Item04,
+                                pCount = pageCount,
+                                altPath = Common.Util.SiteRootURL + "detailchart.aspx?proNo=" + t.ProductNo
+                            });
+
+                if (!string.IsNullOrEmpty(orderby) && orderby.IndexOf("SellPrice") > -1)
+                {
+                    if (orderby.IndexOf("asc") > -1)
+                    {
+                        items.OrderBy(i => i.SellPrice);
+                    }
+                    if (orderby.IndexOf("desc") > -1)
+                    {
+                        items.OrderByDescending(i => i.SellPrice);
+                    }
+                }
+                ViewBag.PagedListEofModel = new PagedList<EOF_PAGE_MASTER>(items, id, pageSize, pageCount);
+            }
+            ViewBag.Months = new EOF_PAGE_Other_MASTER
+            {
+                Month0 = Common.Util.GetMonthName(DateTime.Now.Month),
+                Month1 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-1).Month),
+                Month2 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-2).Month),
+                Month3 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-3).Month),
+                Month4 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-4).Month),
+            };
+            if (Request.IsAjaxRequest())
+            {
+                System.Threading.Thread.Sleep(1000);
+                return PartialView("_EofList");
+            }
+
+            EOF_PAGE_Other2_MASTER eof_master = new EOF_PAGE_Other2_MASTER();
+            //IEnumerable<EOF_Location> locationList = null;
+            string strWhrer2 = string.Empty;
+            List<string> condition = getCategoryStrWhere();
+            if (condition.Count > 0) strWhrer2 = " Where " + string.Join(" and ", condition.ToArray());
+            eof_master.Categories = BindCategory(strWhrer2).ToList();
+            eof_master.Locations = BindLocation(strWhrer2).ToList();
+
+            var myfavs = SALES_FAVFOLDERService.GetFavFoldersAndItemCount(base.CurrentUser.AccountInfo.Account_no, base.CurrentUser.Id);
+            eof_master.MyFavourites = myfavs.Select(t => new EOF_Favourite
+            {
+                Count = t.itemCount,
+                Favourite = t.FolderName,
+                FavouriteID = t.ID
+            }).ToList();
+
+            ViewBag.EOF_Model = eof_master;
+            return View();
+        }
+
+        private IEnumerable<EOF_Category> BindCategory(string strWhere)
+        {
+            var rows = SALES_ESIORDERFORMService.GetByCustIDAndShipto(base.CurrentUser.AccountInfo.Account_no, string.Empty, "ALL", strWhere, string.Empty);
+            var categories = from category in rows
+                             group category by new { code = category.CategoryCode, name = category.CategoryName?? category.MenuAlias } into cs
+                             select new EOF_Category
+                             {
+                                 CategoryName = cs.Key.name,
+                                 CategoryCode = cs.Key.code,
+                                 Count = cs.Count()
+                             };
+            return categories;
+        }
+        private IEnumerable<EOF_Location> BindLocation(string strWhere)
+        {
+            var rows = SALES_ESIORDERFORMService.GetEOFShipToCount(strWhere);
+            var locats = from loca in rows
+                         select new EOF_Location
+                         {
+                             Count = loca.Total,
+                             ShopName = loca.ShipTo
+                         };
+            return locats;
+
+        }
+
+        #endregion
+
+        #region CustomizedProduct
+        public ActionResult CustomizedProdcut(int id = 1)
+        {
+            //分页控件语言定义
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            string tab_type = Common.Util.GetCookie("snell_product_tab_type");
+            if (string.IsNullOrEmpty(tab_type))
+            {
+                Common.Util.SetCookie("snell_product_tab_type", "list");
+            }
+            var orderby = Request.Params["sortModle"] ?? " ProductName asc";
+            var category = Request.Params["category"] ?? "";
+            var location = Request.Params["location"] ?? "";
+            if (!string.IsNullOrEmpty(category))
+            {
+                var cates = JsonConvert.DeserializeObject<List<string>>(category);
+                category = string.Join(",", cates.ToArray());
+            }
+
+            if (!string.IsNullOrEmpty(location))
+            {
+                var locas = JsonConvert.DeserializeObject<List<string>>(location);
+                location = string.Join(",", locas.ToArray());
+            }
+
+            int pageSize = base.CurrentUser.EofPageSize;
+            int pageCount = 0;
+
+            string strWhere = string.Empty;
+            List<string> condition = new List<string>();
+            //if (!string.IsNullOrEmpty(location) && !location.Contains("ALL"))
+            //{
+            //    condition.Add(string.Format("ShipTo='{0}'", location));
+            //}
+            if (!string.IsNullOrEmpty(category))
+            {
+                string cateWhere = string.Empty;
+
+                string[] cateArr = category.Split(',');
+                List<string> cateList = new List<string>();
+                foreach (string c in cateArr)
+                {
+                    cateList.Add("'" + c + "'");
+                }
+                cateWhere = string.Join(",", cateList.ToArray());
+
+                condition.Add(string.Format("CategoryCode in ({0})", cateWhere));
+            }
+            if (condition.Count > 0) strWhere = string.Join(" and ", condition.ToArray());
+
+            var dt = SALES_ESIORDERFORMService.GetCustomizedProducts(strWhere, base.CurrentUser.AccountInfo.Account_no,  orderby,  pageSize, id, out pageCount);// Ben 2012-12-25
+            if (dt != null && dt.Count() > 0)
+            {
+                var items = dt.AsEnumerable()
+                            .Select(t => new EOF_PAGE_MASTER
+                            {
+                                ProductID = t.ProductID,
+                                ProductNo = t.ProductNo,
+                                ProductName = t.ProductName,
+                                BigPic = Common.Util.GetProductImgUrl(t.BigPic, false),
+                                SmallPic = Common.Util.GetProductImgUrl(t.SmallPic),
+                                MiddlePic = Common.Util.GetProductImgUrl(t.SmallPic).Replace("Small", "Middl"),
+                                StockType = t.StockType,
+                                SellPrice = PROD_MASTERService.GetSellPrice(t.ProductNo, Common.Util.TransformObjToDou(t.ListPrice), (double)t.SpecialPrice), //在EasiorderForm不需要对价格进行处理，因为已经登陆了
+                                CategoryName = string.IsNullOrEmpty(t.CategoryName) ? t.CategoryCode : t.CategoryName,
+                                BaseUOFM = t.BaseUOFM,
+                                ListPrice = t.ListPrice,
+                                pCount = pageCount,
+                                altPath = Common.Util.SiteRootURL + "detailchart.aspx?proNo=" + t.ProductNo
+                            });
+
+                if (!string.IsNullOrEmpty(orderby) && orderby.IndexOf("SellPrice") > -1)
+                {
+                    if (orderby.IndexOf("asc") > -1)
+                    {
+                        items.OrderBy(i => i.SellPrice);
+                    }
+                    if (orderby.IndexOf("desc") > -1)
+                    {
+                        items.OrderByDescending(i => i.SellPrice);
+                    }
+                }
+                ViewBag.PagedListModel = new PagedList<EOF_PAGE_MASTER>(items, id, pageSize, pageCount);
+            }
+            if (Request.IsAjaxRequest())
+            {
+                System.Threading.Thread.Sleep(1000);
+                return PartialView("_CustomizedProdList");
+            }
+            EOF_PAGE_Other2_MASTER eof_master = new EOF_PAGE_Other2_MASTER();
+            ViewBag.EOF_Model = eof_master;
+            eof_master.Categories = BindCustomizedProdCategory().ToList();
+            return View();
+        }
+
+        private IEnumerable<EOF_Category> BindCustomizedProdCategory()
+        {
+            int totalcount = 0;
+            var rows = SALES_ESIORDERFORMService.GetCustomizedProducts(string.Empty, base.CurrentUser.AccountInfo.Account_no, string.Empty, 0, 1, out totalcount); ;
+            var categories = from category in rows
+                             group category by new { code = category.CategoryCode, name = category.CategoryName ?? category.MenuAlias } into cs
+                             select new EOF_Category
+                             {
+                                 CategoryName = cs.Key.name,
+                                 CategoryCode = cs.Key.code,
+                                 Count = cs.Count()
+                             };
+            return categories;
+        }
+
+        #endregion
+
+        #region ContractPricing
+
+        public ActionResult ContractPricing(int id = 1)
+        {
+            //分页控件语言定义
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            string tab_type = Common.Util.GetCookie("snell_product_tab_type");
+            if (string.IsNullOrEmpty(tab_type))
+            {
+                Common.Util.SetCookie("snell_product_tab_type", "list");
+            }
+            var orderby = Request.Params["sortModle"] ?? " ProductName asc";
+            var category = Request.Params["category"] ?? "";
+            var location = Request.Params["location"] ?? "";
+            if (!string.IsNullOrEmpty(category))
+            {
+                var cates = JsonConvert.DeserializeObject<List<string>>(category);
+                category = string.Join(",", cates.ToArray());
+            }
+
+            if (!string.IsNullOrEmpty(location))
+            {
+                var locas = JsonConvert.DeserializeObject<List<string>>(location);
+                location = string.Join(",", locas.ToArray());
+            }
+
+            int pageSize = base.CurrentUser.EofPageSize;
+            int pageCount = 0;
+
+            string strWhere = string.Empty;
+            List<string> condition = new List<string>();
+            condition.Add(string.Format("a.CustomerID = '{0}'", base.CurrentUser.AccountInfo.Account_no));
+            if (!string.IsNullOrEmpty(category))
+            {
+                string cateWhere = string.Empty;
+
+                string[] cateArr = category.Split(',');
+                List<string> cateList = new List<string>();
+                foreach (string c in cateArr)
+                {
+                    cateList.Add("'" + c + "'");
+                }
+                cateWhere = string.Join(",", cateList.ToArray());
+
+                condition.Add(string.Format("f0.CategoryCode in ({0})", cateWhere));
+            }
+            if (condition.Count > 0) strWhere = "  Where " + string.Join(" and ", condition.ToArray());
+
+            var dt = SALES_CONTRACTPRICEService.GetContractPric(strWhere, orderby, pageSize, id, out pageCount);// Ben 2012-12-25
+            if (dt != null && dt.Count() > 0)
+            {
+                var items = dt.AsEnumerable()
+                            .Select(t => new EOF_PAGE_MASTER
+                            {
+                                ProductID = t.ProductID,
+                                ProductNo = t.ProductNo,
+                                ProductName = t.ProductName,
+                                BigPic = Common.Util.GetProductImgUrl(t.BigPic, false),
+                                SmallPic = Common.Util.GetProductImgUrl(t.SmallPic),
+                                MiddlePic = Common.Util.GetProductImgUrl(t.SmallPic).Replace("Small", "Middl"),
+                                StockType = t.StockType,
+                                SellPrice = PROD_MASTERService.GetSellPrice(t.ProductNo, Common.Util.TransformObjToDou(t.ListPrice), (double)t.SpecialPrice), //在EasiorderForm不需要对价格进行处理，因为已经登陆了
+                                CategoryName = string.IsNullOrEmpty(t.CategoryName) ? t.CategoryCode : t.CategoryName,
+                                BaseUOFM = t.BaseUOFM,
+                                ListPrice = t.ListPrice,
+                                pCount = pageCount,
+                                altPath = Common.Util.SiteRootURL + "detailchart.aspx?proNo=" + t.ProductNo
+                            });
+
+                if (!string.IsNullOrEmpty(orderby) && orderby.IndexOf("SellPrice") > -1)
+                {
+                    if (orderby.IndexOf("asc") > -1)
+                    {
+                        items.OrderBy(i => i.SellPrice);
+                    }
+                    if (orderby.IndexOf("desc") > -1)
+                    {
+                        items.OrderByDescending(i => i.SellPrice);
+                    }
+                }
+                ViewBag.PagedListModel = new PagedList<EOF_PAGE_MASTER>(items, id, pageSize, pageCount);
+            }
+            if (Request.IsAjaxRequest())
+            {
+                System.Threading.Thread.Sleep(1000);
+                return PartialView("_CustomizedProdList");
+            }
+            EOF_PAGE_Other2_MASTER eof_master = new EOF_PAGE_Other2_MASTER();
+            ViewBag.EOF_Model = eof_master;
+            eof_master.Categories = BindContractPricingCategory().ToList();
+            return View();
+        }
+
+        private IEnumerable<EOF_Category> BindContractPricingCategory()
+        {
+            int totalcount = 0;
+            var rows = SALES_CONTRACTPRICEService.GetContractPric(" where a.CustomerID = '" + base.CurrentUser.AccountInfo.Account_no + "'", string.Empty, 0, -1, out totalcount); ;
+            var categories = from category in rows
+                             group category by new { code = category.CategoryCode, name = category.CategoryName ?? category.MenuAlias } into cs
+                             select new EOF_Category
+                             {
+                                 CategoryName = cs.Key.name,
+                                 CategoryCode = cs.Key.code,
+                                 Count = cs.Count()
+                             };
+            return categories;
+        }
+
+        #endregion
+
+        #region My Favourites
+        public ActionResult MyFavourites()
+        {
+            var myfavs = SALES_FAVFOLDERService.GetFavFoldersAndItemCount(base.CurrentUser.AccountInfo.Account_no, base.CurrentUser.Id);
+            ViewBag.MyFavourites = myfavs.Select(t => new EOF_Favourite
+            {
+                Count = t.itemCount,
+                Favourite = t.FolderName,
+                FavouriteID = t.ID,
+                Img = GetFavFolderFirstImg(t.ID)
+            }).ToList();
+
+            return View();
+        }
+
+        private string GetFavFolderFirstImg(string favFolderID)
+        {
+           string img =  SALES_FAVORITEService.GetFavFolderFirstImg(favFolderID);
+            if (img != null && !string.IsNullOrEmpty(img))
+            {
+                img = Common.Util.UploadFilesRootURL + img;
+            }
+            return img;
+        }
+        [HttpPost]
+        public JsonResult UpdateFavourite(string hdfavid, string FavouriteName)
+        {
+            if (string.IsNullOrEmpty(hdfavid))
+            {
+                Models.MyOffice.SALES_FAVFOLDER.SALES_FAVFOLDERModel model = new Models.MyOffice.SALES_FAVFOLDER.SALES_FAVFOLDERModel
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    FolderName = FavouriteName,
+                    Status = 0,
+                    CreateDate = DateTime.Now,
+                    CustomerID = CurrentUser.AccountInfo.Account_no,
+                    ContactID = CurrentUser.Id,
+                    Creator = CurrentUser.UserName,
+                };
+                SALES_FAVFOLDERService.Insert(model);
+                return Json(new { success = true, message = "added success" });
+            }
+            else
+            {
+                var info = SALES_FAVFOLDERService.SALES_FAVFOLDERList.FirstOrDefault(t => t.ID == hdfavid);
+                if (info != null)
+                {
+                    info.FolderName = FavouriteName;
+                    info.ModiDate = DateTime.Now;
+                    info.Modifier = CurrentUser.UserName;
+                    SALES_FAVFOLDERService.Update(info);
+                    return Json(new { success = true, message = "edit success" });
+                }
+            }
+            return Json(new { success = false, message = "failed" });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveFavourite(string favid)
+        {
+            SALES_FAVFOLDERService.DeleteBysql(favid);
+            return Json(new { success = true, message = "delete success" });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveFavouriteItem(string favid)
+        {
+            SALES_FAVORITEService.Delete(favid);
+            return Json(new { success = true, message = "delete success" });
+        }
+
+        public ActionResult MyFavouriteItems(int id = 1,string favId ="")
+        {
+            //分页控件语言定义
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            string tab_type = Common.Util.GetCookie("snell_product_tab_type");
+            if (string.IsNullOrEmpty(tab_type))
+            {
+                Common.Util.SetCookie("snell_product_tab_type", "list");
+            }
+            var orderby = Request.Params["sortModle"] ?? " ProductName asc";
+            var category = Request.Params["category"] ?? "";
+            if (string.IsNullOrEmpty(favId)) favId = Request.Params["favId"] ?? "";
+            if (!string.IsNullOrEmpty(category))
+            {
+                var cates = JsonConvert.DeserializeObject<List<string>>(category);
+                category = string.Join(",", cates.ToArray());
+            }
+
+
+            int pageSize = base.CurrentUser.EofPageSize;
+            int pageCount = 0;
+
+            string strWhere = string.Empty;
+            List<string> condition = new List<string>();
+            if (!string.IsNullOrEmpty(favId))
+            {
+                condition.Add(string.Format("a.FavFolderID = '{0}'", favId));
+            }
+            if (!string.IsNullOrEmpty(category))
+            {
+                string cateWhere = string.Empty;
+
+                string[] cateArr = category.Split(',');
+                List<string> cateList = new List<string>();
+                foreach (string c in cateArr)
+                {
+                    cateList.Add("'" + c + "'");
+                }
+                cateWhere = string.Join(",", cateList.ToArray());
+
+                condition.Add(string.Format("f0.CategoryCode in ({0})", cateWhere));
+            }
+            if (condition.Count > 0) strWhere = string.Join(" and ", condition.ToArray());
+
+            var dt = SALES_FAVORITEService.GetAllByCondition(CurrentUser.AccountInfo.Account_no,CurrentUser.Id, strWhere);// Ben 2012-12-25
+            if (dt != null && dt.Count() > 0)
+            {
+                var items = dt.AsEnumerable()
+                            .Select(t => new EOF_PAGE_MASTER
+                            {
+                                ID = t.ID,
+                                ProductID = t.ProductID,
+                                ProductNo = t.ProductNo,
+                                ProductName = t.ProductName,
+                                BigPic = Common.Util.GetProductImgUrl(t.BigPic, false),
+                                SmallPic = Common.Util.GetProductImgUrl(t.SmallPic),
+                                MiddlePic = Common.Util.GetProductImgUrl(t.SmallPic).Replace("Small", "Middl"),
+                                StockType = t.StockType,
+                                SellPrice = PROD_MASTERService.GetSellPrice(t.ProductNo, Common.Util.TransformObjToDou(t.ListPrice), (double)t.SpecialPrice), //在EasiorderForm不需要对价格进行处理，因为已经登陆了
+                                Qty0 = SALES_ESIORDERFORMService.GetQTYBycustomerID(CurrentUser.AccountInfo.Account_no, t.ProductNo)[0],
+                                Qty1 = SALES_ESIORDERFORMService.GetQTYBycustomerID(CurrentUser.AccountInfo.Account_no, t.ProductNo)[1],
+                                Qty2 = SALES_ESIORDERFORMService.GetQTYBycustomerID(CurrentUser.AccountInfo.Account_no, t.ProductNo)[2],
+                                Qty3 = SALES_ESIORDERFORMService.GetQTYBycustomerID(CurrentUser.AccountInfo.Account_no, t.ProductNo)[3],
+                                CategoryName = string.IsNullOrEmpty(t.CategoryName) ? t.CategoryCode : t.CategoryName,
+                                BaseUOFM = t.BaseUOFM,
+                                ListPrice = t.ListPrice,
+                                pCount = pageCount,
+                                altPath = Common.Util.SiteRootURL + "detailchart.aspx?proNo=" + t.ProductNo
+                            });
+
+                if (!string.IsNullOrEmpty(orderby))
+                {
+                    if(orderby.IndexOf("ProductName") > -1)
+                    {
+                        if (orderby.IndexOf("asc") > -1)
+                        {
+                            items = items.OrderBy(i => i.ProductName);
+                        }
+                        if (orderby.IndexOf("desc") > -1)
+                        {
+                            items = items.OrderByDescending(i => i.ProductName);
+                        }
+                    }
+                    if (orderby.IndexOf("ProductNo") > -1)
+                    {
+                        if (orderby.IndexOf("asc") > -1)
+                        {
+                            items = items.OrderBy(i => i.ProductNo);
+                        }
+                        if (orderby.IndexOf("desc") > -1)
+                        {
+                            items = items.OrderByDescending(i => i.ProductNo);
+                        }
+                    }
+                    if (orderby.IndexOf("CategoryCode") > -1)
+                    {
+                        if (orderby.IndexOf("asc") > -1)
+                        {
+                            items = items.OrderBy(i => i.CategoryCode);
+                        }
+                        if (orderby.IndexOf("desc") > -1)
+                        {
+                             items.OrderByDescending(i => i.CategoryCode);
+                        }
+                    }
+
+                }
+                ViewBag.PagedListModel = items.ToPagedList(id, 5);
+            }
+            ViewBag.Months = new EOF_PAGE_Other_MASTER
+            {
+                Month0 = Common.Util.GetMonthName(DateTime.Now.Month),
+                Month1 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-1).Month),
+                Month2 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-2).Month),
+                Month3 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-3).Month),
+                Month4 = Common.Util.GetMonthName(DateTime.Now.AddMonths(-4).Month),
+            };
+            if (Request.IsAjaxRequest())
+            {
+                //System.Threading.Thread.Sleep(1000);
+                return PartialView("_Favourites");
+            }
+            EOF_PAGE_Other2_MASTER eof_master = new EOF_PAGE_Other2_MASTER();
+            ViewBag.EOF_Model = eof_master;
+            ViewBag.FavId = favId;
+            ViewBag.FavName = SALES_FAVFOLDERService.GetFavName(favId);
+
+            var myfavs = SALES_FAVFOLDERService.GetFavFoldersAndItemCount(base.CurrentUser.AccountInfo.Account_no, base.CurrentUser.Id);
+            eof_master.MyFavourites = myfavs.Select(t => new EOF_Favourite
+            {
+                Count = t.itemCount,
+                Favourite = t.FolderName,
+                FavouriteID = t.ID
+            }).ToList();
+            eof_master.Categories = BindMyFavouritesCategory(favId).ToList();
+            return View();
+
+            //var items = SALES_FAVORITEService.SALES_FAVORITEList.Where(t => t.FavFolderID == favId).Select();
+            //return View();
+        }
+
+        private IEnumerable<EOF_Category> BindMyFavouritesCategory(string favId)
+        {
+            string strWhere = string.Empty;
+            if (!string.IsNullOrEmpty(favId))
+            {
+                strWhere = string.Format("a.FavFolderID = '{0}'", favId);
+            }
+            var rows = SALES_FAVORITEService.GetAllByCondition(CurrentUser.AccountInfo.Account_no, CurrentUser.Id, strWhere);
+            var categories = from category in rows
+                             group category by new { code = category.CategoryCode, name = category.CategoryName ?? category.MenuAlias } into cs
+                             select new EOF_Category
+                             {
+                                 CategoryName = cs.Key.name,
+                                 CategoryCode = cs.Key.code,
+                                 Count = cs.Count()
+                             };
+            return categories;
+        }
+
+        public ActionResult GetMyFav(int pageSize = 5, int pageNumber = 1)
+        {
+            var myfavs = SALES_FAVFOLDERService.GetFavFoldersAndItemCount(base.CurrentUser.AccountInfo.Account_no, base.CurrentUser.Id);
+            var list = myfavs.Select(t => new EOF_Favourite
+            {
+                Count = t.itemCount,
+                Favourite = t.FolderName,
+                FavouriteID = t.ID
+            }).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            int total = myfavs.Count();
+            var json = new { total = total, rows = list };
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region User manage
+        public ActionResult Users()
+        {
+            //var ls = Rela_contactService.Rela_contactList.Where(t => t.Account_id == CurrentUser.Account_id);
+            //string sql = string.Format("a.[account_id]='{0}' and a.[UserName]<>'' and a.[id]<>'{1}'", base.CurrentUser.Account_id,base.CurrentUser.Id);
+            var users = Rela_contactService.Rela_contactList.Where(t => t.Account_id == CurrentUser.Account_id && t.UserName != "" && t.Id != CurrentUser.Id)
+                .Select(t=>new Rela_contactModel
+                {
+                    Name = t.Name,
+                    Phone1 = t.Phone1,
+                    Mobile = t.Mobile,
+                    IsManager = t.IsManager,
+                    UserName = t.UserName,
+                    Password = t.Password,
+                    AmountLimit = t.AmountLimit,
+                    Id = t.Id
+                });
+            ViewBag.UsersModel = users;
+            return View();
+        }
+        public ActionResult UserInfor(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                ViewBag.UserModel = GetMyProfile(id);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdateUserInfor()
+        {
+            string id = Request.Form["Id"];
+            if (string.IsNullOrEmpty(id))
+            {
+                return Json(new OperationResult(OperationResultType.Error, "ID is error."));
+            }
+            Rela_contactModel model = GetMyProfile(id); //ID直接就是用户登录的ID;
+            model.Fname = Request.Form["Fname"];
+            model.Lname = Request.Form["Lname"];
+            model.Email = Request.Form["Email"];
+            model.Fax = Request.Form["Fax"];
+            model.Mobile = Request.Form["Mobile"];
+            model.Phone1 = Request.Form["Phone1"];
+            model.Password = Request.Form["Password"];
+
+            double i = 0;
+            double.TryParse(Request.Form["AmountLimit"], out i);
+            model.AmountLimit = i;
+            model.Report_To_Email = Request.Form["Report_To_Email"];
+
+            string IsManager = Request.Form["IsManager"];
+            if(IsManager == "1")
+            {
+                model.IsManager = true;
+            }
+            else
+            {
+                model.IsManager = false;
+            }
+
+            OperationResult result = Rela_contactService.UpdateMyProfile(model);
+            return Json(result);
+        }
+
+        public ActionResult MyProfile()
+        {
+            ViewBag.UserModel = GetMyProfile(string.Empty);
+            return View();
+        }
+
+        private Rela_contactModel GetMyProfile(string id)
+        {
+            var user = base.CurrentUser;
+            if (!string.IsNullOrEmpty(id))
+            {
+                user = Rela_contactService.Rela_contactList.FirstOrDefault(t => t.Id == id);
+            }
+            Rela_contactModel model = new Rela_contactModel();
+            if (user != null)
+            {
+                model.Id = user.Id;
+                model.Name = user.Name;
+                model.Title = user.Title;
+                model.Job_title = user.Job_title;
+                model.Fname = user.Fname;
+                model.Lname = user.Lname;
+                model.Mname = user.Mname;
+                model.Gender = user.Gender;
+                model.Account_id = user.Account_id;
+                model.Iskey = user.Iskey;
+                model.Description = user.Description;
+                model.Address1 = user.Address1;
+                model.Address2 = user.Address2;
+                model.City = user.City;
+                model.State = user.State;
+                model.Country = user.Country;
+                model.Zip = user.Zip;
+                model.P_address1 = user.P_address1;
+                model.P_address2 = user.P_address2;
+                model.P_city = user.P_city;
+                model.P_state = user.P_state;
+                model.P_country = user.P_country;
+                model.P_zip = user.P_zip;
+                model.Phone1 = user.Phone1;
+                model.Phone2 = user.Phone2;
+                model.Fax = user.Fax;
+                model.Email = user.Email;
+                model.Www = user.Www;
+                model.Isort = user.Isort;
+                model.Pic_s = user.Pic_s;
+                model.Pic_b = user.Pic_b;
+                model.Detail = user.Detail;
+                model.Status = user.Status;
+                model.Territory_id = user.Territory_id;
+                model.Home_phone = user.Home_phone;
+                model.Mobile = user.Mobile;
+                model.Department = user.Department;
+                model.Birthday = user.Birthday;
+                model.Assistant = user.Assistant;
+                model.Assistant_phone = user.Assistant_phone;
+                model.Report_to = user.Report_to;
+                model.Lead_source = user.Lead_source;
+                model.Personal_details = user.Personal_details;
+                model.Background = user.Background;
+                model.Family = user.Family;
+                model.Qualifications = user.Qualifications;
+                model.Memberships = user.Memberships;
+                model.Projects = user.Projects;
+                model.Interests = user.Interests;
+                model.Quote = user.Quote;
+                model.Skills = user.Skills;
+                model.Cretuser = user.Cretuser;
+                model.Cretdate = user.Cretdate;
+                model.Modidate = user.Modidate;
+                model.Modiuser = user.Modiuser;
+                model.Row_id = user.Row_id;
+                model.Isprivate = user.Isprivate;
+                model.Owner = user.Owner;
+                model.Rn_id = user.Rn_id;
+                model.Item1 = user.Item1;
+                model.Item2 = user.Item2;
+                model.Item3 = user.Item3;
+                model.Item4 = user.Item4;
+                model.Item5 = user.Item5;
+                model.Item6 = user.Item6;
+                model.Class1 = user.Class1;
+                model.Class2 = user.Class2;
+                model.Class3 = user.Class3;
+                model.Class4 = user.Class4;
+                model.Class5 = user.Class5;
+                model.Class6 = user.Class6;
+                model.IsManager = user.IsManager;
+                model.UserName = user.UserName;
+                model.Password = user.Password;
+                model.QtyLimit = user.QtyLimit;
+                model.AmountLimit = user.AmountLimit;
+                model.ItemQtyLimit = user.ItemQtyLimit;
+                model.ItemAmountLimit = user.ItemAmountLimit;
+                model.AccountRole = user.AccountRole;
+                model.IsContractLimit = user.IsContractLimit;
+                model.HomePage = user.HomePage;
+                model.Report_To_Email = user.Report_To_Email;
+            }
+            return model;
+        }
+
+        [HttpPost]
+        public ActionResult UpdateMyProfile()
+        {
+            Rela_contactModel model = GetMyProfile(string.Empty); //ID直接就是用户登录的ID;
+            model.Fname = Request.Form["Fname"];
+            model.Lname = Request.Form["Lname"];
+            model.Email = Request.Form["Email"];
+            model.Fax = Request.Form["Fax"];
+            model.Mobile = Request.Form["Mobile"];
+            model.Phone1 = Request.Form["Phone1"];
+            model.Password = Request.Form["Password"];
+
+            OperationResult result = Rela_contactService.UpdateMyProfile(model);
+            return Json(result);
+        }
+
+        public ActionResult SyncLocation(string id)
+        {
+            var shiptos = Rela_account_locationService.Query_SHIPTO(CurrentUser.AccountInfo.Account_no, CurrentUser.Id)
+                .Select(t => new Rela_account_location_shiptoModel
+                {
+                    address1 = t.address1,
+                    address2 = t.address2,
+                    address_id = t.address_id,
+                    contact_id = t.contact_id,
+                    description = t.description,
+                    isSel = t.isSel
+                });
+            ViewBag.LocationModel = shiptos;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdateSyncLocation(Dictionary<string, string>[] shiptolist)
+        {
+            OperationResult result = new OperationResult(OperationResultType.Error, "Error");
+            string contact_id = CurrentUser.Id;
+            string account_no = CurrentUser.AccountInfo.Account_no;
+            for (int i = 0; i < shiptolist.Length; i++)
+            {
+                string address_id = shiptolist[i]["address_id"];
+                bool isChecked = bool.Parse(shiptolist[i]["isChecked"]);
+                var entity = Rela_contact_locationService.Rela_contact_locationList.FirstOrDefault(t => t.Account_no == account_no && t.Contact_id == contact_id && t.Address_no == address_id);
+                if (isChecked)
+                {
+                    if (entity != null)
+                    {
+                        UpdateRela_contact_locationModel model = new UpdateRela_contact_locationModel();
+                        model.Account_no = entity.Account_no;
+                        model.Contact_id = entity.Contact_id;
+                        model.Address_no = entity.Address_no;
+                        model.Cretdate = entity.Cretdate;
+                        model.Modidate = DateTime.Now;
+                        model.Cretuser = entity.Cretuser;
+                        model.Modiuser = CurrentUser.Name;
+                        model.Display_order = entity.Display_order;
+                        //model.Row_id = entity.Row_id;
+                        model.Status = entity.Status;
+                        model.Item1 = entity.Item1;
+                        model.Item2 = entity.Item2;
+                        model.Item3 = entity.Item3;
+                        model.Item4 = entity.Item4;
+                        model.Item5 = entity.Item5;
+                        model.Item6 = entity.Item6;
+
+
+                        result = Rela_contact_locationService.Update(model);
+                    }
+                    else
+                    {
+                        Rela_contact_locationModel model = new Rela_contact_locationModel();
+                        model.Account_no = account_no;
+                        model.Contact_id = contact_id;
+                        model.Address_no = address_id;
+                        model.Cretdate = DateTime.Now;
+                        model.Modidate = DateTime.Now;
+                        model.Cretuser = CurrentUser.Name;
+                        model.Modiuser = CurrentUser.Name;
+                        model.Display_order = 0;
+                        model.Status = 0;
+
+                        result = Rela_contact_locationService.Insert(model);
+                    }
+                }
+                else
+                {
+                    result = Rela_contact_locationService.Delete(entity.Account_no, entity.Contact_id, entity.Address_no);
+                }
+            }             
+            
+            return Json(result);
+        }
+
+        #endregion
+
+        #region Order Limit
+        public ActionResult OrderLimit()
+        {
+            var action = Request.Params["action"];
+            var address_id = Request.Params["Address_id"];
+            var month_quota = Request.Params["Month_quota"];
+            if (!string.IsNullOrEmpty(action))
+            {
+                var m = Rela_location_limitService.Rela_location_limitList.FirstOrDefault(t => t.Account_no == CurrentUser.AccountInfo.Account_no && t.Address_id == address_id);
+                if (m != null && action == "add")
+                {
+                    action = "edit";
+                }
+
+                switch (action)
+                {
+                    case "add":
+                        Models.EpSnell.Rela_location_limit.Rela_location_limitModel info = new Models.EpSnell.Rela_location_limit.Rela_location_limitModel();
+                        info.Account_no = CurrentUser.AccountInfo.Account_no;
+                        info.Address_id = address_id;
+                        info.Month_quota = double.Parse(month_quota);
+                        Rela_location_limitService.Insert(info);
+                        break;
+                    case "edit":
+                        if (m != null)
+                        {
+                            Rela_location_limitService.Update(new Models.EpSnell.Rela_location_limit.UpdateRela_location_limitModel
+                            {
+                                Account_no = CurrentUser.AccountInfo.Account_no,
+                                Address_id = address_id,
+                                Month_quota = double.Parse(month_quota),
+                                Month_sales = m.Month_sales
+                            });
+                        }
+                        break;
+                    case "delete":
+                        Rela_location_limitService.Delete(CurrentUser.AccountInfo.Account_no, address_id);
+                        break;
+                }
+            }
+
+            var orders = Rela_location_limitService.Rela_location_limitList.Where(t => t.Account_no == CurrentUser.AccountInfo.Account_no)
+                .ToList()
+                .Select(t => new Ecomm.Site.Models.EpSnell.Rela_location_limit.Rela_location_limitModel
+                {
+                    Account_no = t.Account_no,
+                    Address_id = t.Address_id,
+                    Month_quota = t.Month_quota,
+                    Month_sales = t.Month_sales,
+                    Address = Rela_account_locationService.GetAddress(t.Account_no,t.Address_id)
+                });
+            ViewBag.OrderModel = orders;
+            var drop = Rela_account_locationService.QueryDropList(CurrentUser.AccountInfo.Account_no)
+                .Select(t => new SelectListItem
+                {
+                    Text = t.name,
+                    Value = t.id
+                });
+            ViewBag.DropDownModel = drop;
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_OrderLimitList");
+            }
+            return View();
+        }
+
+        public ActionResult OrderStatus()
+        {
+            var orders = SALES_EORDERSService.GetOrderStatus(CurrentUser.AccountInfo.Account_no).Select(t => new Order_StatusModel
+            {
+                DOCDATE = t.DOCDATE,
+                gCUSTNAME = t.gCUSTNAME,
+                gCUSTNMBR = t.gCUSTNMBR,
+                gSOPNUMBE = t.gSOPNUMBE,
+                PACKSLIP = t.PACKSLIP,
+                PONO = t.PONO,
+                PROCSTEP = SALES_EORDERSService.GetStatus(t.PROCSTEP)
+            });//redo
+            ViewBag.OrderModel = orders;
+            return View();
+        }
+
+        public ActionResult OrderItemStatus(string packslip)
+        {
+            var items = DBService.GetOrderItemStatusByPackslip(packslip).
+                Select(t => new Order_ItemModel
+                {
+                    ITEMDESC = t.ITEMDESC,
+                    ITEMNMBR = t.ITEMNMBR,
+                    ITMCLSCD = t.ITMCLSCD,
+                    Qty_BackOrdered = t.Qty_BackOrdered,
+                    Qty_Ordered = t.Qty_Ordered,
+                    Qty_Shipped = t.Qty_Shipped,
+                    UOFM = t.UOFM
+                });
+            ViewBag.OrderModel = items;
+            return View();
+        }
+        #endregion
+
+        #region Invoices
+        public ActionResult Invoices()
+        {
+            return View();
+        }
+        #endregion
+
+        #region OrderByLoca
+        public ActionResult OrderByLoca()
+        {
+            return View();
+        }
+
+        public ActionResult OrderHistory()
+        {
+            return View();
+        }
+
+        public ActionResult OrderDetail()
+        {
+            return View();
+        }
+        #endregion
     }
 }

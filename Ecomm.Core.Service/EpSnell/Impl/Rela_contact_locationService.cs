@@ -98,6 +98,55 @@ namespace Ecomm.Core.Service.EpSnell.Impl
             return new OperationResult(OperationResultType.Success, "successfully deleted");
         }
 
+        public int Modification(string Account_no, string Contact_id, string Address_no,Rela_contact_locationModel model)
+        {
+            int ret = 0;
+            var entity = Rela_contact_locationList.FirstOrDefault(t => t.Account_no == Account_no && t.Contact_id == Contact_id && t.Address_no == Address_no);
+            if(entity != null)
+            {
+                entity.Account_no = model.Account_no;
+                entity.Contact_id = model.Contact_id;
+                entity.Address_no = model.Address_no;
+                entity.Cretdate = model.Cretdate;
+                entity.Modidate = model.Modidate;
+                entity.Cretuser = model.Cretuser;
+                entity.Modiuser = model.Modiuser;
+                entity.Display_order = model.Display_order;
+                entity.Row_id = model.Row_id;
+                entity.Status = model.Status;
+                entity.Item1 = model.Item1;
+                entity.Item2 = model.Item2;
+                entity.Item3 = model.Item3;
+                entity.Item4 = model.Item4;
+                entity.Item5 = model.Item5;
+                entity.Item6 = model.Item6;
+
+                ret = Rela_contact_locationRepository.Update(entity);
+            }
+            else
+            {
+                entity.Account_no = model.Account_no;
+                entity.Contact_id = model.Contact_id;
+                entity.Address_no = model.Address_no;
+                entity.Cretdate = model.Cretdate;
+                entity.Modidate = model.Modidate;
+                entity.Cretuser = model.Cretuser;
+                entity.Modiuser = model.Modiuser;
+                entity.Display_order = model.Display_order;
+                entity.Row_id = model.Row_id;
+                entity.Status = model.Status;
+                entity.Item1 = model.Item1;
+                entity.Item2 = model.Item2;
+                entity.Item3 = model.Item3;
+                entity.Item4 = model.Item4;
+                entity.Item5 = model.Item5;
+                entity.Item6 = model.Item6;
+
+                ret = Rela_contact_locationRepository.Insert(entity);
+            }
+            return ret;
+        }
+
         #endregion
     }
 }

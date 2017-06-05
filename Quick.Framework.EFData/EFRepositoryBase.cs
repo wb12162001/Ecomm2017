@@ -760,6 +760,23 @@ namespace Quick.Framework.EFData
             return new SqlParameter(name, value);
         }
 
+        public SqlParameter GetParameter(string name, object value, SqlDbType type, int size)
+        {
+            if (name.Substring(0, 1) != "@")
+            {
+                name = "@" + name;
+            }
+            return new SqlParameter
+            {
+                ParameterName = name,
+                //Direction = ParameterDirection.Input,
+                Value = value,
+                SqlDbType = type,
+                Size = size
+
+            };
+        }
+
         /// <summary>
         /// 创建参数
         /// </summary>

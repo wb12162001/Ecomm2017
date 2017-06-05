@@ -67,5 +67,13 @@ namespace Ecomm.Core.Repository.GPSPS
             string sql = string.Format("SELECT * FROM [dbo].[RM00102] {0}", strWhere);
             return base.ExcuteQuery<RM00102>(sql);
         }
+
+        public IEnumerable<OrderItem> GetOrderItemStatusByPackslip(string packslip)
+        {
+            System.Data.SqlClient.SqlParameter[] parameters = {
+               new System.Data.SqlClient.SqlParameter("@sopnumbe", packslip)
+            };
+            return base.ExecuteProc<OrderItem>("zx_GetOrderStatusByOrderId", parameters);
+        }
     }
 }

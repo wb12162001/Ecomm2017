@@ -29,12 +29,21 @@ namespace Ecomm.Site.WebApp
                 "~/Scripts/ajaxfileupload.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/autocomplete/js").Include(
+                "~/Scripts/jquery.mockjax.js",
+                "~/Scripts/jquery.autocomplete.js"
+                ));
+
             bundles.Add(new ScriptBundle("~/bundles/chart").Include(
                 "~/Scripts/Chart.js"
                 ));
+            bundles.Add(new ScriptBundle("~/bundles/mvcpager").Include(
+                "~/Scripts/MvcPager.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                "~/Scripts/angular.min.js"
+                "~/Scripts/angular.min.js",
+                "~/Scripts/angular-animate.min.js"
                 ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -46,6 +55,13 @@ namespace Ecomm.Site.WebApp
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
             //Plugins
+            //bootstrap-table
+            bundles.Add(new ScriptBundle("~/bundles/plugins/bootstrap-table/js").Include(
+                "~/Content/plugins/bootstrap-table/bootstrap-table.min.js",
+                "~/Content/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"
+                ));
+            bundles.Add(new StyleBundle("~/bundles/plugins/bootstrap-table/css").Include(
+                     "~/Content/plugins/bootstrap-table/bootstrap-table.min.css"));
             //bootstrapValidator
             bundles.Add(new ScriptBundle("~/bundles/plugins/bootstrapvalidator/js").Include(
                 "~/Content/plugins/bootstrapvalidator/js/bootstrapValidator.min.js"
@@ -84,6 +100,9 @@ namespace Ecomm.Site.WebApp
                       "~/Content/snell/css/font-awesome.css",
                       "~/Content/snell/css/index.css"));
 
+            bundles.Add(new StyleBundle("~/bundles/autocomplete/css").Include(
+                     "~/Content/snell/css/jquery.autocomplete.css"));
+
             bundles.Add(new StyleBundle("~/bundles/product").Include(
                      "~/Content/snell/css/products.css"));
 
@@ -93,6 +112,9 @@ namespace Ecomm.Site.WebApp
                      ));
             bundles.Add(new StyleBundle("~/bundles/cart").Include(
                      "~/Content/snell/css/cart.css"
+                     ));
+            bundles.Add(new StyleBundle("~/bundles/filter").Include(
+                     "~/Content/snell/css/filter.css"
                      ));
 
             bundles.Add(new StyleBundle("~/bundles/login").Include(

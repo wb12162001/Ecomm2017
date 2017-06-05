@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.Composition;
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.Product;
-
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.Product
 {
@@ -44,6 +44,17 @@ namespace Ecomm.Core.Repository.Product
             double.TryParse(result[0].ToString(), out sellPrice);
             priceType = result[1].ToString();
         }
+
+        public IEnumerable<PROD_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder)
+        {
+            System.Data.SqlClient.SqlParameter[] parameters = {
+               new System.Data.SqlClient.SqlParameter("@count",count),
+               new System.Data.SqlClient.SqlParameter("@strWhere", strWhere),
+               new System.Data.SqlClient.SqlParameter("@strOrder",strOrder)
+            };
+            return base.ExecuteProc<PROD_MASTER_PAGE>("USP_PROD_MASTER_Query", parameters);
+        }
+
     }
 }
 

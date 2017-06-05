@@ -1,0 +1,30 @@
+﻿
+
+    <table class="table table-hover">
+        <tr style="color: #003975;font-weight: bold;">
+            <th style="width: 15%">Location</th>
+            <th style="width: 25%">Address</th>
+            <th style="width: 30%">Monthly Quota</th>
+            <th style="width: 15%">Eidt</th>
+            <th style="width: 15%">Delete</th>
+        </tr>
+        @if (ViewBag.OrderModel != null)
+        {
+            IEnumerable<Ecomm.Site.Models.EpSnell.Rela_location_limit.Rela_location_limitModel> orders = (IEnumerable<Ecomm.Site.Models.EpSnell.Rela_location_limit.Rela_location_limitModel>)ViewBag.OrderModel;
+            foreach (var order in orders)
+            {
+                <tr style="color: #8B8770;font-size: 12px;">
+                    <td>@order.Address_id</td>
+                    <td>@order.Address</td>
+                    <td>$@order.Month_quota</td>
+                    <td>
+                        <a data-action="edit" data-aid="@order.Address_id" data-mquota="@order.Month_quota" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil"></span></a>
+                    </td>
+                    <td>
+                        <a data-action="delete" data-aid="@order.Address_id"  data-mquota="@order.Month_quota" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+

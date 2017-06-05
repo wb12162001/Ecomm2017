@@ -9,7 +9,7 @@ using System;
 
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.EpSnell;
-
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.EpSnell
 {
@@ -17,6 +17,10 @@ namespace Ecomm.Core.Repository.EpSnell
     /// 仓储操作层接口 —— Rela_account_location 
     /// </summary>
     public interface IRela_account_locationRepository : IRepository<Rela_account_location>
-    { }
+    {
+        IEnumerable<Rela_account_location_shipto> Query_SHIPTO(string account_no, string contact_id);
+
+        IEnumerable<Rela_account_location_shipto_item> QueryDropList(string account_no);
+    }
 }
 

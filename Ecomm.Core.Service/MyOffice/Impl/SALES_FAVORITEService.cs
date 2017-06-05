@@ -41,6 +41,33 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
         #region 公共方法
 
+        public IEnumerable<SALES_FAVORITE_MASTER> QueryEntities(int count, string strWhere, string strOrder)
+        {
+            return SALES_FAVORITERepository.QueryEntities(count, strWhere, strOrder);
+        }
+
+        public IEnumerable<SALES_FAVORITE_MASTER> GetAllByCondition(string custID, string contactID,string strWhere)
+        {
+            List<string> condition = new List<string>();
+            string sql = string.Empty;
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                condition.Add(strWhere);
+            }
+
+            if (!string.IsNullOrEmpty(custID))
+            {
+                condition.Add(string.Format("a.[CustomerID]='{0}'", custID));
+            }
+            if (!string.IsNullOrEmpty(contactID))
+            {
+                condition.Add(string.Format("a.[ContactID]='{0}'", contactID));
+            }
+           
+            if (condition.Count > 0) sql = string.Join(" and ", condition.ToArray());
+            return QueryEntities(0, sql, string.Empty);
+        }
+
         public OperationResult Insert(SALES_FAVORITEModel model)
         {
             var entity = new SALES_FAVORITE
@@ -86,7 +113,25 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             return new OperationResult(OperationResultType.Success, "successfully deleted");
         }
 
-        #endregion
+        /// <summary>
+        /// 使用在FavoriteFolder.aspx页面上，每个Folder取一张图显示
+        /// Ben 2016-01-21
+        /// </summary>
+        /// <param name="custID"></param>
+        /// <param name="contactID"></param>
+        /// <returns></returns>
+        public string GetFavFolderFirstImg(string favFolderID)
+        {
+            string returnValue = string.Empty;
+            returnValue = SALES_FAVORITERepository.GetFavFolderFirstImg(favFolderID);
+            //if (returnValue != null && !string.IsNullOrEmpty(returnValue))
+            //{
+            //    returnValue = Ecomm.Site.WebApp.Common.Util.UploadFilesRootURL + returnValue;
+            //}
+            return returnValue;
+        }
+
+       #endregion
     }
 }
 

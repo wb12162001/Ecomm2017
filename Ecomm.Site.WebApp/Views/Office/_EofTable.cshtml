@@ -1,0 +1,89 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM;
+@using Webdiyer.WebControls.Mvc;
+@{
+    var months = (EOF_PAGE_Other_MASTER)ViewBag.Months;
+    PagedList<EOF_PAGE_MASTER> PagedListEofModel = (PagedList<EOF_PAGE_MASTER>)ViewBag.PagedListEofModel;
+    string cl = " active in";
+}
+<!--list 模式-->
+<div id="list" class="product-list tab-pane @if(Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "list") { @cl; }">
+    <table class="table table-hover">
+        <tr>
+            <th colspan="2" style="width: 50%">Product</th>
+            <th style="width: 8%">@months.Month0</th>
+            <th style="width: 8%">@months.Month1</th>
+            <th style="width: 8%">@months.Month2</th>
+            <th style="width: 8%">@months.Month3</th>
+            <th style="width: 8%">@months.Month4</th>
+            <th style="width: 18%">Price</th>
+            <th style="width: 8%">Forecast</th>
+            <th style="width: 15%">Quantity</th>
+            <th style="width: 15%"></th>
+        </tr>
+@foreach (var item in PagedListEofModel)
+{
+        <tr>
+            <td>
+                <a href="@Url.Action("Detail", "Prod", new { id = item.ProductID })">
+                    <img src="@item.SmallPic" />
+                </a>
+            </td>
+            <td>
+                <p class="p1"><a href="##">@item.ProductName</a></p>
+                <p class="p2">
+                    Code: <span class="blue">@item.ProductNo</span>　 Unit: <span class="blue">@item.BaseUOFM</span>
+                </p>
+                <p class="p3">
+                    Category: <span class="blue">@item.CategoryName</span> 　　&nbsp;&nbsp;&nbsp;
+                    <a href="javascript:void(0);" onclick="addFav('@item.ProductNo');"><i class="fa fa-heart-o"></i></a>
+                </p>
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.Qty0)</td>
+            <td>@Html.DisplayFor(modelItem => item.Qty1)</td>
+            <td>@Html.DisplayFor(modelItem => item.Qty2)</td>
+            <td>@Html.DisplayFor(modelItem => item.Qty3)</td>
+            <td>@Html.DisplayFor(modelItem => item.Qty4)</td>
+            <td>$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</td>
+            <td>@Html.DisplayFor(modelItem => item.Forecast)</td>
+            <td>
+                <input type="number" class="form-control" min="1" value="1" />
+            </td>
+            <td class="cart-col">
+                <span class="glyphicon glyphicon-shopping-cart" data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" ></span>
+            </td>
+        </tr>
+}
+    </table>
+</div>
+<!--end-->
+<!--array 模式-->
+<div id="tile" class="product-list tab-pane @if(Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "tile") { @cl; }">
+  @foreach (var item in PagedListEofModel)
+  {
+    <div class="pull-left product-box product-1">
+        <a href="@Url.Action("Detail", "Prod", new { id = item.ProductID })"><img class="pro-img" src="@item.MiddlePic" /></a>
+        <p class='star-line'>
+            <img src='/Content/snell/images/star-4.png'>
+        </p>
+        <a href="@Url.Action("Detail", "Prod", new { id = item.ProductID })">
+            <p class="product-name" data-prono="@Html.DisplayFor(modelItem => item.ProductNo)">@Html.DisplayFor(modelItem => item.ProductName)</p>
+        </a>
+        <div class="price-cart">
+            <div class="price pull-left">
+                <p class="old-price">@Html.DisplayFor(modelItem => item.ProductNo)</p>
+                <p class="new-price">$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</p>
+            </div>
+            <div class="pull-right">
+                <a href='javascript:void(0);' class='cart' data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" >
+                    <img src='/Content/snell/images/cart_03.png'>
+                </a>
+            </div>
+        </div>
+        <div class="wishlist-compare">
+            <div class="wishlist pull-left"><a href="javascript:void(0);" onclick="addFav('@item.ProductNo');"><i class="fa fa-heart-o"></i> <span>wishlist</span></a></div>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+  }
+</div>

@@ -69,6 +69,8 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EBASKET
         public int ItemCount { get; set; }
 
         public string Message { get; set; }
+        public string Misctitle { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:N2}")]
         public double Freight { get; set; }
         [DisplayFormat(DataFormatString = "{0:N2}")]

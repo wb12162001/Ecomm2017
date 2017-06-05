@@ -52,20 +52,47 @@
             <li>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">SPECIALS<i class="fa fa-caret-down"></i></a>
                 <ul class="dropdown-menu nav-box" role="menu" aria-labelledby="dLabel">
-                        <li><a href="##">HOME</a></li>
-                        <li><a href="##">PACKAGING</a></li>
+                        <li><a href="@Url.Action("Hotspecials", "Prod",new { cate= "Packaging" })">Packaging</a></li>
+                        <li><a href="@Url.Action("Hotspecials", "Prod", new { cate= "Safety" })">Safety</a></li>
                 </ul>
             </li>
-            <li><a href="#">ABOUT US</a></li>
+@if (!string.IsNullOrEmpty(ViewBag.UserName))
+{
             <li>
-                <a href="#">ON SALE</a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">MYOFFICE<i class="fa fa-caret-down"></i></a>
+                <ul class="dropdown-menu nav-box" role="menu" aria-labelledby="dLabel">
+                    <li><a href="@Url.Action("EasiOrderForm", "Office")">Snell Easi Order Form</a></li>
+                    <li><a href="@Url.Action("MyFavourites", "Office")">My Favourites</a></li>
+
+                    <li><a href="@Url.Action("ContractPricing", "Office")">Contract Pricing</a></li>
+                    <li><a href="@Url.Action("CustomizedProdcut", "Office")">Customised Products</a></li>
+                    <li><a href="@Url.Action("Invoices", "Office")">Invoices & Credits</a></li>
+
+                    <li><a href="@Url.Action("OrderStatus", "Office")">Order Status</a></li>
+                    <li><a href="@Url.Action("OrderByLoca", "Office")">Orders by Location</a></li>
+                    <li><a href="@Url.Action("OrderHistory", "Office")">Order History</a></li>
+                   
+
+                    <li><a href="@Url.Action("MyProfile", "Office")">My Profile</a></li>
+                   
+                    <li><a href="@Url.Action("Users", "Office")">User Manager</a></li>
+                    <li><a href="@Url.Action("OrderLimit", "Office")">Order Limit Manager</a></li>
+                    
+                    <li><a href="/PendingOrder.aspx">Pending Order</a></li>
+                    
+                </ul>
+            </li>
+}
+            <li><a href="@Url.Action("AboutUs", "Infor")">ABOUT US</a></li>
+            <li>
+                <a href="@Url.Action("EasiOrderForm", "Infor")">ON SALE</a>
                 <!-- tip -->
                 <div class="tooltip fade top in" role="tooltip" id="onsale-tip">
                     <div class="tooltip-arrow" style="left: 50%;"></div>
                     <div class="tooltip-inner">Hot</div>
                 </div>
             </li>
-            <li><a href="#">CONTACT US</a></li>
+            <li><a href="@Url.Action("ContactUs", "Infor")">CONTACT US</a></li>
         </ul>
     </div>
 

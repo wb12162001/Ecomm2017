@@ -541,5 +541,23 @@ namespace Ecomm.Site.Models.Product.PROD_MASTER
 
         public List<SelectListItem> EnabledItems { get; set; }
     }
+
+    /// <summary>
+    /// 用于input Search 中使用.
+    /// </summary>
+    public class DataItemModel
+    {
+        public string value { get; set; }
+
+        public SearchItemModel data { get; set; }
+    }
+    public class SearchItemModel
+    {
+        public string ProductName { get; set; }
+
+        public string ProductNo { get; set; }
+
+        public string ProductId { get; set; }
+    }
 }
 

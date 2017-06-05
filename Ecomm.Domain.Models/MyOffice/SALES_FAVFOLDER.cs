@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecomm.Domain.Models.MyOffice
 {
@@ -47,7 +48,13 @@ namespace Ecomm.Domain.Models.MyOffice
         
         
     }
-    
-    
+
+    [NotMapped]
+    public class MyFavFolders
+    {
+        public string ID { get; set; }
+        public int itemCount { get; set; }
+        public string FolderName { get; set; }
+    }
 }
 

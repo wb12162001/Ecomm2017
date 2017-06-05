@@ -39,6 +39,10 @@ namespace Ecomm.Core.Service.MyOffice
         OperationResult Delete(string  ID);
 
         double GetOrdersByCurrentMonth(string custId, string shipId);
+
+        IEnumerable<Order_Status> GetOrderStatus(string Custid);
+
+        string GetStatus(object status);
         #endregion
     }
 }

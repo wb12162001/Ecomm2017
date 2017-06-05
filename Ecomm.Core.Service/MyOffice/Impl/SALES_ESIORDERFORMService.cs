@@ -16,12 +16,11 @@ using Ecomm.Core.Repository.MyOffice;
 using Ecomm.Site.Models;
 using Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM;
 using Quick.Framework.Common.SecurityHelper;
-
-
+using Ecomm.Core.Service.EpSnell;
 
 namespace Ecomm.Core.Service.MyOffice.Impl
 {
-	/// <summary>
+    /// <summary>
     /// 服务层实现 —— SALES_ESIORDERFORMService
     /// </summary>
     [Export(typeof(ISALES_ESIORDERFORMService))]
@@ -31,6 +30,9 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
         [Import]
         public ISALES_ESIORDERFORMRepository SALES_ESIORDERFORMRepository { get; set; }
+
+        [Import]
+        public IRela_account_locationService Rela_account_locationService { get; set; }
 
         public IQueryable<SALES_ESIORDERFORM> SALES_ESIORDERFORMList
         {
@@ -112,7 +114,7 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
         public OperationResult Update(UpdateSALES_ESIORDERFORMModel model)
         {
-			var entity = SALES_ESIORDERFORMList.First(t => t.CustomerID == model.CustomerID && t.ProductNo == model.ProductNo && t.ShipTo == model.ShipTo);
+            var entity = SALES_ESIORDERFORMList.First(t => t.CustomerID == model.CustomerID && t.ProductNo == model.ProductNo && t.ShipTo == model.ShipTo);
             entity.CustomerID = model.CustomerID;
             entity.ProductNo = model.ProductNo;
             entity.ShipTo = model.ShipTo;
@@ -173,7 +175,7 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             return new OperationResult(OperationResultType.Success, "update completed");
         }
 
-        public OperationResult Delete(string  CustomerID,string  ProductNo,string  ShipTo)
+        public OperationResult Delete(string CustomerID, string ProductNo, string ShipTo)
         {
             var model = SALES_ESIORDERFORMList.FirstOrDefault(t => t.CustomerID == CustomerID && t.ProductNo == ProductNo && t.ShipTo == ShipTo);
 
@@ -181,6 +183,78 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             return new OperationResult(OperationResultType.Success, "successfully deleted");
         }
 
+        public IEnumerable<ESIORDERFORM_PAGE_MASTER> GetByCustIDAndShipto(string customer, string contactID, string shipTo, int curPage, int pageRows, string strWhere, string orderby, out int pageCount)
+        {
+            return SALES_ESIORDERFORMRepository.GetByCustIDAndShipto(customer, contactID, shipTo, curPage, pageRows, strWhere, orderby, out pageCount);
+        }
+
+        public IEnumerable<ESIORDERFORM_PAGE_MASTER> GetItems(string customer,string strWhrer, string location, string orderby, int pageIndex, int pageSize, out int pageCount)
+        {
+            //var user = GetCurrentUser();
+            //locationList = GetEOFShipToCount(strWhrer);
+            var dt = GetByCustIDAndShipto(customer, string.Empty, location ?? "ALL", pageIndex, pageSize, strWhrer, orderby, out pageCount);
+            return dt;
+
+        }
+        public double getCurrentPrice(object currentPrice, object listPrice)
+        {
+            double r = 0;
+            if (currentPrice != null && !DBNull.Value.Equals(currentPrice))//|| 
+            {
+                double.TryParse(currentPrice.ToString(), out r);
+            }
+            if (r == 0)
+            {
+                double.TryParse(listPrice.ToString(), out r);
+            }
+            return r;
+        }
+        public List<Location> GetEOFShipToCount(string strWhere)
+        {
+            return SALES_ESIORDERFORMRepository.GetEOFShipToCount(strWhere);
+        }
+
+        /// <summary>
+        /// 返回所有的记录;
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <param name="contactID"></param>
+        /// <param name="shipTo"></param>
+        /// <param name="strWhere"></param>
+        /// <param name="orderby"></param>
+        /// <returns></returns>
+        public IEnumerable<ESIORDERFORM_PAGE_MASTER> GetByCustIDAndShipto(string customer, string contactID, string shipTo, string strWhere, string orderby)
+        {
+            int pageCount = 0;
+            return GetByCustIDAndShipto(customer, contactID, shipTo, -1, 0, strWhere, orderby, out pageCount);
+        }
+
+        public IEnumerable<CustomizedProduct_PAGE_MASTER> GetCustomizedProducts(string strwhere, string custnmbr, string sortModle, int pagesize, int pageIndex, out int totalCount)
+        {
+            return SALES_ESIORDERFORMRepository.GetCustomizedProducts(strwhere, custnmbr, sortModle, pagesize, pageIndex, out totalCount);
+        }
+
+        public IEnumerable<MyFavourite_QTY_MASTER> GetQTY(string customerID, string productNo)
+        {
+            return SALES_ESIORDERFORMRepository.GetQTY(customerID, productNo);
+        }
+
+        public double[] GetQTYBycustomerID(string customerID, string productNo)
+        {
+            IEnumerable<MyFavourite_QTY_MASTER> list = GetQTY(customerID, productNo);
+            double[] qtys = new double[4] { 0.0, 0.0, 0.0, 0.0 };
+            if (list.Count() > 0)
+            {
+                foreach (var item in list)
+                {
+                    qtys[0] = item.Qty0.Value;
+                    qtys[1] = item.Qty1.Value;
+                    qtys[2] = item.Qty2.Value;
+                    qtys[3] = item.Qty3.Value;
+                }
+            }
+            return qtys;
+        }
         #endregion
     }
 }

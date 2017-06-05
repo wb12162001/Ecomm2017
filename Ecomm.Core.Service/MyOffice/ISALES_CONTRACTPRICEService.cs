@@ -28,6 +28,8 @@ namespace Ecomm.Core.Service.MyOffice
         #endregion
 
         #region 公共方法
+
+        IEnumerable<ContractPrice_PAGE_MASTER> GetContractPric(string strwhere, string orderby, int pagesize, int pageIndex, out int totalCount);
         OperationResult Insert(SALES_CONTRACTPRICEModel model);
         OperationResult Update(UpdateSALES_CONTRACTPRICEModel model);
         /// <summary>

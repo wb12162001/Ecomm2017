@@ -10,6 +10,7 @@ using System.ComponentModel.Composition;
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.MyOffice;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.MyOffice
 {
@@ -34,6 +35,14 @@ namespace Ecomm.Core.Repository.MyOffice
             object obj = base.ExecuteScalar<double>(sb.ToString());
             if (obj != DBNull.Value) double.TryParse(obj.ToString(), out ret);
             return ret;
+        }
+
+        public IEnumerable<Order_Status> GetOrderStatus(string Custid)
+        {
+            System.Data.SqlClient.SqlParameter[] parameters = {
+               new System.Data.SqlClient.SqlParameter("@CUSTNMBR", Custid)
+            };
+            return base.ExecuteProc<Order_Status>("zx_GetOrderStatusHeadByCustid", parameters);
         }
     }
 }

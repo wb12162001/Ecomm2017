@@ -41,6 +41,11 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
         #region 公共方法
 
+        public IEnumerable<ContractPrice_PAGE_MASTER> GetContractPric(string strwhere, string orderby, int pagesize, int pageIndex, out int totalCount)
+        {
+            return SALES_CONTRACTPRICERepository.GetContractPric(strwhere, orderby, pagesize, pageIndex, out totalCount);
+        }
+
         public OperationResult Insert(SALES_CONTRACTPRICEModel model)
         {
             var entity = new SALES_CONTRACTPRICE

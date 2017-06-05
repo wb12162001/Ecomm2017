@@ -30,13 +30,22 @@ namespace Ecomm.Core.Service.MyOffice
         #region 公共方法
         OperationResult Insert(SALES_FAVFOLDERModel model);
         OperationResult Update(UpdateSALES_FAVFOLDERModel model);
+
+
+        int Update(SALES_FAVFOLDER model);
         /// <summary>
         /// 逻辑删除
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(string  ID);
+
+        List<MyFavFolders> GetFavFoldersAndItemCount(string custID, string contactID);
+
+        int DeleteBysql(string favId);
+
+        string GetFavName(string favId);
         #endregion
-	}
+    }
 }
 

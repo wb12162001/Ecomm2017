@@ -1,0 +1,10 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM;
+@using Webdiyer.WebControls.Mvc;
+@{
+    PagedList<EOF_PAGE_MASTER> PagedListEofModel = (PagedList<EOF_PAGE_MASTER>)ViewBag.PagedListEofModel;
+}
+
+@{ Html.RenderPartial("_EofTable"); }
+<div class="pull-right">
+    @Ajax.Pager(PagedListEofModel, new PagerOptions { PageIndexParameterName = "id", ContainerTagName = "ul", CssClass = "pagination", CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>", DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>", PagerItemTemplate = "<li>{0}</li>" }, new MvcAjaxOptions{UpdateTargetId = "articles", HttpMethod = "Post", DataFormId = "searchForm", LoadingElementId = "loadingDiv",OnBegin="$('#articles').fadeOut('slow')",OnComplete="$('#articles').fadeIn('slow')"}).Options(o => o.SetHtmlAttributes(new Dictionary<string, object> { { "data-url", "#" } }))
+</div>

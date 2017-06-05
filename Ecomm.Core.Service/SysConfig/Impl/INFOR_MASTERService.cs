@@ -41,6 +41,11 @@ namespace Ecomm.Core.Service.SysConfig.Impl
 
         #region 公共方法
 
+        public IEnumerable<INFOR_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder)
+        {
+            return INFOR_MASTERRepository.QueryEntities(count, strWhere, strOrder);
+        }
+
         public OperationResult Insert(INFOR_MASTERModel model)
         {
             var entity = new INFOR_MASTER

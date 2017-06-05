@@ -19,6 +19,14 @@ namespace Ecomm.Core.Repository.MyOffice
     public interface ISALES_ESIORDERFORMRepository : IRepository<SALES_ESIORDERFORM>
     {
         IEnumerable<SALES_ESIORDERFORM_MASTER> QueryEntities(int count, string strWhere, string strOrder);
+
+        IEnumerable<ESIORDERFORM_PAGE_MASTER> GetByCustIDAndShipto(string customer, string contactID, string shipTo, int curPage, int pageRows, string strWhere, string orderby, out int pageCount);
+
+        IEnumerable<CustomizedProduct_PAGE_MASTER> GetCustomizedProducts(string strwhere, string custnmbr, string sortModle, int pagesize, int pageIndex, out int totalCount);
+
+        List<Location> GetEOFShipToCount(string strWhere);
+
+        IEnumerable<MyFavourite_QTY_MASTER> GetQTY(string customerID, string productNo);
     }
 }
 

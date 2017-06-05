@@ -1,0 +1,91 @@
+﻿@using Ecomm.Site.Models.SysConfig.INFOR_MASTER;
+@{
+    ViewBag.Title = "About Us Page";
+    var Categories = (IEnumerable<INFOR_CATE_Model>)ViewBag.Categories;
+}
+@section Header  {
+    @Styles.Render("~/bundles/product")
+<style>
+    .products {
+        margin-top: 5px;
+    }
+    .sub_about_left {
+    width: 180px;
+    margin: 0px 0;
+    padding: 0 0px 0 0;
+    float: left;
+}
+    .sub_about_left ul li {
+    line-height: 30px;
+    width: 180px;
+    font-size: 14px;
+    font-weight: bold;
+}
+    .sub_about_right {
+    min-height: 400px;
+    width: 700px;
+    margin: 0px 0 8px 0;
+    padding: 0 0 0px 40px;
+    float: left;
+    border-left: solid 1px #c9c9c9;
+}
+
+    .sub_about_right .abouttitle {
+    width: 100%;
+    margin: 0;
+    padding: 10px 0;
+    float: right;
+    clear: both;
+    line-height: 30px;
+    font-size: 20px;
+}
+    .sub_about_right .aboutcontent {
+    width: 100%;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    float: right;
+    clear: both;
+    line-height: 20px;
+}
+    </style>
+}
+<div class="clearfix"></div>
+<!-- Product list -->
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+        <li class="active">About Us</li>
+    </ol>
+
+    <div class="sub_about_left">
+        @if (Categories != null)
+        {
+            <ul>
+                @foreach (var c in Categories)
+                {
+                    <li data-id="@c.ID"><a class="blue" href="@Url.Action("AboutUs", "Infor", new { CategoryID = c.ID })">@c.InforSubject</a></li>
+                }
+            </ul>
+        }
+    </div>
+    <div class="sub_about_right">
+        @Html.Partial("_Information")
+    </div>
+</div>
+<div class="clearfix"></div>
+
+@section scripts
+{
+    <script type="text/javascript">
+    $(function () {
+        $('.nav-pills li').click(function () {
+            var _id = $(this).attr('data-id');
+            //console.log($(this));
+            $.get('@Url.Action("TabShow", "Prod")', { tab_type: _id }, function (response) {
+                //console.log(response);
+            }, 'json');
+        });
+    });
+    </script>
+}

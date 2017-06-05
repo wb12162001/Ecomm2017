@@ -99,7 +99,15 @@ namespace Ecomm.Domain.Models.SysConfig
         
         
     }
-    
-    
+
+    [NotMapped]
+    public class INFOR_MASTER_PAGE:INFOR_MASTER
+    {
+        public string InforCategoryName { get; set; }
+        public string ParentSubject { get; set; }
+        public string color { get; set; }
+    }
+
+
 }
 

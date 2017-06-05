@@ -9,7 +9,7 @@ using System;
 
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.SysConfig;
-
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.SysConfig
 {
@@ -17,6 +17,8 @@ namespace Ecomm.Core.Repository.SysConfig
     /// 仓储操作层接口 —— INFOR_MASTER 
     /// </summary>
     public interface IINFOR_MASTERRepository : IRepository<INFOR_MASTER>
-    { }
+    {
+        IEnumerable<INFOR_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder);
+    }
 }
 

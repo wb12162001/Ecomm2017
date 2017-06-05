@@ -197,5 +197,104 @@ namespace Ecomm.Domain.Models.MyOffice
         public double? StndCost { get; set; }
         public string StockType { get; set; }
     }
+
+    [NotMapped]
+    public class ESIORDERFORM_PAGE_MASTER
+    {
+        public string ProductName { get; set; }
+        public string ProductNo { get; set; }
+        public string ProductID { get; set; }
+
+        public double? ListPrice { get; set; }
+        public double? SpecialPrice { get; set; }
+        public double? ClearPrice { get; set; }
+
+        public string CategoryCode { get; set; }
+        public string BaseUOFM { get; set; }
+        public string ProdGroupID { get; set; }
+        public string StockType { get; set; }
+        public string SmallPic { get; set; }
+        public string BigPic { get; set; }
+        public string ShipTo { get; set; }
+
+        public double? Qty0 { get; set; }
+        public double? Qty1 { get; set; }
+        public double? Qty2 { get; set; }
+        public double? Qty3 { get; set; }
+        public double? Qty4 { get; set; }
+        public double? Qty5 { get; set; }
+        public double? Qty6 { get; set; }
+
+        public double? AVGQTY { get; set; }
+        public double? CurrentPrice { get; set; }
+
+        public string PriceType { get; set; }
+
+        public int? Status { get; set; }
+
+
+        public double? Forecast { get; set; }
+
+        public string Item04 { get; set; }
+        public string CategoryName { get; set; }
+        public string MenuAlias { get; set; }
+    }
+
+    [NotMapped]
+    public class Location
+    {
+        public int Total { get; set; }
+        public string ShipTo { get; set; }
+    }
+
+    [NotMapped]
+    public class CustomizedProduct_PAGE_MASTER
+    {
+        public string ProductName { get; set; }
+        public string ProductNo { get; set; }
+        public string ProductID { get; set; }
+
+        public double? ListPrice { get; set; }
+        public double? SpecialPrice { get; set; }
+        public double? ClearPrice { get; set; }
+
+        public string CategoryCode { get; set; }
+        public string BaseUOFM { get; set; }
+        public string ProdGroupID { get; set; }
+        public string StockType { get; set; }
+        public string SmallPic { get; set; }
+        public string BigPic { get; set; }
+        
+        public string CategoryName { get; set; }
+        public string MenuAlias { get; set; }
+    }
+
+    [NotMapped]
+    public class MyFavourite_QTY_MASTER
+    {
+        public string CustomerID { get; set; }
+
+
+        public string ProductNo { get; set; }
+
+
+        public string ShipTo { get; set; }
+
+
+        public double? Qty0 { get; set; }
+
+
+        public double? Qty1 { get; set; }
+
+
+        public double? Qty2 { get; set; }
+
+
+        public double? Qty3 { get; set; }
+
+
+        public double? Forecast { get; set; }
+
+    }
 }
 

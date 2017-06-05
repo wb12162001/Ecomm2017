@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.Composition;
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.EpSnell;
-
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.EpSnell
 {
@@ -23,7 +23,6 @@ namespace Ecomm.Core.Repository.EpSnell
         {
         }
 
-       
     }
 }
 

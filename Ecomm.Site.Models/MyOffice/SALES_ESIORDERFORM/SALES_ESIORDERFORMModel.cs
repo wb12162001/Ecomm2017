@@ -292,5 +292,108 @@ namespace Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM
         public double? StndCost { get; set; }
         public string StockType { get; set; }
     }
+    public class EOF_PAGE_Other_MASTER
+    {
+        public string Month0 { get; set; }
+        public string Month1 { get; set; }
+        public string Month2 { get; set; }
+        public string Month3 { get; set; }
+        public string Month4 { get; set; }
+    }
+    public class EOF_PAGE_MASTER
+    {
+        public string ID { get; set; }
+        public string ProductName { get; set; }
+        public string ProductNo { get; set; }
+        public string ProductID { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? ListPrice { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? SpecialPrice { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? ClearPrice { get; set; }
+
+        public string CategoryCode { get; set; }
+        public string BaseUOFM { get; set; }
+        public string ProdGroupID { get; set; }
+        public string StockType { get; set; }
+        public string SmallPic { get; set; }
+        public string MiddlePic { get; set; }
+        public string BigPic { get; set; }
+        public string ShipTo { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? Qty0 { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? Qty1 { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? Qty2 { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? Qty3 { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? Qty4 { get; set; }
+        public double? Qty5 { get; set; }
+        public double? Qty6 { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? AVGQTY { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? CurrentPrice { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? SellPrice { get; set; }
+
+        public string PriceType { get; set; }
+
+        public int? Status { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public double? Forecast { get; set; }
+
+        public string Item04 { get; set; }
+        public string CategoryName { get; set; }
+        public string MenuAlias { get; set; }
+
+        public int pCount { get; set; }
+
+        public string altPath { get; set; }
+    }
+
+    public class EOF_Category
+    {
+        public string CategoryName { get; set; }
+        public string CategoryCode { get; set; }
+        public int Count { get; set; }
+    }
+
+    public class EOF_Location
+    {
+        public string ShopName { get; set; }
+        public string ShopId { get; set; }
+        public int Count { get; set; }
+    }
+    public class EOF_Favourite
+    {
+        public string Favourite { get; set; }
+        public int Count { get; set; }
+        public string FavouriteID { get; set; }
+
+        public string Img { get; set; }
+    }
+    public class EOF_PAGE_Other2_MASTER
+    {
+        public EOF_PAGE_Other2_MASTER()
+        {
+            Categories = new List<EOF_Category>();
+            Locations = new List<EOF_Location>();
+            MyFavourites = new List<EOF_Favourite>();
+        }
+        public List<EOF_Category> Categories { get; set; }
+
+        public List<EOF_Location> Locations { get; set; }
+
+        public List<EOF_Favourite> MyFavourites { get; set; }
+    }
 }
 

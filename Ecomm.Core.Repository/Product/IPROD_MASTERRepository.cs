@@ -9,7 +9,7 @@ using System;
 
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.Product;
-
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.Product
 {
@@ -19,6 +19,8 @@ namespace Ecomm.Core.Repository.Product
     public interface IPROD_MASTERRepository : IRepository<PROD_MASTER>
     {
         void GetSellingPrice(string itemnmbr, string custnmbr, out double sellPrice, out string priceType);
+
+        IEnumerable<PROD_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder);
     }
 }
 

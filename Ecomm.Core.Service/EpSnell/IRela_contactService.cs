@@ -33,6 +33,8 @@ namespace Ecomm.Core.Service.EpSnell
 
         OperationResult Insert(Rela_contactModel model);
         OperationResult Update(UpdateRela_contactModel model);
+
+        OperationResult UpdateMyProfile(Rela_contactModel model);
         /// <summary>
         /// 逻辑删除
         /// </summary>

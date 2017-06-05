@@ -1,0 +1,90 @@
+﻿@section Header  {
+<style>
+    .products .popular-products {
+        margin-left: 0px;
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 8px 8px;
+    }
+
+        .products .popular-products .product-list {
+            border: none;
+        }
+</style>
+    }
+<div class="clearfix"></div>
+
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li class="active">Users</li>
+        <li class="active">Sync Location</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>User Location Setup</h3>
+        </div>
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+                <table class="table table-hover">
+                    <tr style="color: #cd0824;">
+                        <th style="width: 17%">Location</th>
+                        <th style="width: 10%">Address</th>
+                        <th style="width: 10%">Description</th>
+                        <th style="width: 10%">Contact</th>
+                        <th style="width: 10%"></th>
+                    </tr>
+@if (ViewBag.LocationModel != null)
+{
+    IEnumerable<Ecomm.Site.Models.EpSnell.Rela_account_location.Rela_account_location_shiptoModel> shiptos = (IEnumerable<Ecomm.Site.Models.EpSnell.Rela_account_location.Rela_account_location_shiptoModel>)ViewBag.LocationModel;
+    foreach (var loca in shiptos)
+    {
+                    <tr style="color: #8B8770;font-size: 12px;">
+                        <td style="color:#074A84;">@loca.address_id</td>
+                        <td>@loca.address1</td>
+                        <td>@loca.description</td>
+                        <td>@loca.contact_id</td>
+                        <td>
+                            <input type="checkbox" data-cid="@loca.contact_id" value="@loca.address_id" name="cboxShipto"  @if (@loca.isSel == 1) { @Html.Raw("checked='checked'"); } />
+                </td>
+                </tr>
+    }
+}
+                </table>
+                <button class="btn btn-primary pull-right" id="update_shipto">Update</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#update_shipto").click(function () {
+                var list = [];
+                $("input[name='cboxShipto']").each(function () {
+                    var address_id = $(this).val();
+                    //var contact_id = $(this).attr("data-cid");
+                    var isChecked = $(this).is(':checked');
+                    //console.log($(this).is(':checked'));
+                    list.push({ "address_id": address_id, "isChecked": isChecked });
+                    //console.log(isChecked);
+                });
+                $.ajax({
+                    type: "post",
+                    url: "@Url.Action("UpdateSyncLocation", "Office")",
+                    data: $.param({ shiptolist: list }),
+                    dataType: "json",
+                    traditional: true, //传数组一定要这个参数
+                    success: function (data) {
+                        //var json = eval("(" + data + ")");//必须加否则字符串不能序列化成json
+                        //jQuery.gritter.add(json);
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.debug(data);
+                    }
+                });
+            })
+    });
+    </script>
+}

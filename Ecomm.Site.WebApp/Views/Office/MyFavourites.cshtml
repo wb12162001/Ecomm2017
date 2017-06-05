@@ -1,0 +1,164 @@
+﻿@section Header  {
+    <style>
+        .products .popular-products {
+            margin-left: 0px;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 8px 8px;
+        }
+
+            .products .popular-products .product-list {
+                border: none;
+            }
+    </style>
+}
+<div class="clearfix"></div>
+<!-- My Favourites -->
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li class="active">My Favourites</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>Manage My Favourites</h3> &nbsp;&nbsp;&nbsp;
+            <button onclick="editFavourites()" class="btn btn-primary btn-sm">Add new</button>
+        </div>
+        <hr />
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+            <div class="row">
+@if (ViewBag.MyFavourites != null)
+{
+    IEnumerable<Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM.EOF_Favourite> list = (IEnumerable<Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM.EOF_Favourite>)ViewBag.MyFavourites;
+    foreach (var t in list)
+    {
+                <div class="col-md-3 col-lg-3">
+                    <div class="thumbnail">
+                        <a href="@Url.Action("MyFavouriteItems", "Office",new { favId = t.FavouriteID })"><img style="width: 100%;height: 100%;" src="@t.Img" alt="" /></a>
+                        <div class="caption">
+                            <h4 style="color: #023674;font-weight: bold;" class="text-center">@t.Favourite</h4>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6" style="color: #48668d;font-size: 12px;">@t.Count items</div>
+                                <div class="col-md-3 col-lg-3"><a href="javascript:editFavourites('@t.FavouriteID','@t.Favourite');"><span class="glyphicon glyphicon-pencil"></span></a></div>
+                                <div class="col-md-3 col-lg-3"><a href="javascript:removeFavourites('@t.FavouriteID')" style="color: #C31919"><span class="glyphicon glyphicon-remove"></span></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        }
+ }
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form id="myfavourites-form" action="@Url.Action("UpdateFavourite", "Office")" class="form-horizontal">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" class="form-control" id="hdfavid" name="hdfavid">
+                            <input type="text" class="form-control" id="FavouriteName" name="FavouriteName" placeholder="Name">
+                            <span class="help-block">(Less than 15 characters)</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#myModal').on('show.bs.modal', function () {
+               //$('#myfavourites-form').bootstrapValidator('resetForm', true);
+            });
+            //login
+            $('#myfavourites-form').bootstrapValidator({
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                excluded: ':disabled',
+                fields: {
+                    FavouriteName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The name is required'
+                            },
+                            stringLength: {
+                                min: 3,
+                                max: 15,
+                                message: 'The name must be between 3 and 15 characters'
+                            },
+                        }
+                    }
+                }
+            }).on('success.form.bv', function (e) {
+                // Prevent form submission
+                e.preventDefault();
+                // Get the form instance
+                var $form = $(e.target);
+                // Get the BootstrapValidator instance
+                var bv = $form.data('bootstrapValidator');
+                // Use Ajax to submit form data
+                $.post($form.attr('action'), $form.serialize(), function (result) {
+                    //console.log(result);
+                    if (result.success) {
+                        // You can reload the current location
+                        $('#myModal').modal('hide');
+                        window.location.reload();
+                        
+                        } else {
+                        // The account is not found
+                        // Show the errors
+                        bootbox.alert(result.message);
+
+                        // Enable the submit buttons
+                        $('#myfavourites-form').bootstrapValidator('disableSubmitButtons', false);
+                    }
+                }, 'json');
+            });
+
+        });
+
+    function editFavourites(id, name) {
+        $('#hdfavid').val(id || '');
+        $('#FavouriteName').val(name || '');
+        console.log(name);
+        $('#myModal').modal();
+    }
+    function removeFavourites(id) {
+        bootbox.confirm("Are you sure remove the favourite?", function (result) {
+            if (result) {
+                $.post('@Url.Action("RemoveFavourite", "Office")', { favid: id }, function (result) {
+                    //console.log(result);
+                    if (result.success) {
+                        window.location.reload();
+                    } 
+                }, 'json');
+            } 
+        });
+    }
+</script>
+}

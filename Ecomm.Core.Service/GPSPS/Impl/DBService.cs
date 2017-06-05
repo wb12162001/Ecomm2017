@@ -47,5 +47,9 @@ namespace Ecomm.Core.Service.GPSPS
 
             return DBRepository.GetRM00102(strwhere);
         }
+        public IEnumerable<OrderItem> GetOrderItemStatusByPackslip(string packslip)
+        {
+            return DBRepository.GetOrderItemStatusByPackslip(packslip);
+        }
     }
 }

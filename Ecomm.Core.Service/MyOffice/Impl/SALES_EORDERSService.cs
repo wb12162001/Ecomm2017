@@ -21,7 +21,7 @@ using Quick.Framework.Common.SecurityHelper;
 
 namespace Ecomm.Core.Service.MyOffice.Impl
 {
-	/// <summary>
+    /// <summary>
     /// 服务层实现 —— SALES_EORDERSService
     /// </summary>
     [Export(typeof(ISALES_EORDERSService))]
@@ -156,7 +156,7 @@ namespace Ecomm.Core.Service.MyOffice.Impl
 
         public OperationResult Update(SALES_EORDERSModel model)
         {
-			var entity = SALES_EORDERSList.First(t => t.ID == model.ID);
+            var entity = SALES_EORDERSList.First(t => t.ID == model.ID);
             entity.ID = model.ID;
             entity.RowID = model.RowID;
             entity.OrderType = model.OrderType;
@@ -210,7 +210,7 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             return new OperationResult(OperationResultType.Success, "update completed");
         }
 
-        public OperationResult Delete(string  ID)
+        public OperationResult Delete(string ID)
         {
             var model = SALES_EORDERSList.FirstOrDefault(t => t.ID == ID);
 
@@ -237,7 +237,46 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             }
             return returnValue;
         }
+
+        public IEnumerable<Order_Status> GetOrderStatus(string Custid)
+        {
+            return SALES_EORDERSRepository.GetOrderStatus(Custid);
+        }
+
+        public string GetStatus(object status)
+        {
+            string st = "Unknown";
+            if (status != null)
+            {
+                string ss = status.ToString();
+                switch (status.ToString())
+                {
+                    case "100":
+                        st = "Shipped";
+                        break;
+                    case "19":
+                    case "3":
+                        st = "Holding";
+                        break;
+                    case "14":
+                        st = "Suspended";
+                        break;
+                    case "16":
+                        st = "ReadyToShip";
+                        break;
+                    case "1":
+                    case "4":
+                    case "5":
+                    case "6":
+                    case "8":
+                        st = "Processing";
+                        break;
+                }
+            }
+            return st;
+        }
         #endregion
+
     }
 }
 

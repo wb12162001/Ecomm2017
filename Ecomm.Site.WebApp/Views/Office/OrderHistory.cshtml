@@ -1,0 +1,78 @@
+﻿@section Header  {
+    <style>
+        .products .popular-products {
+            margin-left: 0px;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 8px 8px;
+        }
+
+            .products .popular-products .product-list {
+                border: none;
+            }
+    </style>
+}
+<div class="clearfix"></div>
+<!-- List -->
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li class="active">Order History</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>Order History</h3>
+        </div>
+        <form class="form-inline" style="margin:10px 0">
+            <div class="form-group" style="margin-right:10px">
+                Date From:
+                <input type="text" class="form-control" id="datestart" value="05/2017" />
+            </div>
+            <div class="form-group" style="margin-right:10px">
+                TO:
+                <input type="text" class="form-control" id="dateend" value="05/2017" />
+            </div>
+            <div class="form-group" style="margin-right:10px">
+                View By:
+                <select class="form-control">
+                    <option value="Category">Category</option>
+                    <option value="Product">Product</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">GO</button>
+            </div>
+        </form>
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+            <form action="">
+                <table class="table table-striped">
+                    <tr style="color: #cd0824;font-weight: bold;">
+                        <th style="width: 70%">Category</th>
+                        <th style="width: 15%">Sales$</th>
+                        <th style="width: 15%"></th>
+                    </tr>
+                    <tr style="color: #8B8770;font-size: 12px;">
+                        <td>BOARD</td>
+                        <td>$371,870.12</td>
+                        <td>
+                            <a href="@Url.Action("OrderDetail", "Office")">View Detail</a>
+                        </td>
+                    </tr>
+                    <tr style="color: #8B8770;font-size: 12px;">
+                        <td>CATER</td>
+                        <td>$179,074.84</td>
+                        <td>
+                            <a href="@Url.Action("OrderDetail", "Office")">View Detail</a>
+                        </td>
+                    </tr>
+                    <tr style="color: #cd0824;font-weight: bold;">
+                        <td></td>
+                        <td>Total：$526,763.57</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

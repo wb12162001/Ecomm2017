@@ -308,7 +308,7 @@ namespace Ecomm.Site.Models.EpSnell.Rela_contact
 
 
         [Display(Name = "IsManager")]
-		public bool IsManager  { get; set; }
+		public bool? IsManager  { get; set; }
 
 
         [Display(Name = "UserName")]
@@ -340,7 +340,7 @@ namespace Ecomm.Site.Models.EpSnell.Rela_contact
 
 
         [Display(Name = "IsContractLimit")]
-		public bool IsContractLimit  { get; set; }
+		public bool? IsContractLimit  { get; set; }
 
 
         [Display(Name = "HomePage")]

@@ -595,7 +595,7 @@ namespace Ecomm.Site.WebApp.Controllers
                             Status = 0,
                             MakeOrderID = "",
                         };
-                        if (base.CurrentUser.IsContractLimit && unitPriceType != "L")//only to purchase contract goods
+                        if ((bool)base.CurrentUser.IsContractLimit && unitPriceType != "L")//only to purchase contract goods
                         {
                             if (unitPriceType == "S")//Special Price
                             {
@@ -636,7 +636,10 @@ namespace Ecomm.Site.WebApp.Controllers
             }
             if (ret > 0)
             {
-                return Json(new { success = true, message = "successfull delete cart item" });
+                //ShoppingCart
+                ViewBag.ShoppingCartModel = InitSalesEbasket(); //重新计算购物车信息
+
+                return Json(new { success = true, message = "successfull delete cart item", shoppingCart = ViewBag.ShoppingCartModel });
             }
             else
             {
@@ -659,12 +662,43 @@ namespace Ecomm.Site.WebApp.Controllers
             }
             if (ret > 0)
             {
-                return Json(new { success = true, message = "successfull update to cart" });
+                //ShoppingCart
+                ViewBag.ShoppingCartModel = InitSalesEbasket(); //重新计算购物车信息
+
+                return Json(new { success = true, message = "successfull update to cart" , shoppingCart = ViewBag.ShoppingCartModel });
             }
             else
             {
                 return Json(new { success = false, message = "update cart failed." });
             }
         }
+
+        public JsonResult Search(string query)
+        {
+            //[
+            //{ "id":"Perdix perdix","label":"Grey Partridge","value":"Grey Partridge"},
+            //{ "id":"Passer domesticus","label":"House Sparrow","value":"House Sparrow"},
+            //{ "id":"Passer montanus","label":"Eurasian Tree Sparrow","value":"Eurasian Tree Sparrow"},
+            //{ "id":"Accipiter nisus","label":"Eurasian Sparrow Hawk","value":"Eurasian Sparrow Hawk"},
+            //{ "id":"Stercorarius parasiticus","label":"Parasitic Jaeger","value":"Parasitic Jaeger"},
+            //{ "id":"Alectoris graeca","label":"Rock Partridge","value":"Rock Partridge"}
+            //....]
+            var list = PROD_MASTERService.PROD_MASTERList.Where(t => t.ProductNo.Contains(query))
+                .AsEnumerable()
+                .Select(t => new Ecomm.Site.Models.Product.PROD_MASTER.DataItemModel
+                {
+
+                    value = t.ProductNo.Trim(),
+                    data = new Models.Product.PROD_MASTER.SearchItemModel
+                    {
+                        ProductId = t.ID.Trim(),
+                        ProductNo = t.ProductNo.Trim(),
+                        ProductName = Server.UrlEncode(t.ProductName.Trim())
+                    }
+                });
+            
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

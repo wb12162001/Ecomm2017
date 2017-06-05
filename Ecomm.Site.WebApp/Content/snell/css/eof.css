@@ -1,0 +1,83 @@
+﻿.products .popular-products .product-list {
+    border: none;
+}
+
+.products .popular-products>.tab-pane {
+    display: none;
+}
+
+.products .popular-products>.active {
+    display: block;
+}
+
+.products .popular-products .product-list .product-box,
+.products .popular-products .product-list .product-box:last-child {
+    border: 1px solid #e4e4e4;
+    margin: 0 17px 15px 3px;
+}
+
+.products .popular-products {
+    width: 100%;
+    margin-left: 0px;
+}
+
+.products .today-deals .product-show {
+    height: auto;
+    font-size: 16px;
+    border: none;
+    border-right: 2px solid #b99767;
+    text-align: left;
+}
+
+.products .today-deals .product-show li {
+    margin: 12px 0;
+}
+
+.products .today-deals .product-show li a:hover {
+    text-decoration: underline;
+}
+
+.products .popular-products .popular-title .pull-right {
+    padding-top: 10px;
+}
+
+.products .popular-products #list img {
+    width: 84px;
+    height: 67px;
+}
+
+.products .popular-products #list .p1,
+.products .popular-products #list .p2,
+.products .popular-products #list .p3 {
+    margin-bottom: 0px;
+    line-height: 14px;
+}
+
+.products .popular-products #list .p1 {
+    color: #074A84;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.products .popular-products #list .p2,
+.products .popular-products #list .p3 {
+    font-size: 12px;
+    color: #333;
+}
+
+.products .popular-products #list .p3 a {
+    font-size: 15px;
+}
+
+.products .popular-products #list .blue {
+    color: #074A84;
+}
+
+.products .popular-products #list .cart-col {
+    text-align: center;
+}
+
+.products .popular-products #list .cart-col span {
+    font-size: 26px;
+    cursor: pointer;
+}

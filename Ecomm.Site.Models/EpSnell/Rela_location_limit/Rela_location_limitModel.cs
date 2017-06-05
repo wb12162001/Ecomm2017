@@ -30,6 +30,8 @@ namespace Ecomm.Site.Models.EpSnell.Rela_location_limit
         [Required(ErrorMessage = "Address_id can not be empty")]
 		public string Address_id  { get; set; }
 
+        public string Address { get; set; }
+
 
         [Display(Name = "Month_quota")]
 		public double? Month_quota  { get; set; }

@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
+    <title>Error 500</title>
 </head>
 <body>
     <hgroup>
@@ -15,6 +15,13 @@
         <p>
             @ViewBag.Msg
         </p>
+        @if (Model != null)
+        {
+            var ex = (System.Exception)Model.Exception;
+            <p>Controller: @Model.ControllerName</p>
+            <p>Action: @Model.ActionName</p>
+            <p>ErrorMessage: @ex.Message</p>
+        }
     </hgroup>
     <img src="~/Content/images/error.jpg" alt="Cat" />
 </body>

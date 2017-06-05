@@ -1,0 +1,36 @@
+﻿<div id="addfavourite-modal-form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addfavourite-form" action="@Url.Action("AddFavourite", "Office")" method="post" role="form" style="display: block;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Add to favourite</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table id="favourite-table" 
+                                   data-toggle="table"
+                                data-height="200"
+                                data-side-pagination="server"
+                                data-pagination="false"
+                                data-url="@Url.Action("GetMyFav", "Office")">
+                                <thead>
+                                <tr>
+                                <th data-field="FavouriteID">FavouriteID</th>
+                                <th data-field="Favourite">Favourite</th>
+                                <th data-field="Count">Count</th>
+                                </tr>
+                                </thead>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-main-addfav" tabindex="3">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="4">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

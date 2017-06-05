@@ -1,0 +1,150 @@
+﻿@using Ecomm.Site.Models.EpSnell.Rela_contact;
+@{ 
+    Rela_contactModel user = null;
+    if (ViewBag.UserModel != null)
+    {
+        user = (Rela_contactModel)ViewBag.UserModel;
+    }
+}
+@section Header  {
+<style>
+    .products .popular-products {
+        margin-left: 0px;
+        width: 100%;
+        margin-bottom: 20px;
+        padding:8px 8px;
+    }
+    .products .popular-products .product-list {
+     border: none;
+}
+</style>
+    }
+<div class="clearfix"></div>
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li class="active">User Manage</li>
+        <li class="active">User Information</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>User Information</h3>
+        </div>
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+            <form id="user_infor-form" action="@Url.Action("UpdateUserInfor", "Office")">
+                <input type="hidden" name="Id" value="@user.Id" />
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="">First Name<span style="color: red">*</span></label>
+                            <input type="text" class="form-control" name="Fname" value="@user.Fname" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Email<span style="color: red">*</span></label>
+                            <input type="text" class="form-control" name="Email" value="@user.Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Mobile<span style="color: red"></span></label>
+                            <input type="text" class="form-control" name="Mobile" value="@user.Mobile" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Password of user:CATENZ@snell<span style="color: red"></span></label>
+                            <input type="password" class="form-control" name="Password" value="@user.Password" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">AmountLimit:<span style="color: red"></span></label>
+                            <input type="number" class="form-control" name="AmountLimit" value="@user.AmountLimit" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="">Last Name<span style="color: red">*</span></label>
+                            <input type="text" class="form-control" name="Lname" value="@user.Lname" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Phone<span style="color: red"></span></label>
+                            <input type="text" class="form-control" name="Phone1" value="@user.Phone1" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Fax<span style="color: red"></span></label>
+                            <input type="text" class="form-control" name="Fax" value="@user.Fax" />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Report To Email:<span style="color: red"></span></label>
+                            <input type="text" class="form-control" name="Report_To_Email" value="@user.Report_To_Email" />
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="IsManager" value="1" @if ((bool)@user.IsManager) { Html.Raw("checked"); } /> Is Manager
+                            </label>
+                            <p></p>
+                            <span style="color: red;">* Required Information</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#user_infor-form').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            excluded: ':disabled',
+            fields: {
+                Fname: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The Fname is required'
+                        }
+                    }
+                },
+                Lname: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The Lname is required'
+                        }
+                    }
+                },
+                Email: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The Email is required'
+                        }
+                    }
+                },
+                Password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The Password is required'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function (e) {
+            // Prevent form submission
+            e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+            // Get the BootstrapValidator instance
+            var bv = $form.data('bootstrapValidator');
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function (result) {
+                //console.log(result);
+                bootbox.alert(result.Message, function () { window.location.reload(); });
+            }, 'json');
+        });
+    });
+    </script>
+}

@@ -309,5 +309,38 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EORDERS
 
         public List<SelectListItem> EnabledItems { get; set; }
     }
+
+    public class Order_StatusModel
+    {
+        public string gSOPNUMBE { get; set; }
+
+        public string PONO { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime? DOCDATE { get; set; }
+
+        public string gCUSTNMBR { get; set; }
+
+        public string gCUSTNAME { get; set; }
+
+        public string PACKSLIP { get; set; }
+        public string PROCSTEP { get; set; }
+    }
+
+    public class Order_ItemModel
+    {
+        public string ITEMNMBR { get; set; }
+
+        public string ITEMDESC { get; set; }
+
+        public string UOFM { get; set; }
+
+        public string ITMCLSCD { get; set; }
+
+        public double Qty_Ordered { get; set; }
+
+        public double Qty_Shipped { get; set; }
+        public double Qty_BackOrdered { get; set; }
+    }
 }
 

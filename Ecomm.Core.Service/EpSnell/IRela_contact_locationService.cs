@@ -36,7 +36,9 @@ namespace Ecomm.Core.Service.EpSnell
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(string  Account_no,string  Contact_id,string  Address_no);
+
+        int Modification(string Account_no, string Contact_id, string Address_no,Rela_contact_locationModel model);
         #endregion
-	}
+    }
 }
 

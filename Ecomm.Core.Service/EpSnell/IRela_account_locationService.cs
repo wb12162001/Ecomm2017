@@ -36,7 +36,13 @@ namespace Ecomm.Core.Service.EpSnell
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(string  Account_no,string  Address_id);
+
+        string GetAddress(string account_no, string address_id);
+
+        IEnumerable<Rela_account_location_shipto> Query_SHIPTO(string account_no, string contact_id);
+
+        IEnumerable<Rela_account_location_shipto_item> QueryDropList(string account_no);
         #endregion
-	}
+    }
 }
 

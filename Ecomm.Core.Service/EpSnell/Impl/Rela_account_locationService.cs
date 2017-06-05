@@ -21,7 +21,7 @@ using Quick.Framework.Common.SecurityHelper;
 
 namespace Ecomm.Core.Service.EpSnell.Impl
 {
-	/// <summary>
+    /// <summary>
     /// 服务层实现 —— Rela_account_locationService
     /// </summary>
     [Export(typeof(IRela_account_locationService))]
@@ -84,7 +84,7 @@ namespace Ecomm.Core.Service.EpSnell.Impl
 
         public OperationResult Update(UpdateRela_account_locationModel model)
         {
-			var entity = Rela_account_locationList.First(t => t.Account_no == model.Account_no && t.Address_id == model.Address_id);
+            var entity = Rela_account_locationList.First(t => t.Account_no == model.Account_no && t.Address_id == model.Address_id);
             entity.Account_no = model.Account_no;
             entity.Address_id = model.Address_id;
             entity.Name = model.Name;
@@ -122,12 +122,30 @@ namespace Ecomm.Core.Service.EpSnell.Impl
             return new OperationResult(OperationResultType.Success, "update completed");
         }
 
-        public OperationResult Delete(string  Account_no,string  Address_id)
+        public OperationResult Delete(string Account_no, string Address_id)
         {
             var model = Rela_account_locationList.FirstOrDefault(t => t.Account_no == Account_no && t.Address_id == Address_id);
 
             Rela_account_locationRepository.Delete(model);
             return new OperationResult(OperationResultType.Success, "successfully deleted");
+        }
+
+        public string GetAddress(string account_no, string address_id)
+        {
+            var entity = Rela_account_locationList.FirstOrDefault(t => t.Account_no == account_no && t.Address_id == address_id);
+            if (entity != null) return entity.Address1;
+            return string.Empty;
+
+        }
+
+        public IEnumerable<Rela_account_location_shipto> Query_SHIPTO(string account_no, string contact_id)
+        {
+            return Rela_account_locationRepository.Query_SHIPTO(account_no, contact_id);
+        }
+
+        public IEnumerable<Rela_account_location_shipto_item> QueryDropList(string account_no)
+        {
+            return Rela_account_locationRepository.QueryDropList(account_no);
         }
 
         #endregion

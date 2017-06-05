@@ -28,6 +28,10 @@ namespace Ecomm.Core.Service.Product
         #endregion
 
         #region 公共方法
+        IEnumerable<PROD_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder);
+
+        IEnumerable<PROD_MASTER_PAGE> GetHotSpecials(string categorycode, string where, string strOrder);
+
         OperationResult Insert(PROD_MASTERModel model);
         OperationResult Update(UpdatePROD_MASTERModel model);
         /// <summary>

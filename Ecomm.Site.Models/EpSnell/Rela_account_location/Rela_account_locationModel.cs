@@ -191,5 +191,19 @@ namespace Ecomm.Site.Models.EpSnell.Rela_account_location
 
         public List<SelectListItem> EnabledItems { get; set; }
     }
+
+    public class Rela_account_location_shiptoModel
+    {
+        public string address1 { get; set; }
+
+        public string address2 { get; set; }
+        public string address_id { get; set; }
+        public string description { get; set; }
+
+        public string contact_id { get; set; }
+
+        public int isSel { get; set; }
+
+    }
 }
 

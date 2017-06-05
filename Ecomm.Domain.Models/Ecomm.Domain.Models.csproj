@@ -49,6 +49,7 @@
     <Compile Include="EpSnell\Rela_contact.cs" />
     <Compile Include="EpSnell\Rela_contact_location.cs" />
     <Compile Include="EpSnell\Rela_location_limit.cs" />
+    <Compile Include="GPSPS\Order.cs" />
     <Compile Include="GPSPS\RM00102.cs" />
     <Compile Include="InetApp\EOrder.cs" />
     <Compile Include="InetApp\EOrderDetail.cs" />

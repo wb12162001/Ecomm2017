@@ -13,5 +13,7 @@ namespace Ecomm.Core.Service.GPSPS
     {
         void GetFreightByCust(string cust, out float freight, out float admincost);
         IEnumerable<RM00102> GetRM00102(string custId, string shopId);
+
+        IEnumerable<OrderItem> GetOrderItemStatusByPackslip(string packslip);
     }
 }

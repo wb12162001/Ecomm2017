@@ -52,6 +52,32 @@ namespace Ecomm.Core.Service.Product.Impl
 
         #region 公共方法
 
+        public IEnumerable<PROD_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder)
+        {
+            return PROD_MASTERRepository.QueryEntities(count, strWhere, strOrder);
+        }
+
+        public IEnumerable<PROD_MASTER_PAGE> GetHotSpecials(string categorycode, string where, string strOrder)
+        {
+            string strWhere = " a.[Item03]='1' and a.[PriceBookItem]='YES' and a.[SpecialPrice]>0";
+            if (!string.IsNullOrEmpty(categorycode) && !categorycode.Equals("null"))
+            {
+                if (categorycode.ToLower().Equals("safety"))
+                {
+                    strWhere += string.Format(" and a.[ProdCategoryID]='{0}'", "S");
+                }
+                else
+                {
+                    strWhere += string.Format(" and a.[ProdCategoryID]='{0}'", "P");
+                }
+            }
+            if (!string.IsNullOrEmpty(where))
+            {
+                strWhere += where;
+            }
+            return QueryEntities(0, strWhere, strOrder);
+        }
+
         public OperationResult Insert(PROD_MASTERModel model)
         {
             var entity = new PROD_MASTER

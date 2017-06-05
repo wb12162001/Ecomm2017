@@ -20,6 +20,8 @@ using System.Text;
 using Ecomm.Site.WebApp.Extension.Filters;
 using Chart.Mvc.ComplexChart;
 using Chart.Mvc.Extensions;
+using Newtonsoft.Json;
+using Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM;
 
 namespace Ecomm.Site.WebApp.Controllers
 {
@@ -569,6 +571,108 @@ namespace Ecomm.Site.WebApp.Controllers
                 tab_type = Common.Util.GetCookie("snell_product_tab_type");
             }
             return Json(new { success = 1, type = tab_type }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Hotspecials(string cate, int id = 1)
+        {
+            //分页控件语言定义
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            string tab_type = Common.Util.GetCookie("snell_product_tab_type");
+            if (string.IsNullOrEmpty(tab_type))
+            {
+                Common.Util.SetCookie("snell_product_tab_type", "list");
+            }
+            var orderby = Request.Params["sortModle"] ?? " ProductName asc";
+            var category = Request.Params["category"] ?? "";
+            if (!string.IsNullOrEmpty(category))
+            {
+                var cates = JsonConvert.DeserializeObject<List<string>>(category);
+                category = string.Join(",", cates.ToArray());
+            }
+            int pageSize = 40;
+            int pageCount = 0;
+
+            string strWhere = string.Empty;
+            if (!string.IsNullOrEmpty(category))
+            {
+                string cateWhere = string.Empty;
+
+                string[] cateArr = category.Split(',');
+                List<string> cateList = new List<string>();
+                foreach (string c in cateArr)
+                {
+                    cateList.Add("'" + c + "'");
+                }
+                cateWhere = string.Join(",", cateList.ToArray());
+
+                strWhere = string.Format(" and {1} in ({0})", cateWhere, "a.CategoryCode");
+            }
+            //if (condition.Count > 0) strWhere = string.Join(" and ", condition.ToArray());
+
+            var dt = PROD_MASTERService.GetHotSpecials(cate, strWhere,string.Empty);// Ben 2012-12-25
+            if (dt != null && dt.Count() > 0)
+            {
+                pageCount = dt.Count();
+                var items = dt.AsEnumerable()
+                            .Select(t => new EOF_PAGE_MASTER
+                            {
+                                ProductID = t.ID,
+                                ProductNo = t.ProductNo,
+                                ProductName = t.ProductName,
+                                BigPic = Common.Util.GetProductImgUrl(t.BigPic, false),
+                                SmallPic = Common.Util.GetProductImgUrl(t.SmallPic),
+                                MiddlePic = Common.Util.GetProductImgUrl(t.SmallPic).Replace("Small", "Middl"),
+                                StockType = t.StockType,
+                                SellPrice = PROD_MASTERService.GetSellPrice(t.ProductNo, Common.Util.TransformObjToDou(t.ListPrice), (double)t.SpecialPrice), //在EasiorderForm不需要对价格进行处理，因为已经登陆了
+                                CategoryName = string.IsNullOrEmpty(t.CategoryName) ? t.CategoryCode : t.CategoryName,
+                                CategoryCode = t.CategoryCode,
+                                BaseUOFM = t.BaseUOFM,
+                                ListPrice = t.ListPrice,
+                                pCount = pageCount,
+                                altPath = Common.Util.SiteRootURL + "detailchart.aspx?proNo=" + t.ProductNo
+                            });
+
+                if (!string.IsNullOrEmpty(orderby) && orderby.IndexOf("SellPrice") > -1)
+                {
+                    if (orderby.IndexOf("asc") > -1)
+                    {
+                        items.OrderBy(i => i.SellPrice);
+                    }
+                    if (orderby.IndexOf("desc") > -1)
+                    {
+                        items.OrderByDescending(i => i.SellPrice);
+                    }
+                }
+                items = items.Skip((id - 1) * pageSize).Take(pageSize);
+
+                ViewBag.PagedListModel = new PagedList<EOF_PAGE_MASTER>(items, id, pageSize, pageCount);
+
+                EOF_PAGE_Other2_MASTER eof_master = new EOF_PAGE_Other2_MASTER();
+                ViewBag.EOF_Model = eof_master;
+                eof_master.Categories = BindHotspecialsCategory(items).ToList();
+            }
+            if (Request.IsAjaxRequest())
+            {
+                System.Threading.Thread.Sleep(1000);
+                return PartialView("../Office/_CustomizedProdList");
+            }
+            
+            return View();
+        }
+
+        private IEnumerable<EOF_Category> BindHotspecialsCategory(IEnumerable<EOF_PAGE_MASTER> rows)
+        {
+            var categories = from category in rows
+                             group category by new { code = category.CategoryCode, name = category.CategoryName ?? category.MenuAlias } into cs
+                             select new EOF_Category
+                             {
+                                 CategoryName = cs.Key.name,
+                                 CategoryCode = cs.Key.code,
+                                 Count = cs.Count()
+                             };
+            return categories;
         }
     }
 }

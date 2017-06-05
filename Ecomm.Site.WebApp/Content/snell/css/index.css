@@ -6,7 +6,7 @@ a:hover{text-decoration: none}
 .nav-active{color: #0091d0!important;background: url(../images/line.png) no-repeat 0px 42px;}
 
 /* 提示工具 */
-.nav .navitems #onsale-tip{top: -2px;left: 13px;display: block;}
+.nav .navitems #onsale-tip{top: -2px;left: 13px;display: block; z-index:100;}
 .nav .navitems #onsale-tip .tooltip-inner{padding: 1px 4px;background-color: #e93434;border-radius: 0;}
 .nav .navitems #onsale-tip .tooltip-arrow{border-top-color: #e93434;}
 /* 顶部链接 */
@@ -43,7 +43,7 @@ a:hover{text-decoration: none}
 .header .tools .cart .cart-layer .cart-item .cart-item-detail a{display: block;overflow: hidden;text-overflow:ellipsis;}
 .header .tools .cart .cart-layer .empty-cart{display:none;height: 100px;line-height: 100px;text-align: center;color: #777;}
 /* 导航 */
-.header .nav-bar{margin-top: 2px;}
+.header .nav-bar{margin-top: 2px;     border-bottom: 1px solid #e4e4e4; height: 60px;}
 .header .nav-bar .all-category{position: relative;width: 270px;height: 60px;background-color: #255886;display: inline-block;float: left;}
 .header .nav-bar .all-category a{border-bottom: 2px solid #6e6068;display: block;width: 100%;height: 60px;line-height: 60px;text-indent: 1.5em;color: #ffffec;font-weight: bold;font-size: 16px;}
 .header .nav-bar .all-category i{margin-left: -17px;color: #b4897a}
@@ -52,14 +52,14 @@ a:hover{text-decoration: none}
 .header .nav-bar .all-category .dd .dd-inner a:hover{background-color: #004684}
 .header .nav-bar .all-category .dd .dd-inner a i{margin-right: 17px;color: #aba2a4;}
 .header .nav-bar .all-category .dd .dd-inner .label{margin-left: 6px;}
-.header .nav-bar .nav{height: 60px;background-color: #fff;display: inline-block;float: left;border-bottom: 1px solid #e4e4e4;}
+.header .nav-bar .nav{height: 60px;display: inline-block;float: left;}
 .header .nav-bar .nav .navitems{height: 60px;line-height: 60px;}
 .header .nav-bar .nav .navitems li{float: left;margin-left: 33px;position: relative;}
 .header .nav-bar .nav .navitems li a{display: block;color: #000;font-size: 15px;}
 .header .nav-bar .nav .navitems li a:hover{color: #0091d0;background: url(../images/line.png) no-repeat 0px 42px;}
 .header .nav-bar .nav .navitems i{font-size: 12px;margin-left: 7px;}
 .header .nav-bar .nav .navitems .nav-box{top: 95%;border: none;border-radius: inherit;min-width: 0px; white-space:nowrap;}
-.header .nav-bar .nav .navitems .nav-box li{float: none;margin: 0 30px;}
+.header .nav-bar .nav .navitems .nav-box li{float: none;margin: 0 5px; padding:2px 2px;}
 .header .nav-bar .nav .navitems .nav-box li a{font-size: 12px;}
 .header .nav-bar .nav .navitems .nav-box li a:hover{background: none}
 /* 子分类 */
@@ -281,4 +281,34 @@ background-color: #fff;
 #articles .pagination{
     /*display:block;*/
     width: 600px;
+}
+
+.autocomplete-suggestions {
+    border: 1px solid #999;
+    background: #FFF;
+    overflow: auto;
+}
+
+.autocomplete-suggestion {
+    padding: 2px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.autocomplete-selected {
+    background: #F0F0F0;
+}
+
+.autocomplete-suggestions strong {
+    font-weight: normal;
+    color: #3399FF;
+}
+
+.autocomplete-group {
+    padding: 2px 5px;
+}
+
+.autocomplete-group strong {
+    display: block;
+    border-bottom: 1px solid #000;
 }

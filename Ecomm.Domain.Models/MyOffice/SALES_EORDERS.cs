@@ -166,7 +166,24 @@ namespace Ecomm.Domain.Models.MyOffice
         
         
     }
-    
+
+
+    [NotMapped]
+    public class Order_Status
+    {
+        public string gSOPNUMBE { get; set; }
+
+        public string PONO { get; set; }
+
+        public DateTime? DOCDATE { get; set; }
+
+        public string gCUSTNMBR { get; set; }
+
+        public string gCUSTNAME { get; set; }
+
+        public string PACKSLIP { get; set; }
+        public string PROCSTEP { get; set; }
+    }
     
 }
 

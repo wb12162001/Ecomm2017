@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecomm.Domain.Models.EpSnell
 {
@@ -116,7 +117,31 @@ namespace Ecomm.Domain.Models.EpSnell
         
         
     }
-    
-    
+
+    [NotMapped]
+    public class Rela_account_location_shipto
+    {
+        public string address1 { get; set; }
+
+        public string address2 { get; set; }
+        public string address_id { get; set; }
+        public string description { get; set; }
+
+        public string contact_id { get; set; }
+
+        public int isSel { get; set; }
+
+    }
+
+    [NotMapped]
+    public class Rela_account_location_shipto_item
+    {
+        public string id { get; set; }
+
+        public string name { get; set; }
+
+    }
+
+
 }
 

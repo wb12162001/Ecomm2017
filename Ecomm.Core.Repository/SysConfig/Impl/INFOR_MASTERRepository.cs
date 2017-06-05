@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.Composition;
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.SysConfig;
-
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.SysConfig
 {
@@ -22,6 +22,17 @@ namespace Ecomm.Core.Repository.SysConfig
         public INFOR_MASTERRepository() : base("default")
         {
         }
+
+        public IEnumerable<INFOR_MASTER_PAGE> QueryEntities(int count, string strWhere, string strOrder)
+        {
+            System.Data.SqlClient.SqlParameter[] parameters = {
+               new System.Data.SqlClient.SqlParameter("@count",count),
+               new System.Data.SqlClient.SqlParameter("@strWhere", strWhere),
+               new System.Data.SqlClient.SqlParameter("@strOrder",strOrder)
+            };
+            return base.ExecuteProc<INFOR_MASTER_PAGE>("USP_INFOR_MASTER_Query", parameters);
+        }
+
     }
 }
 

@@ -1,0 +1,55 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+<style>
+    .products .popular-products {
+        margin-left: 0px;
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 8px 8px;
+    }
+
+        .products .popular-products .product-list {
+            border: none;
+        }
+</style>
+<div class="clearfix"></div>
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li class="active">Order Status</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>Order Status</h3>
+        </div>
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+            <form action="">
+                <table class="table table-hover">
+                    <tr style="color: #cd0824;">
+                        <th style="width: 17%"></th>
+                        <th style="width: 10%">Snell Order No.</th>
+                        <th style="width: 10%">Purchase Order No.</th>
+                        <th style="width: 10%">Date</th>
+                        <th style="width: 10%">Order Status</th>
+                    </tr>
+@if (ViewBag.OrderModel != null)
+{
+    IEnumerable<Ecomm.Site.Models.MyOffice.SALES_EORDERS.Order_StatusModel> orders = (IEnumerable<Ecomm.Site.Models.MyOffice.SALES_EORDERS.Order_StatusModel>)ViewBag.OrderModel;
+    foreach (var order in orders)
+    {
+                    <tr style="color: #8B8770;font-size: 12px;">
+                        <td style="color:#074A84;font-weight: bold;">
+                            <a href="@Url.Action("OrderItemStatus", "Office", new { packslip = order.PACKSLIP })">@order.PACKSLIP</a>
+                        </td>
+                        <td>@order.gSOPNUMBE</td>
+                        <td>@order.PONO</td>
+                        <td>@order.DOCDATE</td>
+                        <td>Holding</td>
+                    </tr>
+    }
+}
+                </table>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

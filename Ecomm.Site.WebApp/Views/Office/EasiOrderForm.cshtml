@@ -1,0 +1,438 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM;
+@using Webdiyer.WebControls.Mvc;
+@{
+    EOF_PAGE_Other2_MASTER EOF_master = (EOF_PAGE_Other2_MASTER)ViewBag.EOF_Model;
+    ViewBag.Title = "Easi Order Form Page";
+    string cl = "class= active";
+}
+@section Header  {
+    @Styles.Render("~/bundles/product", "~/bundles/filter");
+    <style>
+        .products .popular-products {
+            width: 100%;
+            margin-left: 0px;
+        }
+
+.products .popular-products .product-list .product-box,
+.products .popular-products .product-list .product-box:last-child {
+    border: 1px solid #e4e4e4;
+    margin: 0 17px 15px 3px;
+}
+.products .breadcrumb{
+    margin-bottom:2px;
+}
+#snell-banner-main {
+    margin: 0 auto;
+}
+#snell-banner-content {
+    /*display: none;*/
+    margin: 0 auto;
+    /*width: 930px;*/
+    height: 150px;
+    position: relative;
+}
+#snell-banner-close {
+    display: block;
+    width: 40px;
+    height: 15px;
+    text-align: center;
+    line-height: 15px;
+    border: 1px #fbfbfb solid;
+    background: #003974;
+    color: #fff;
+    font-size: 12px;
+    float: right;
+    cursor: pointer;
+}
+.fade_ad.ng-hide {
+			transition: 3s linear all;
+			opacity: 0;
+		}
+		.fade_ad.ng-show {
+			transition: 3s linear all;
+			opacity: 1;
+		}
+</style>
+}
+<div class="clearfix"></div>
+<!-- Easi Order Form -->
+<div class="products" ng-app="myofficeApp" ng-controller="easiCtrl" bn-document-click="handleClick($event)">
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+        <li>MyOffice</li>
+        <li class="active">Easi Order Form</li>
+    </ol>
+    <div id="snell-banner-main">
+        <div class="fade_ad" ng-show="banner_flag"><a href="infor.aspx?title=Support KidsCan" >
+            <img id="snell-banner-content"  src="/Content/snell/images/KidscanBannerSmall.jpg" />
+            </a></div>
+        <span id="snell-banner-close" ng-click="ClickAd()">{{banner_btn}}</span>
+    </div>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>Snell Easi Order Form</h3>
+            <div class="pull-right">
+                <ul class="nav nav-pills">
+                    <li @if (Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "tile") { @cl   } data-id="tile">
+                        <a href="#tile" data-toggle="tab">
+                            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li @if (Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "list") { @cl   } data-id="list">
+                        <a href="#list" data-toggle="tab">
+                            <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Filter start -->
+        <form id="searchForm" name="searchForm">
+            <input type="hidden" name="category" id="category" value="{{Categories}}" />
+            <input type="hidden" name="location" id="location" value="{{Locations}}" />
+            <input type="hidden" name="sortModle" id="sortModle" value="{{SortModle}}" />
+        </form>
+        <div class="filtering horizontal-filters clear" style="margin-top: 10px; margin-bottom: 10px;">
+            <div class="filter-selector clear">
+                <div class="filter-type details" ng-click="OpenFilter('filter_category')" >
+                    <div class="filter-button">
+                        <span class="filter-type-label summary">Filter Categories<span id="summarycategories"></span></span>
+                        <span class="filter-type-action">▾</span>
+                    </div>
+                    <div id="filter_category" class="filter-list filter-group-list col1" style="display: none;">
+                        <ol class="filter-group-wrapper">
+                            <li class="filter-group first-group">
+                                <span id="infor_cate">Showing All</span>
+                            </li>
+                            <hr>
+                            @foreach (var cate in EOF_master.Categories)
+                            {
+                                <li class="filter-option" title="@Html.Raw((cate.CategoryName ?? cate.CategoryCode).Trim() + "(" + cate.Count + ")")" >
+                                    <label class="filter-target">
+                                        <span ng-click="ClickCategory($event,'@cate.CategoryCode')">@Html.Raw((cate.CategoryName ?? cate.CategoryCode).Trim() + "(" + cate.Count + ")")</span>
+                                        <input class="filter-value" name="node_id[]" value="@cate.CategoryName" type="checkbox">
+                                    </label>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                </div>
+                <div class="filter-type details"  ng-click="OpenFilter('filter_location')" >
+                    <div class="filter-button">
+                        <span class="filter-type-label summary">Filter Location<span id="summaryLocation"></span></span>            <span class="filter-type-action">▾</span>
+                    </div>
+                    <div id="filter_location" class="filter-list filter-group-list col1" style="display: none;">
+                        <ol class="filter-group-wrapper">
+                            <li class="filter-group first-group">
+                                <span id="infor_loca">Showing All</span>
+                            </li>
+                            <hr>
+                            @foreach (var loca in EOF_master.Locations)
+                            {
+                                <li class="filter-option">
+                                    <label class="filter-target">
+                                        <span ng-click="ClickLocation($event,'@loca.ShopName')">@Html.Raw(loca.ShopName + "(" + loca.Count + ")")</span>
+                                    </label>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="filter-type details"  ng-click="OpenFilter('filter_sort')">
+                    <div class="filter-button">
+                        <span class="filter-type-label summary">Sort By</span>
+                        <span class="filter-type-action">▾</span>
+                    </div>
+                    <div id="filter_sort" class="filter-list filter-group-list col1" style="display: none;">
+                        <ol class="filter-group-wrapper">
+                            <li class="filter-group first-group">
+                                Sort
+                            </li>
+                            <hr>
+                            <li class="filter-option" >
+                                <label class="filter-target none_background_img">
+                                    <span class="floatleft" ng-click="clickSort('ProductName','asc',$event);">Description A to Z</span>
+
+                                </label>
+                            </li>
+                            <li class="filter-option" >
+                                <label class="filter-target none_background_img">
+                                    <span class="floatleft" ng-click="clickSort('ProductName','desc',$event);">Description Z to A</span>
+
+                                </label>
+
+                            </li>
+                            <li class="filter-option" >
+                                <label class="filter-target none_background_img">
+                                    <span class="floatleft" ng-click="clickSort('b.ProductNo','asc',$event);">Code A to Z</span>
+
+                                </label>
+                            </li>
+                            <li class="filter-option" >
+                                <label class="filter-target none_background_img">
+                                    <span class="floatleft" ng-click="clickSort('b.ProductNo','desc',$event);">Code Z to A</span>
+                                </label>
+                            </li>
+                            <li class="filter-option" >
+                                <label class="filter-target none_background_img">
+                                    <span class="floatleft" ng-click="clickSort('a.CategoryCode','asc',$event);">Category A to Z</span>
+
+                                </label>
+                            </li>
+                            <li class="filter-option" >
+                                <label class="filter-target none_background_img">
+                                    <span class="floatleft" ng-click="clickSort('a.CategoryCode','desc',$event);">Category  Z to A</span>
+
+                                </label>
+                            </li>
+
+                        </ol>
+                    </div>
+                </div>
+                <div class="filter-type details" ng-click="OpenFilter('MyEof')">
+                    <div class="filter-button">
+                        <span class="filter-type-label summary">My Favourites</span>
+                        <span class="filter-type-action">▾</span>
+                    </div>
+                    <div id="MyEof" class="filter-list filter-group-list col1" style="display: none;">
+                        <ol class="filter-group-wrapper" style="overflow:hidden;">
+                            <li class="filter-group first-group" style="text-indent:0px;">Favourites</li>
+                            <hr>
+                            @foreach (var fav in EOF_master.MyFavourites)
+                            {
+                                <li class="filter-option">
+                                    <label class="filter-target nocheck">
+                                        <a href="@Url.Action("MyFavouriteItems", "office",new { favId = fav.FavouriteID })">@Html.Raw(fav.Favourite + "(" + fav.Count + ")")</a>
+                                    </label>
+                                </li>
+                            }
+
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="floatleft eof_clear_all">
+                    <div class="filter-button">
+                        <a href="@Url.Action("CustomizedProdcut", "office")"><span class="filter-type-label summary ctp">Customised Products</span></a>
+</div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Filter end -->
+        <!--list-->
+        <div id="loadingDiv" style="display:none"><img src="/Content/snell/images/loading.gif" /><h3>Loading data, please wait...</h3></div>
+        <div id="articles">
+            @Html.Partial("_EofList")
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('.nav-pills li').click(function () {
+                var _id = $(this).attr('data-id');
+                //console.log($(this));
+                $.get('@Url.Action("TabShow", "Prod")', { tab_type: _id }, function (response) {
+                    //console.log(response);
+                }, 'json');
+            });
+        });
+
+        var app = angular.module('myofficeApp', ["ngAnimate"]);
+        app.directive(
+            "bnDocumentClick",
+            function ($document, $parse) {
+                //将Angular的上下文链接到DOM事件
+                var linkFunction = function ($scope, $element, $attributes) {
+                    //获得表达式
+                    var scopeExpression = $attributes.bnDocumentClick;
+                    //使用$parse来编译表达式
+                    var invoker = $parse(scopeExpression);
+                    //绑定click事件
+                    $document.on(
+                        "click",
+                        function (event) {
+                            //当点击事件被触发时，我们需要再次调用AngularJS的上下文。再次，我们使用$apply()来确保$digest()方法在幕后被调用
+                            $scope.$apply(
+                                function () {
+                                    //在scope中调用处理函数，将jQuery时间映射到$event对象上
+                                    invoker(
+                                        $scope,
+                                        {
+                                            $event: event
+                                        }
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+                    //当父控制器被从渲染文档中移除时监听"$destory"事件
+                };
+                //返回linking函数
+                return (linkFunction);
+            }
+        );
+        app.controller('easiCtrl', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
+            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+            $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+            $scope.Categories = new Array();
+            $scope.Locations = new Array();
+            $scope.SortModle = "";
+            $scope.cateItemCount = 0;
+
+            $scope.banner_flag = true;
+            $scope.banner_btn = 'close';
+
+            $scope.ClickCategory = function($event,code) {
+                var me = $($event.target).parent().parent();
+                console.log(code);
+                if (me.hasClass("selected")) {
+                    //eobj.category.splice($.inArray(cate, eobj.category), 1);
+                    me.removeClass("selected");
+                    $scope.cateItemCount--;
+                    $scope.Categories.splice($.inArray(code,$scope.Categories),1);
+                } else {
+                    //addArray(cate, eobj.category);
+                    me.addClass("selected");
+                    $scope.cateItemCount++;
+                    $scope.Categories.push(code);
+                }
+                if ($scope.cateItemCount > 0) {
+                    var compileFn = $compile('<span>' + $scope.cateItemCount + '</span>&nbsp;Selected&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a ng-click="ClearCategory()">Clear All</a>');
+                    var $dom = compileFn($scope);
+                    $('#infor_cate').html('');
+                    $dom.appendTo($('#infor_cate'));
+                    $('#summarycategories').html(' ('+$scope.cateItemCount+')');
+                }else{
+                    $('#infor_cate').html('Showing All');
+                    $('#summarycategories').html('');
+                }
+                //console.log($scope.Categories);
+                $scope.clickFilter(1);
+            }
+            $scope.ClearCategory = function () {
+                $scope.cateItemCount = 0;
+                $scope.Locations = new Array();
+                $scope.Categories = new Array();
+                $('#infor_cate').html('Showing All');
+                $('#summarycategories').html('');
+
+                $('#infor_loca').html('Showing All');
+                $('#summaryLocation').html('');
+
+                
+                angular.forEach($('div.filter-selector ol li'), function (me, index) {
+                    if ($(me).hasClass("selected")) {
+                        $(me).removeClass("selected");
+                    }
+                });
+
+                $scope.clickFilter(1);
+            }
+
+            $scope.ClickLocation = function ($event, code) {
+                var me = $($event.target).parent().parent();
+                //console.log(code);
+                if (me.hasClass("selected")) {
+                    me.removeClass("selected");
+                    //$scope.cateItemCount--;
+                    $scope.Locations.splice($.inArray(code, $scope.Locations), 1);
+                } else {
+                    me.addClass("selected");
+                    //$scope.cateItemCount++;
+                    $scope.Locations.push(code);
+                }
+                var count = $scope.Locations.length;
+                if (count > 0) {
+                    var compileFn = $compile('<span>' + count + '</span>&nbsp;Selected&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a ng-click="ClearCategory()">Clear All</a>');
+                    var $dom = compileFn($scope);
+                    $('#infor_loca').html('');
+                    $dom.appendTo($('#infor_loca'));
+                    $('#summaryLocation').html(' (' + count + ')');
+                } else {
+                    $('#infor_loca').html('Showing All');
+                    $('#summaryLocation').html('');
+                }
+                //console.log($scope.Locations);
+                $scope.clickFilter(2);
+            }
+            $scope.OpenFilter = function (id) { //redo...
+                var filter_ids = ['filter_category', 'filter_location', 'filter_sort', 'MyEof'];
+                if (id != 'all') { //all 就是所有都hide.
+                    filter_ids.splice($.inArray(id, filter_ids), 1); //删除当前自己
+                    $('#' + id).toggle();
+                }
+                angular.forEach(filter_ids, function (value, index) {
+                    //console.log(index + "-" + value);
+                    if ($('#' + value).is(":hidden")) {
+                    } else {
+                        $('#' + value).hide();
+                    }
+                });
+            }
+            $scope.clickFilter = function (ctype) {
+                var cates = JSON.stringify($scope.Categories);
+                var locats = JSON.stringify($scope.Locations);
+                $.post('/Office/EasiOrderForm/1', { category: cates, location: locats, sortModle: $scope.SortModle, ctype: ctype })
+                    .success(function (response) {
+                        //console.info(response);
+                        $("#articles").html(response);
+                        //alert(response);
+                        //$scope.getResult(response.shoppingCart);
+                    });
+                
+            }
+            $scope.clickSort = function (name, decs, $event) {
+                var me = $($event.target).parent().parent();
+                angular.forEach(me.parent().find('li'), function (value, index) {
+                    if (me != $(value)) {
+                        if ($(value).hasClass("selected")) {
+                            $(value).removeClass("selected");
+                        }
+                    }
+                });
+                //console.info($($event.target));
+                if (me.hasClass("selected")) {
+                    me.removeClass("selected");
+                } else {
+                    me.addClass("selected");
+                }
+                $scope.SortModle = name + " " + decs;
+                $scope.clickFilter(1);
+            }
+            $scope.ClickAd = function () {
+                $scope.banner_flag = !$scope.banner_flag;
+                if ($scope.banner_flag) {
+                    $scope.banner_btn = 'close';
+                } else {
+                    $scope.banner_btn = 'show';
+                }
+                //$scope.$apply();
+            }
+
+            //setTimeout(function () {
+            //    $scope.ClickAd();
+            //}, 3000);
+
+            $scope.handleClick = function (event) {
+                //console.log(event.target);
+                //console.log($(event.target).parent().parent().parent().hasClass('filter-selector'));
+                if ($(event.target).parent().parent().parent().hasClass('filter-selector') == false) {
+                    $scope.OpenFilter('all');
+                }
+                //event.stopPropagation();
+            };
+            
+            //alert('123');
+        }]);
+    </script>
+    @Scripts.Render("~/bundles/mvcpager")
+}

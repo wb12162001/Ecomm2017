@@ -166,5 +166,18 @@ namespace Ecomm.Site.Models.SysConfig.INFOR_MASTER
 
         public List<SelectListItem> Categrouies { get; set; }
     }
+
+    public class INFOR_CATE_Model
+    {
+        public string ID { get; set; }
+
+        public string InforSubject { get; set; }
+
+        public string ActiveLink { get; set; }
+
+        public string Target { get; set; }
+
+        public string Type { get; set; }
+    }
 }
 

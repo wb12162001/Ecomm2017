@@ -10,11 +10,15 @@
 </head>
 <body>
     <hgroup>
-        <h1>Error.</h1>
+        <h1>Error 404.</h1>
         <h2>An error occurred while processing your request.</h2>
-        <p>
-            @ViewBag.Model
-        </p>
+        @if (Model != null)
+        {
+            var ex = (System.Exception)Model.Exception;
+            <p>Controller: @Model.ControllerName</p>
+            <p>Action: @Model.ActionName</p>
+            <p>ErrorMessage: @ex.Message</p>
+        }
     </hgroup>
     <img src="~/Content/images/error.jpg" alt="Cat" />
 </body>

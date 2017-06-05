@@ -76,12 +76,33 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             return new OperationResult(OperationResultType.Success, "update completed");
         }
 
+        public int Update(SALES_FAVFOLDER model)
+        {
+            return SALES_FAVFOLDERRepository.Update(model);
+        }
+
         public OperationResult Delete(string  ID)
         {
             var model = SALES_FAVFOLDERList.FirstOrDefault(t => t.ID == ID);
 
             SALES_FAVFOLDERRepository.Delete(model);
             return new OperationResult(OperationResultType.Success, "successfully deleted");
+        }
+        public List<MyFavFolders> GetFavFoldersAndItemCount(string custID, string contactID)
+        {
+            return SALES_FAVFOLDERRepository.GetFavFoldersAndItemCount(custID, contactID);
+        }
+
+        public int DeleteBysql(string favId)
+        {
+            return SALES_FAVFOLDERRepository.Delete(favId);
+        }
+
+        public string GetFavName(string favId)
+        {
+            var model = SALES_FAVFOLDERList.FirstOrDefault(t => t.ID == favId);
+            if (model != null) return model.FolderName;
+            return string.Empty;
         }
 
         #endregion

@@ -9,7 +9,7 @@ using System;
 
 using Quick.Framework.EFData;
 using Ecomm.Domain.Models.MyOffice;
-
+using System.Collections.Generic;
 
 namespace Ecomm.Core.Repository.MyOffice
 {
@@ -19,6 +19,8 @@ namespace Ecomm.Core.Repository.MyOffice
     public interface ISALES_EORDERSRepository : IRepository<SALES_EORDERS>
     {
         double GetOrdersByCurrentMonth(string custId, string shipId);
+
+        IEnumerable<Order_Status> GetOrderStatus(string Custid);
     }
 }
 

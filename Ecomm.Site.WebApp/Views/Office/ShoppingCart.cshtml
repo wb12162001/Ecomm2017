@@ -2,25 +2,29 @@
 @{
     ShoppingCartViewModel ShoppingCart = (ShoppingCartViewModel)ViewBag.ShoppingCartModel;
     string MinOrderMsg = (string)ViewBag.MinOrderMsg;
+    string Misctitle = (string)ViewBag.Misctitle;
 }
 @section Header  {
     @Styles.Render("~/bundles/cart")
 }
 <div class="clearfix"></div>
 <!-- Shopping Cart -->
-<div class="products">
+<div class="products" ng-app="myApp" ng-controller="validateCtrl">
     <div class="cart-top">
         <div class="sub_cart_tit">Your Cart</div>
         <div class="sub_cart_guage cart_f1"></div>
     </div>
     <div class="clearfix"></div>
-<input type="hidden" id="hdItemcount" value="@ShoppingCart.ItemCount" />
 @if (ShoppingCart.ItemCount > 0)
 {
-    <div class="cart-msg">
-        @MinOrderMsg
+    var i = 1;
+    <div class="cart-msg" ng-show="isShowMinOrderMsg">
+       @MinOrderMsg
     </div>
-    <div class="cart-content">
+    <div class="cart-msg" ng-show="isShowMisctitle">
+        @Misctitle
+    </div>
+    <div class="cart-content" ng-hide="isShoppingCartEmpty">
         <table class="table table-hover">
             <thead>
                 <tr class="redcolor">
@@ -47,12 +51,13 @@
                     <td>@item.Unit</td>
                     <td class="redcolor">$@Html.DisplayFor(modelItem => item.UnitPrice)</td>
                     <td>
-                        <input type="number" class="form-control quantity" min="1" value="@Html.DisplayFor(modelItem => item.Quantity)" />
+                        <input type="number" ng-init="qty[@i]=@Html.DisplayFor(modelItem => item.Quantity)" class="form-control quantity" min="1" ng-model="qty[@i]" ng-change="txtQtyChange(@i,'@item.ProductNo');" />
                     </td>
                     <td>
-                        <button class="btn btn-default" onclick="RemoveCartItem('@item.ID',this);" ><span class="glyphicon glyphicon-trash"></span></button>
+                        <button class="btn btn-default" ng-click="deleItem($event,'@item.ID')" ><span class="glyphicon glyphicon-trash"></span></button>
                     </td>
                 </tr>
+    i++;
 }
             </tbody>
         </table>
@@ -62,23 +67,23 @@
             <table class="count-table">
                 <tr>
                     <td class="textalign-right">Subtotal:</td>
-                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.CartTotal)</td>
+                    <td class="textalign-right" ng-model="subtotal" ng-init="subtotal=@Html.DisplayFor(modelItem => ShoppingCart.CartTotal)">${{subtotal}}</td>
                 </tr>
                 <tr>
                     <td class="textalign-right">Freight Fee:</td>
-                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.Freight)</td>
+                    <td class="textalign-right" ng-model="freight" ng-init="freight=@Html.DisplayFor(modelItem => ShoppingCart.Freight)">${{freight | number:2}}</td>
                 </tr>
                 <tr>
                     <td class="textalign-right">Miscellaneous:</td>
-                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.Miscellaneous)</td>
+                    <td class="textalign-right" ng-model="misc" ng-init="misc=@Html.DisplayFor(modelItem => ShoppingCart.Miscellaneous)">${{misc | number:2}}</td>
                 </tr>
                 <tr>
                     <td class="textalign-right">GST:</td>
-                    <td class="textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.GST)</td>
+                    <td class="textalign-right" ng-model="gst" ng-init="gst=@Html.DisplayFor(modelItem => ShoppingCart.GST)">${{gst | number:2}}</td>
                 </tr>
                 <tr>
                     <td class="textalign-right redcolor">Total:</td>
-                    <td class="redcolor textalign-right">$@Html.DisplayFor(modelItem => ShoppingCart.Total)</td>
+                    <td class="redcolor textalign-right" ng-model="total" ng-init="total=@Html.DisplayFor(modelItem => ShoppingCart.Total)">${{total | number:2}}</td>
                 </tr>
             </table>
         </div>
@@ -93,16 +98,17 @@
         </div>
     </div>
 }
-    <div class="no_purchase">
+    <div class="no_purchase" ng-show="isShoppingCartEmpty">
         There is no purchase of any product
     </div>
 </div>
 @section scripts
 {
+    @Scripts.Render("~/bundles/angular")
     <script>
         $(function () {
             $('.cart').unbind("mouseover").unbind("mouseout");
-            if ($("#hdItemcount").val() == 0) {
+            @*if ($("#hdItemcount").val() == 0) {
                 $("div.cart-content").hide();
                 $("div.cart-bottom").hide();
                 $("div.no_purchase").show();
@@ -116,7 +122,82 @@
             {
                 @Html.Raw("$('div.cart-msg').hide();");
                 @Html.Raw("$('#a_checkout').removeClass('disabled');");
-                }
+                }*@
         });
+
+        var app = angular.module('myApp', []);
+        app.controller('validateCtrl', ['$scope', '$http', function ($scope, $http) {
+            $scope.isShowMinOrderMsg = @Html.Raw((!string.IsNullOrEmpty(ShoppingCart.Message)).ToString().ToLower());
+            $scope.isShowMisctitle = @Html.Raw((!string.IsNullOrEmpty(ShoppingCart.Misctitle)).ToString().ToLower());
+            $scope.itemCount=@ShoppingCart.ItemCount;
+            $scope.isShoppingCartEmpty = $scope.itemCount == 0;
+            $scope.deleItem = function($event,id){
+                $.post('/Home/DeleCart', { id: id})
+                    .success(function (response) {
+                        console.info(response);
+                        //alert(response);
+                        $scope.getResult(response.shoppingCart);
+                        var me = $($event.target).parent().parent();
+                        //console.info(me[0]);
+                        //console.info(me[0].localName);
+                        if(me[0].localName == 'td'){ //点击里有可能是buttom 里面的icon; 这时me就是td;
+                            me = me.parent(); //这里才是tr
+                        }
+                        me.remove();
+                        //console.info(me);
+                        bootbox.alert({ message: response.message });
+                    });
+            }
+            //console.log($scope.isShowMinOrderMsg);
+            $scope.updateCart = function (pno, qty) {
+                $.post('/Home/UpdateCartItem', { sku: pno ,qty:qty})
+                    .success(function (response) {
+                        console.info(response);
+                        //alert(response);
+                        $scope.getResult(response.shoppingCart);
+                    });
+            }
+
+            $scope.getResult = function (obj){      //计算输入框的总值
+                //var result = 0;
+                //angular.forEach($scope.qty, function (item, key) {
+                //    result += parseInt($scope.qty[key]);
+                //})
+                //console.info(result);
+                $scope.$apply(function(){
+                    $scope.subtotal = obj.CartTotal;
+                    $scope.freight = obj.Freight;
+                    $scope.misc = obj.Miscellaneous;
+                    $scope.gst = obj.GST;
+                    $scope.total = obj.Total;
+                    $scope.itemCount = obj.ItemCount;
+                    $scope.isShowMinOrderMsg = !(obj.Message == null);
+                    $scope.isShoppingCartEmpty = (obj.ItemCount == 0);
+                    $scope.isShowMisctitle = !(obj.Misctitle == null);
+                    console.info($scope.isShoppingCartEmpty);
+                    $scope.disabledCheck();
+                });
+            }
+
+            $scope.txtQtyChange = function (key,pno) {
+                var val = $scope.qty[key];
+                //console.info(val);
+                //$scope.getResult();
+                $scope.updateCart(pno, val);
+            }
+
+            $scope.disabledCheck = function () {
+                var myEl = angular.element(document.querySelector('#a_checkout'));
+                if ($scope.isShowMinOrderMsg) {
+                    myEl.addClass('disabled');
+                } else {
+                    myEl.removeClass('disabled');
+                }
+                //console.info($scope.isShowMinOrderMsg);
+                //console.info(myEl);
+            }
+
+            $scope.disabledCheck();
+        }]);
     </script>
 }

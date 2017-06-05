@@ -28,6 +28,9 @@ namespace Ecomm.Core.Service.MyOffice
         #endregion
 
         #region 公共方法
+        IEnumerable<SALES_FAVORITE_MASTER> QueryEntities(int count, string strWhere, string strOrder);
+
+        IEnumerable<SALES_FAVORITE_MASTER> GetAllByCondition(string custID, string contactID,string strWhere);
         OperationResult Insert(SALES_FAVORITEModel model);
         OperationResult Update(UpdateSALES_FAVORITEModel model);
         /// <summary>
@@ -36,7 +39,9 @@ namespace Ecomm.Core.Service.MyOffice
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(string  ID);
+
+        string GetFavFolderFirstImg(string favFolderID);
         #endregion
-	}
+    }
 }
 

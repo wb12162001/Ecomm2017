@@ -1,4 +1,59 @@
 ﻿$(function () {
+    'use strict';
+    $.ajax({
+        url: '../Sku.txt?v=' + Math.round(Math.random() * 999) + 3000,
+        async: true,
+        dataType: 'json'
+    }).done(function (source) {
+        var countriesArray = $.map(source, function (value) { return { value: value.sku, data: { desc: value.desc, id: 12345} }; });
+        // Setup jQuery ajax mock:
+        $.mockjax({
+            url: '../Sku.txt',
+            responseTime: 2000,
+            response: function (settings) {
+                var query = settings.data.query,
+                    queryLowerCase = query.toLowerCase(),
+                    re = new RegExp('\\b' + $.Autocomplete.utils.escapeRegExChars(queryLowerCase), 'gi'),
+                    suggestions = $.grep(countriesArray, function (country) {
+                        // return country.value.toLowerCase().indexOf(queryLowerCase) === 0;
+                        return re.test(country.value);
+                    }),
+                    response = {
+                        query: query,
+                        suggestions: suggestions
+                    };
+
+                this.responseText = JSON.stringify(response);
+            }
+        });
+
+        // Initialize ajax autocomplete:
+        $('#search-text').autocomplete({
+            // serviceUrl: '/autosuggest/service/url',
+            lookup: countriesArray,
+            minChars: 2,
+            lookupLimit: 50,
+            lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
+                var re = new RegExp('\\b' + $.Autocomplete.utils.escapeRegExChars(queryLowerCase), 'gi');
+                return re.test(suggestion.value);
+            },
+            onSelect: function (suggestion) {
+                //$('#selction-ajax').html('You selected: ' + suggestion.value + ', ' + suggestion.data);
+                console.log(suggestion.value);
+                console.log(suggestion.data.desc);
+                console.log(suggestion.data.id);
+            },
+            onHint: function (hint) {
+                //$('#autocomplete-ajax-x').val(hint);
+            },
+            onInvalidateSelection: function () {
+                //$('#selction-ajax').html('You selected: none');
+            }
+        });
+    });
+});
+
+$(function () {
     //删除左右两端的空格
     function trim(str) {
         return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -107,26 +162,43 @@
     //add to cart
     $('a.cart').each(function (index) {
         $(this).on('click', function () {
-            var pro = $(this).attr("data-pno");
-            addCart(pro);
-            return false;
+            var objEvt = $._data($(this)[0], "events");
+            if (objEvt && objEvt["click"]) {
+
+            } else {
+                var pro = $(this).attr("data-pno");
+                addCart(pro);
+                return false;
+            }
         });
     });
     //add to cart
     $('span.glyphicon-shopping-cart').each(function (index) {
+        $(this).unbind("click");
         $(this).on('click', function () {
-            var pro = $(this).attr("data-pno");
-            addCart(pro);
-            return false;
+            var objEvt = $._data($(this)[0], "events");
+            //console.log(objEvt);
+            if (objEvt && objEvt["click"]) {
+
+            } else {
+                var pro = $(this).attr("data-pno");
+                addCart(pro);
+                return false;
+            }
         });
     });
 
     //add to fav
     $('a.add_fav').each(function (index) {
         $(this).on('click', function () {
-            var pro = $(this).attr("data-pno");
-            addFav(pro);
-            return false;
+            var objEvt = $._data($(this)[0], "events");
+            if (objEvt && objEvt["click"]) {
+
+            } else {
+                var pro = $(this).attr("data-pno");
+                addFav(pro);
+                return false;
+            }
         });
     });
     
@@ -230,8 +302,9 @@ function addFav(pro) {
         return;
     }
     var post_data = { pno: pro, qty: 1 };
-    bootbox.alert("Add Favorites Success!", function () {
-    });
+    //bootbox.alert("Add Favorites Success!", function () {
+    //});
+    $('#addfavourite-modal-form').modal();
     /*
     $.ajax({
         type: "POST",

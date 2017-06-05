@@ -99,6 +99,16 @@ namespace Ecomm.Site.WebApp.Common
                 cartModel.Miscellaneous = this.CurrentUser.Miscellaneous;
                 cartModel.GST = SYS_CONFIGService.GetCalculatedGst(cartModel.Freight, cartModel.Miscellaneous, item_subtotal);
                 cartModel.Total = item_subtotal + cartModel.Freight + cartModel.Miscellaneous + cartModel.GST;
+
+                //Ben 2014-08-20 For the MinOrderValue
+                if (CurrentUser.MinOrderValue > 0 && CurrentUser.MinOrderValue > item_subtotal)
+                {
+                    cartModel.Message = string.Format("We are unable to process as below ${0}/order threshold, please increase your order or contact the customers service team on 0800736557 to discuss options.", CurrentUser.MinOrderValue.ToString("N2"));
+                }
+                if (CurrentUser.MinOrderSize > 0 && CurrentUser.MinOrderSize > item_subtotal)
+                {
+                    cartModel.Misctitle = string.Format("Save ${1}! Simply by increasing your orders to ${0}, your small orders fee will be waived!", CurrentUser.MinOrderSize.ToString("N0"), CurrentUser.MinOrderMisc.ToString("N0"));
+                }
             }
             return cartModel;
         }

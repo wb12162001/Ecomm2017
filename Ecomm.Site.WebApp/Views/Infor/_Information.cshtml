@@ -1,0 +1,9 @@
+﻿@using Ecomm.Domain.Models.SysConfig;
+@{
+    var Information = (INFOR_MASTER)ViewBag.InformationModel;
+}
+@if (Information != null)
+{
+    <div class="abouttitle f-14 blue ">@Html.Raw(Information.InforSubject)</div>
+    <div class="aboutcontent">@Html.Raw(Information.Description)</div>
+}

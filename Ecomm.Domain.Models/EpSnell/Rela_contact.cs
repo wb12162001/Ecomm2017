@@ -232,7 +232,7 @@ namespace Ecomm.Domain.Models.EpSnell
 		public string Class6  { get; set; }
 
 
-		public bool IsManager  { get; set; }
+		public Boolean? IsManager  { get; set; }
 
 
 		public string UserName  { get; set; }
@@ -256,7 +256,7 @@ namespace Ecomm.Domain.Models.EpSnell
 		public string AccountRole  { get; set; }
 
 
-		public bool IsContractLimit  { get; set; }
+		public Boolean? IsContractLimit  { get; set; }
 
 
 		public string HomePage  { get; set; }

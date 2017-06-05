@@ -1,0 +1,143 @@
+﻿@section Header  {
+    <style>
+        .products .popular-products {
+            margin-left: 0px;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 8px 8px;
+        }
+
+            .products .popular-products .product-list {
+                border: none;
+            }
+    </style>
+}
+<div class="clearfix"></div>
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li class="active">Order Limit</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>Order Limit</h3>
+        </div>
+        
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Create New Order Limit
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-inline" style="margin:10px 0">
+                            <input type="hidden" name="action" id="action" value="add" />
+                            <div class="form-group" style="margin-right:10px">
+                                Location:
+                @if (ViewBag.DropDownModel != null)
+                {
+                IEnumerable<SelectListItem> list = (IEnumerable<SelectListItem>)ViewBag.DropDownModel;
+
+                                <select id="address_id" name="address_id" class="form-control">
+                                    @foreach (var t in list)
+                                    {
+                                    <option value="@t.Value">@t.Text</option>
+                                    }
+                                </select>
+                                    }
+                            </div>
+                            <div class="form-group">
+                                Monthly Quota:
+                                <input type="number" id="Month_quota" name="Month_quota" class="form-control" min="0" value="" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-success">
+                            Save
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary pull-right" data-action="add" data-toggle="modal" data-target="#myModal">Add New</button>
+        </div>
+        <br />
+        <div class="clearfix"></div>
+        <!--list-->
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+            @Html.Partial("_OrderLimitList")
+        </div>
+        <!--end-->
+            <div class="clearfix"></div>
+        </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#myModal button.btn.btn-success').click(function (event) {
+                event.preventDefault();
+                // replace '#' by server-side script who get the post content 
+                $.post('#', $('form').serialize(), function (data, status, xhr) {
+                    // do something here with response;
+                    $('#list').html(data);
+                    //console.info(data);
+                    //console.info(status);
+                    //console.info(xhr);
+                })
+                    .done(function () {
+                        // do something here if done ;
+                        //alert("saved");
+                        // maybe the good state to close the modal
+                        // Set a timeout to hide the element again
+                        setTimeout(function () {
+                            $("#myModal").modal('toggle');
+                        }, 1000);
+                    })
+                    .fail(function () {
+                        // do something here if there is an error ;
+                        //alert("error");
+                    })
+                    .always(function () {
+                        //alert("finished");
+                    });
+            });
+
+            $('#myModal').on('show.bs.modal', function (event) {
+                var a = $(event.relatedTarget) // a that triggered the modal
+                var action = a.data('action');
+                var modal = $(this)
+                modal.find('#action').val(action);
+                modal.find('#Month_quota').val('');
+                modal.find('#myModalLabel').html('Create New Order Limit');
+                if (action == 'edit') {
+                    var aid = a.data('aid');
+                    var mquota = a.data('mquota');
+
+                    modal.find('#Month_quota').val(mquota);
+                    modal.find('#address_id').val(aid);
+                    modal.find('#myModalLabel').html('Edit Order Limit');
+                }
+                if (action == 'delete') {
+                    var aid = a.data('aid');
+                    var mquota = a.data('mquota');
+
+                    modal.find('#Month_quota').val(mquota);
+                    modal.find('#address_id').val(aid);
+                    modal.find('#myModalLabel').html('Are you confirm delete Order Limit');
+                }
+            });
+        });
+    </script>
+}

@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - Snell packaging & safety</title>
     @Styles.Render("~/bundles/snell")
     @Scripts.Render("~/bundles/modernizr")
-   
+   @Styles.Render("~/bundles/plugins/bootstrap-table/css");
     @RenderSection("header", false)
 </head>
 <body>
@@ -33,9 +33,12 @@
 
     <!--Login-part-->
     @Html.Partial("_Login")
+    <!--Add Favourite -part-->
+    @Html.Partial("_AddFavourite")
     @Styles.Render("~/bundles/plugins/bootstrapvalidator/css")
-    @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/angular", "~/bundles/js/jqdataTables")
-    @Scripts.Render("~/bundles/index", "~/bundles/plugins/bootstrapvalidator/js")
+    @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/angular")
+    @Scripts.Render("~/bundles/index", "~/bundles/plugins/bootstrapvalidator/js", "~/bundles/autocomplete/js")
+    @Scripts.Render("~/bundles/plugins/bootstrap-table/js")
     <script type="text/javascript">
         function logout() {
             bootbox.alert({
@@ -128,6 +131,16 @@
             });
 
         });
+
+        $(document).ready(function () {
+            $('#addfavourite-modal-form').on('show.bs.modal',
+            function () {
+                console.log('show.bs.modal');
+                //initTable();
+            });
+        });
+
+
 
     </script>
     @RenderSection("scripts", required: false)

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 
 using Quick.Framework.Tool.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecomm.Domain.Models.MyOffice
 {
@@ -47,7 +48,39 @@ namespace Ecomm.Domain.Models.MyOffice
         
         
     }
-    
-    
+
+
+    [NotMapped]
+    public class ContractPrice_PAGE_MASTER
+    {
+        public string ProductName { get; set; }
+        public string ProductNo { get; set; }
+        public string ProductID { get; set; }
+
+        public double? ListPrice { get; set; }
+        public double? SpecialPrice { get; set; }
+        public double? ClearPrice { get; set; }
+
+        public string CategoryCode { get; set; }
+        public string BaseUOFM { get; set; }
+        public string ProdGroupID { get; set; }
+        public string StockType { get; set; }
+        public string SmallPic { get; set; }
+        public string BigPic { get; set; }
+
+        public double? AvailableQTY { get; set; }
+
+        public double? ContractPrice { get; set; }
+
+        public string PriceType { get; set; }
+
+        public int? Status { get; set; }
+
+        public string Item04 { get; set; }
+
+        public string CategoryName { get; set; }
+        public string MenuAlias { get; set; }
+    }
+
 }
 

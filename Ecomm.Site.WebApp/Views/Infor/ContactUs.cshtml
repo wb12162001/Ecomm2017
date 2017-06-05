@@ -1,0 +1,260 @@
+﻿
+@section Header  {
+    @Styles.Render("~/bundles/product")
+    <style>
+        .products {
+            margin-top: 5px;
+        }
+        .contact_address_top {
+    display: inline-block;
+    margin: 15px 0;
+    width: 100%;
+}
+        .contact-us-map-top {
+    padding-top: 0px;
+}
+        .contact-us .contact-us-left {
+    float: left;
+    font-size: 12px;
+    padding-right: 70px;
+}
+        .contact-us .contact-us-right {
+    float: left;
+    padding-left: 70px;
+    border-left: 1px solid #cccccc;
+    width: 750px;
+}
+        .contact-us .contact-us-h1 {
+    margin: 8px 0 0 0;
+    color: #004380;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: Tahoma;
+}
+        .contact-us-way {
+    padding-top: 20px;
+}
+        .contact-us-way .contact-us-way-name {
+    color: #0c4080;
+}
+        .contact-us-way .contact-us-way-tel {
+    color: #707070;
+}
+        .contact-us-map {
+    border-bottom: 1px solid #cccccc;
+    padding-bottom: 30px;
+        height: auto;
+    display: inline-block;
+    clear: both;
+    width: 100%;
+}
+        .contact-us-map .contact-us-map-left {
+    float: left;
+}
+        .contact-us-map .contact-us-map-right {
+    float: right;
+    padding-right: 180px;
+}
+        .contact-us-map-left-address {
+    padding-top: 20px;
+}
+        .contact-us-map .contact-us-map-left .contact-us-map-left-view {
+    font-size: 12px;
+    font-weight: bold;
+    padding-top: 15px;
+}
+        .contact-us-map-right-p {
+    padding-top: 20px;
+}
+    </style>
+}
+<div class="clearfix"></div>
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+        <li class="active">Contact Us</li>
+    </ol>
+    <div class="contact_address_top">
+        <div class="contact-us">
+            <div class="contact-us-left">
+                <div class="contact-us-h1">Customer Services</div>
+
+                <div class="contact-us-way">
+                    <p class="contact-us-way-name">Customer Service Phone:</p>
+                    <p class="contact-us-way-tel">(09) 622 4141</p>
+                </div>
+                <!--contact-us-wayf end-->
+
+                <div class="contact-us-way">
+                    <p class="contact-us-way-name">24 Hour Fax Service:</p>
+                    <p class="contact-us-way-tel">(09) 622 4146</p>
+                </div>
+                <!--contact-us-wayf end-->
+
+                <div class="contact-us-way">
+                    <p class="contact-us-way-name">Customer Service Email:</p>
+                    <p class="contact-us-way-tel" id="cu_sales"><a href="mailto:sales@snell.co.nz">sales@snell.co.nz</a></p>
+                </div>
+                <!--contact-us-wayf end-->
+
+                <div class="contact-us-way">
+                    <p class="contact-us-way-name">Feedback:</p>
+                    <p class="contact-us-way-tel" id="cu_my2cents"><a href="mailto:my2cents@snell.co.nz">my2cents@snell.co.nz</a></p>
+                </div>
+                <!--contact-us-wayf end-->
+
+                <div class="contact-us-way">
+                    <p class="contact-us-way-name">Webmaster:</p>
+                    <p class="contact-us-way-tel" id="cu_webmaster"><a href="mailto:webmaster@snell.co.nz">webmaster@snell.co.nz</a></p>
+                </div>
+                <!--contact-us-wayf end-->
+
+            </div>
+            <!--contact-us-lef end-->
+
+            <div class="contact-us-right">
+
+                <div class="contact-us-map contact-us-map-top">
+                    <div class="contact-us-h1">Auckland Office</div>
+                    <div class="contact-us-map-left">
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Postal Address</p>
+                            <p class="contact-us-map-left-detail">PO Box 12-215</p>
+                            <p class="contact-us-map-left-detail">Penrose 1642</p>
+                            <p class="contact-us-map-left-detail">Auckland</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Physical Address</p>
+                            <p class="contact-us-map-left-detail">6-8 Goodman Place</p>
+                            <p class="contact-us-map-left-detail">Penrose 1061</p>
+                            <p class="contact-us-map-left-detail">Auckland</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+
+                        <p class="contact-us-map-left-view"><a href="http://maps.google.co.nz/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=6%2F8+Goodman+Pl,+Penrose,+Auckland+1061&amp;sll=-36.897939,174.808959&amp;sspn=0.008099,0.013733&amp;ie=UTF8&amp;ll=-36.909137,174.811106&amp;spn=0.020589,0.025749&amp;z=14&amp;output=embed" target="_blank">View map</a></p>
+                    </div>
+                    <!--contact-us-map-left end-->
+                    <div class="contact-us-map-right">
+                        <div class="contact-us-map-right-p">
+                            <p class="contact-us-map-right-tel"><span>Phone:</span>(09) 622 4144</p>
+                            <p class="contact-us-map-right-fax"><span>Fax:</span>(09) 622 4146</p>
+                        </div>
+                        <!--contact-us-map-right-p end-->
+                    </div>
+                    <!--contact-us-map-right end-->
+                    <div class="clearfloat"></div>
+                </div>
+                <!--contact-us-map end-->
+
+
+                <div class="contact-us-map">
+                    <div class="contact-us-h1">Hamilton Offfice</div>
+                    <div class="contact-us-map-left">
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Postal Address</p>
+                            <p class="contact-us-map-left-detail">PO Box 10053</p>
+                            <p class="contact-us-map-left-detail">Te Rapa 3241</p>
+                            <p class="contact-us-map-left-detail">Hamilton</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Physical Address</p>
+                            <p class="contact-us-map-left-detail">2 Maui Street</p>
+                            <p class="contact-us-map-left-detail">Pukete Industrial 3200</p>
+                            <p class="contact-us-map-left-detail">Hamilton</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+                        <p class="contact-us-map-left-view"><a href="http://maps.google.co.nz/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=2+Maui+St,+Pukete,+Waikato+3200&amp;sll=-37.759761,175.25302&amp;sspn=0.128113,0.219727&amp;ie=UTF8&amp;ll=-37.720967,175.226183&amp;spn=0.020368,0.025749&amp;z=14&amp;iwloc=A&amp;output=embed" target="_blank">View map</a></p>
+                    </div>
+                    <!--contact-us-map-left end-->
+                    <div class="contact-us-map-right">
+                        <div class="contact-us-map-right-p">
+                            <p class="contact-us-map-right-tel"><span>Phone:</span>(07) 850 1077</p>
+                            <p class="contact-us-map-right-fax"><span>Fax:</span>(07) 850 1022</p>
+                        </div>
+                        <!--contact-us-map-right-p end-->
+                    </div>
+                    <!--contact-us-map-right end-->
+                    <div class="clearfloat"></div>
+                </div>
+                <!--contact-us-map end-->
+
+                <div class="contact-us-map">
+                    <div class="contact-us-h1">Wellington Office</div>
+                    <div class="contact-us-map-left">
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Postal Address</p>
+                            <p class="contact-us-map-left-detail">PO Box 33178 </p>
+                            <p class="contact-us-map-left-detail">Lower Hutt 5046</p>
+                            <p class="contact-us-map-left-detail">Wellington</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Physical Address</p>
+                            <p class="contact-us-map-left-detail">133 Gracefield Rd</p>
+                            <p class="contact-us-map-left-detail">Gracefield 1055</p>
+                            <p class="contact-us-map-left-detail">Wellington</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+
+                        <p class="contact-us-map-left-view"><a href="http://maps.google.co.nz/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=133+Gracefield+Rd,+Gracefield+1055,Wellington&amp;sll=-36.917818,174.8069&amp;sspn=0.008097,0.013733&amp;ie=UTF8&amp;ll=-41.230508,174.92054&amp;spn=0.019365,0.025749&amp;z=14&amp;iwloc=A&amp;output=embed" target="_blank">View map</a></p>
+                    </div>
+                    <!--contact-us-map-left end-->
+                    <div class="contact-us-map-right">
+                        <div class="contact-us-map-right-p">
+                            <p class="contact-us-map-right-tel"><span>Phone:</span>(04) 566 9456</p>
+                            <p class="contact-us-map-right-fax"><span>Fax:</span>(04) 566 9456</p>
+                        </div>
+                        <!--contact-us-map-right-p end-->
+                    </div>
+                    <!--contact-us-map-right end-->
+                    <div class="clearfloat"></div>
+                </div>
+                <!--contact-us-map end-->
+
+
+                <div class="contact-us-map contact-us-map-foot">
+                    <div class="contact-us-h1">Christchurch Office</div>
+                    <div class="contact-us-map-left">
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Postal Address</p>
+                            <p class="contact-us-map-left-detail">PO Box 21230 </p>
+                            <p class="contact-us-map-left-detail">Edgeware 8143 </p>
+                            <p class="contact-us-map-left-detail">Christchurch</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+
+                        <div class="contact-us-map-left-address">
+                            <p class="contact-us-map-left-office">Physical Address</p>
+                            <p class="contact-us-map-left-detail">Waterloo Road</p>
+                            <p class="contact-us-map-left-detail">Sockburn 8042</p>
+                            <p class="contact-us-map-left-detail">Christchurch</p>
+                        </div>
+                        <!--contact-us-map-left-address end-->
+
+
+                        <p class="contact-us-map-left-view"><a href="http://maps.google.co.nz/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Waterloo+Road,+Sockburn+8042,Christchurch&amp;sll=-41.239303,174.916356&amp;sspn=0.007616,0.013733&amp;ie=UTF8&amp;ll=-43.528264,172.548695&amp;spn=0.018669,0.025749&amp;z=14&amp;iwloc=A&amp;output=embed" target="_blank">View map</a></p>
+                    </div>
+                    <!--contact-us-map-left end-->
+                    <div class="contact-us-map-right">
+                        <div class="contact-us-map-right-p">
+                            <p class="contact-us-map-right-tel"><span>Phone:</span>(03) 344 1995</p>
+                            <p class="contact-us-map-right-fax"><span>Fax:</span>(03) 344 1997</p>
+                        </div>
+                        <!--contact-us-map-right-p end-->
+                    </div>
+                    <!--contact-us-map-right end-->
+                    <div class="clearfloat"></div>
+                </div>
+                <!--contact-us-map end-->
+
+
+            </div>
+            <!--contact-us-right end-->
+        </div>
+        <!--contact-us end-->
+    </div>
+</div>
