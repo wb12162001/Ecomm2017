@@ -90,7 +90,7 @@ namespace Ecomm.Site.WebApp.Controllers
             return View();
         }
 
-        public ActionResult Detail(string id)
+        public ActionResult Detail(string id,string ptype="id")
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -98,7 +98,16 @@ namespace Ecomm.Site.WebApp.Controllers
             }
 
             var model = new ProductDetailModel();
-            var entity = PROD_MASTERService.PROD_MASTERList.FirstOrDefault(t => t.ID == id);
+            var entity = new PROD_MASTER();
+            if (ptype == "id")
+            {
+                 entity = PROD_MASTERService.PROD_MASTERList.FirstOrDefault(t => t.ID == id);
+            }
+            else
+            {
+                 entity = PROD_MASTERService.PROD_MASTERList.FirstOrDefault(t => t.ProductNo == id);
+            }
+            
             if (null != entity)
             {
                 var photos = PROD_PHOTOService.PROD_PHOTOList.Where(t => t.EntityID == entity.ID)

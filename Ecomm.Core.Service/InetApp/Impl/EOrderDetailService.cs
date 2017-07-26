@@ -143,6 +143,19 @@ namespace Ecomm.Core.Service.InetApp.Impl
             return new OperationResult(OperationResultType.Success, "successfully deleted");
         }
 
+        public void UpdateOrderDetailQty(int orderID, string sku, float qty) {
+            var model = EOrderDetailList.FirstOrDefault(t => t.OrderID == orderID && t.Sku == sku);
+            model.Orderqty = qty;
+            EOrderDetailRepository.Update(model);
+        }
+
+        public int DeleteOrderDetail(int orderID, string sku) {
+
+            var model = EOrderDetailList.FirstOrDefault(t => t.OrderID == orderID && t.Sku == sku);
+
+            return EOrderDetailRepository.Delete(model);
+        }
+
         #endregion
     }
 }

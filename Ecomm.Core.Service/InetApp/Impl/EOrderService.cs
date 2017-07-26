@@ -150,6 +150,11 @@ namespace Ecomm.Core.Service.InetApp.Impl
             return new OperationResult(OperationResultType.Success, "update completed");
         }
 
+        public int UpdateByRepository(EOrder entity)
+        {
+            return EOrderRepository.Update(entity);
+        }
+
         public OperationResult Delete(int OrderID)
         {
             var model = EOrderList.FirstOrDefault(t => t.OrderID == OrderID);
@@ -223,7 +228,23 @@ namespace Ecomm.Core.Service.InetApp.Impl
         {
             return EOrderRepository.GetOrdersByCurrentMonth(custId, shipId);
         }
-        #endregion
+        public Double GetOrdersByCurrentMonth_2(string custId, string shipId, DateTime orderDt)
+        {
+            return EOrderRepository.GetOrdersByCurrentMonth_2(custId, shipId, orderDt);
+        }
+        public IEnumerable<Ecomm.Domain.Models.InetApp.NoMapping_Eorder> GetPendingOrder(string custId)
+        {
+            return EOrderRepository.GetPendingOrder(custId);
+        }
+        public void UpdateProcStatus(int orderID, int status)
+        {
+            EOrderRepository.UpdateProcStatus(orderID, status);
+        }
+        public Double GetAmountByContactId(string shopId)
+        {
+            return EOrderRepository.GetAmountByContactId(shopId);
+        }
+            #endregion
     }
 }
 

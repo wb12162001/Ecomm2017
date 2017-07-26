@@ -7,7 +7,7 @@
 }
 
     <!--列表模式-->
-    <div id="list" class="product-list tab-pane  @if(Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "list") { @cl; }">
+    <div id="list" class="product-list tab-pane  @if (Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "list") { @cl; }">
         <table class="table table-hover">
             <tr>
                 <th colspan="2" style="width: 50%">Product</th>
@@ -15,6 +15,10 @@
                 <th style="width: 10%">Quantity</th>
                 <th style="width: 15%"></th>
             </tr>
+@{ 
+    var l_index = 0;
+}
+
 @foreach (var item in PagedListModel)
 {
             <tr>
@@ -35,55 +39,66 @@
                 </td>
                 <td>$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</td>
                 <td>
-                    <input type="number" class="form-control" min="1" value="1" />
+                    <input type="number" class="form-control" id="list_qtp_@l_index" min="1" value="1" />
                 </td>
                 <td class="cart-col">
-                    <span class="glyphicon glyphicon-shopping-cart" data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');"></span>
+                    <span class="glyphicon glyphicon-shopping-cart" data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)','list_qtp_@l_index');"></span>
                 </td>
             </tr>
+    l_index++;
 }
         </table>
     </div>
     <!--end-->
-    <div id="tile" class="product-list tab-pane @if(Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "tile") { @cl; }">
-@foreach (var item in PagedListModel)
-{
+    <div id="tile" class="product-list tab-pane @if (Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "tile") { @cl; }">
+@{ 
+    var index = 0;
+    foreach (var item in PagedListModel)
+    {
         <div class="pull-left product-box product-1" style="position: relative;">
-            <div class="addToCart" style="position: absolute;left: 26px;top: 54px;height: 178px;display: none">
-                <input type="number" class="form-control" min="1" value="1" />
-                <p></p>
-                <button class="btn btn-primary btn-block">Add to Cart</button>
+            <div class="addToCart" id="hover_addtocart_@index" ng-mouseleave="leaveFavItem(@index)">
+                <div class="hover_cart" >
+                    <input type="number" class="form-control" id="tile_qtp_@index" min="1" value="1" />
+                    <p></p>
+                    <button class="btn btn-primary btn-block" onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)','tile_qtp_@index');">Add to Cart</button>
+                </div>
             </div>
-            <img class="pro-img" src="@item.MiddlePic" />
-            <a href="@Url.Action("Detail", "Prod", new { id = item.ProductID })">
-                <p class="product-name">@Html.DisplayFor(modelItem => item.ProductName)</p>
-            </a>
-            <div class="">
+            <div ng-mouseover="overFavItem(@index);" class="img_addtocart">
+                <img class="pro-img" src="@item.MiddlePic" />
+            </div>
+            <div class="ft_addtocar">
+                <a href="@Url.Action("Detail", "Prod", new { id = item.ProductID })">
+                    <p class="product-name">@Html.DisplayFor(modelItem => item.ProductName)</p>
+                </a>
+
                 <div class="price pull-left">
                     <span style="color: #074A84;font-size: 12px;">Code: @Html.DisplayFor(modelItem => item.ProductNo)</span>
                     <p class="new-price">$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</p>
                 </div>
-            </div>
-            <table style="font-size: 12px;color: #666" class="table table-condensed">
-                <tr>
-                    <td>@months.Month0</td>
-                    <td>@months.Month1</td>
-                    <td>@months.Month2</td>
-                    <td>@months.Month3</td>
-                </tr>
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Qty0)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Qty1)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Qty2)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Qty3)</td>
-                </tr>
-            </table>
-            <div class="wishlist-compare">
-                <div class="wishlist pull-left"><a href="#" ng-click="removeFavItem('@item.ID',$event)" title="Remove item" style="color: #C31919"><span class="glyphicon glyphicon-remove"></span></a></div>
-                <div class="compare pull-right"><a href="#" title="Move to other folder" style="color: #0c4080"><span class="glyphicon glyphicon-folder-open"></span></a></div>
+
+                <table style="font-size: 12px;color: #666" class="table table-condensed">
+                    <tr>
+                        <td>@months.Month0</td>
+                        <td>@months.Month1</td>
+                        <td>@months.Month2</td>
+                        <td>@months.Month3</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Qty0)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Qty1)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Qty2)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Qty3)</td>
+                    </tr>
+                </table>
+                <div class="wishlist-compare">
+                    <div class="wishlist pull-left"><a href="#" ng-click="removeFavItem('@item.ID',$event)" title="Remove item" style="color: #C31919"><span class="glyphicon glyphicon-remove"></span></a></div>
+                    <div class="compare pull-right"><a href="#" title="Move to other folder" style="color: #0c4080"><span class="glyphicon glyphicon-folder-open"></span></a></div>
+                </div>
             </div>
         </div>
-}
+        index++;
+    }
+    }
     </div>
 <div class="clearfix"></div>
 <div class="pull-right">

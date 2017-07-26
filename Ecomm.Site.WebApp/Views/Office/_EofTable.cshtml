@@ -5,6 +5,9 @@
     PagedList<EOF_PAGE_MASTER> PagedListEofModel = (PagedList<EOF_PAGE_MASTER>)ViewBag.PagedListEofModel;
     string cl = " active in";
 }
+@{
+    var l_index = 0;
+}
 <!--list 模式-->
 <div id="list" class="product-list tab-pane @if(Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "list") { @cl; }">
     <table class="table table-hover">
@@ -46,16 +49,20 @@
             <td>$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</td>
             <td>@Html.DisplayFor(modelItem => item.Forecast)</td>
             <td>
-                <input type="number" class="form-control" min="1" value="1" />
+                <input type="number" class="form-control" id="list_qtp_@l_index" min="1" value="1" />
             </td>
             <td class="cart-col">
-                <span class="glyphicon glyphicon-shopping-cart" data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" ></span>
+                <span class="glyphicon glyphicon-shopping-cart" data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)','list_qtp_@l_index');" ></span>
             </td>
         </tr>
+    l_index++;
 }
     </table>
 </div>
 <!--end-->
+@{
+    var index = 0;
+}
 <!--array 模式-->
 <div id="tile" class="product-list tab-pane @if(Ecomm.Site.WebApp.Common.Util.GetCookie("snell_product_tab_type") == "tile") { @cl; }">
   @foreach (var item in PagedListEofModel)
@@ -74,7 +81,7 @@
                 <p class="new-price">$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</p>
             </div>
             <div class="pull-right">
-                <a href='javascript:void(0);' class='cart' data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" >
+                <a href='javascript:void(0);' class='eof_cart' data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" >
                     <img src='/Content/snell/images/cart_03.png'>
                 </a>
             </div>
@@ -85,5 +92,6 @@
         <div class="clearfix"></div>
 
     </div>
+      index++;
   }
 </div>

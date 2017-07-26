@@ -379,6 +379,18 @@
              });
          }
 
+         $scope.overFavItem = function (idx) {
+             //$scope.hover = true;
+             $("#hover_addtocart_" + idx).show();
+         }
+
+         $scope.leaveFavItem = function (idx) {
+             if ($("#hover_addtocart_" + idx).is(":hidden")) { }
+             else {
+                 $("#hover_addtocart_" + idx).hide();
+             }
+         }
+
             //alert('123');
         }]);
     </script>

@@ -18,6 +18,7 @@ using Ecomm.Core.Service.Product;
 using Ecomm.Core.Service.SysConfig;
 using System.Linq.Expressions;
 using Ecomm.Domain.Models.Product;
+using Ecomm.Site.Models.MyOffice.SALES_ESIORDERFORM;
 
 namespace Ecomm.Site.WebApp.Common
 {
@@ -34,6 +35,16 @@ namespace Ecomm.Site.WebApp.Common
 
         [Import]
         protected ISYS_CONFIGService SYS_CONFIGService { get; set; }
+
+        [Import]
+        public ISALES_FAVFOLDERService SALES_FAVFOLDERService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.Product.IPROD_MASTERService PROD_MASTERService { get; set; }
+
+        [Import]
+        public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
+
         public BaseController()
         {
             var container = System.Web.HttpContext.Current.Application["Container"] as CompositionContainer;
@@ -49,6 +60,18 @@ namespace Ecomm.Site.WebApp.Common
             {
                 SYS_CONFIGService = container.GetExportedValueOrDefault<ISYS_CONFIGService>();
             }
+            if (SALES_FAVFOLDERService == null)
+            {
+                SALES_FAVFOLDERService = container.GetExportedValueOrDefault<ISALES_FAVFOLDERService>();
+            }
+            if (PROD_MASTERService == null)
+            {
+                PROD_MASTERService = container.GetExportedValueOrDefault<IPROD_MASTERService>();
+            }
+            if (SALES_CONTRACTPRICEService == null)
+            {
+                SALES_CONTRACTPRICEService = container.GetExportedValueOrDefault<ISALES_CONTRACTPRICEService>();
+            }
 
             ViewBag.UserName = string.Empty;
             if (this.CurrentUser != null)
@@ -60,6 +83,8 @@ namespace Ecomm.Site.WebApp.Common
             //Navigation 菜单
             ViewBag.MenuPackagingModel = InitNavMenu("P");
             ViewBag.MenuSafetyModel = InitNavMenu("S");
+            //My Fav Folder
+            ViewBag.MyFavFolders = InitMyFav();
         }
 
         protected ShoppingCartViewModel InitSalesEbasket()
@@ -187,6 +212,81 @@ namespace Ecomm.Site.WebApp.Common
         {
             get { return (ShoppingOrderViewModel)Session["ShoppingOrderViewModel"]; }
             set { Session["ShoppingOrderViewModel"] = value; }
+        }
+
+
+        protected Models.MyOffice.SALES_FAVFOLDER.SALES_FAVFOLDER_ViewModel InitMyFav()
+        {
+            if (CurrentUser != null)
+            {
+                Models.MyOffice.SALES_FAVFOLDER.SALES_FAVFOLDER_ViewModel model = new Models.MyOffice.SALES_FAVFOLDER.SALES_FAVFOLDER_ViewModel();
+                model.ActionTitle = "Add to favourite";
+                var myfavs = SALES_FAVFOLDERService.GetFavFoldersAndItemCount(CurrentUser.AccountInfo.Account_no, CurrentUser.Id);
+                model.MyFavList = myfavs.Select(t => new EOF_Favourite
+                {
+                    Count = t.itemCount,
+                    Favourite = t.FolderName,
+                    FavouriteID = t.ID
+                }).ToList();
+
+                return model;
+            }
+            return null;
+        }
+
+        protected int _AddCart(string pno, int qty)
+        {
+            int ret = 0;
+            if (!string.IsNullOrEmpty(pno) && CurrentUser != null)
+            {
+                Domain.Models.Product.PROD_MASTER prod = PROD_MASTERService.GetProduct(pno);
+                if (prod != null)
+                {
+                    if (CurrentUser.AccountInfo != null)
+                    {
+                        string unitPriceType = string.Empty;
+                        double uPrice = 0;
+                        PROD_MASTERService.GetSellingPrice(prod.ProductNo, CurrentUser.AccountInfo.Account_no, out uPrice, out unitPriceType);
+                        if (uPrice == 0)
+                        {
+                            uPrice = (double)prod.ListPrice;
+                        }
+                        var model = new SALES_EBASKETModel
+                        {
+                            ID = Quick.Framework.Tool.CombHelper.NewComb().ToString(),
+                            ContactID = CurrentUser.Id,
+                            CreateDate = DateTime.Now,
+                            Creator = CurrentUser.AccountInfo.Account_no,
+                            CustomerID = CurrentUser.AccountInfo.Account_no,//request
+                            ModiDate = DateTime.Now,
+                            Modifier = CurrentUser.AccountInfo.Account_no,
+                            ProductNo = prod.ProductNo,
+                            Quantity = Convert.ToDouble(qty),
+                            Unit = prod.BaseUOFM,
+                            UnitPrice = uPrice,
+                            UnitPType = unitPriceType,
+                            Status = 0,
+                            MakeOrderID = "",
+                        };
+                        if ((bool)CurrentUser.IsContractLimit && unitPriceType != "L")//only to purchase contract goods
+                        {
+                            if (unitPriceType == "S")//Special Price
+                            {
+                                bool hasContractPrice = SALES_CONTRACTPRICEService.IsExist(CurrentUser.AccountInfo.Account_no, prod.ProductNo);
+                                if (!hasContractPrice)
+                                {
+                                    return -10;
+                                    //return Json(new { success = false, message = "You need to purchase contract goods." });
+                                }
+                            }
+                        }
+                        ret = SALES_EBASKETService.ModificationCart(model); //成功了
+                        //ret = SALES_EBASKETService.ModificationByProce(model);//有问题不可以使用
+                    }
+                }
+            }
+            return ret;
+
         }
 
 

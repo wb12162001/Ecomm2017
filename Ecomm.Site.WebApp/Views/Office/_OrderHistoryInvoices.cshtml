@@ -1,0 +1,31 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+@{
+    List<OrderHistoryByInvoiceModel> list = (List<OrderHistoryByInvoiceModel>)ViewBag.Orders;
+}
+<p class="clearfloat font_normal">
+    <label>Invoices for product code '@ViewBag.InvoiceItem ' in the specified period:</label>
+</p>
+<br />
+<div id="list" class="product-list" style="min-height: 150px;height: auto;">
+    @if (list.Count() > 0)
+    {
+        <table class="table table-striped">
+            <tr style="color: #cd0824;font-weight: bold;">
+                <th style="width: 20%">DATE.</th>
+                <th style="width: 30%">Purchase No.</th>
+                <th style="width: 30%">Invoice No</th>
+                <th style="width: 20%">View</th>
+            </tr>
+            @foreach (var item in list)
+            {
+                <tr style="color: #8B8770;font-size: 12px;">
+                    <td>@Html.DisplayFor(modelItem => item.IDATE)</td>
+                    <td>@item.CSTPONBR</td>
+                    <td>@item.SOPNUMBE</td>
+                    <td><a href="#" style="color:#0c4080" onclick="viewInfo('@item.SOPNUMBE.Trim()','@item.SOPTYPE')">View Detail</a></td>
+                </tr>
+            }
+
+        </table>
+    }
+</div>

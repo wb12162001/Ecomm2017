@@ -30,6 +30,8 @@ namespace Ecomm.Core.Service.InetApp
         #region 公共方法
         OperationResult Insert(EOrderModel model);
         OperationResult Update(EOrderModel model);
+
+        int UpdateByRepository(EOrder entity);
         /// <summary>
         /// 逻辑删除
         /// </summary>
@@ -47,6 +49,13 @@ namespace Ecomm.Core.Service.InetApp
         /// <param name="orderDt"></param>
         /// <returns></returns>
         IEnumerable<double> GetOrdersByCurrentMonth(string custId, string shipId);
+        Double GetOrdersByCurrentMonth_2(string custId, string shipId, DateTime orderDt);
+
+        IEnumerable<Ecomm.Domain.Models.InetApp.NoMapping_Eorder> GetPendingOrder(string custId);
+
+        void UpdateProcStatus(int orderID, int status);
+
+        Double GetAmountByContactId(string shopId);
         #endregion
     }
 }

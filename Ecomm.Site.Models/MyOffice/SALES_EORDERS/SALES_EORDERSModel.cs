@@ -327,6 +327,51 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EORDERS
         public string PROCSTEP { get; set; }
     }
 
+    public class OrderSalesByCustidBylocaModel
+    {
+        public string PRSTADCD { get; set; }
+        public float PRICE { get; set; }
+        public int ORDERS { get; set; }
+
+        public string ADDRESS1 { get; set; }
+        public string ADDRESS2 { get; set; }
+
+        public string CITY { get; set; }
+        public string PHONE1 { get; set; }
+        public string FAX { get; set; }
+        public string CNTCPRSN { get; set; }
+    }
+
+    public class OrderHistoryByClasalesModel
+    {
+        public string ITCLASS { get; set; }
+        public float PRICE { get; set; }
+    }
+
+    public class OrderHistoryByInvoiceModel
+    {
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime IDATE { get; set; }
+        public string CSTPONBR { get; set; }
+        public string SOPNUMBE { get; set; }
+        public int SOPTYPE { get; set; }
+    }
+    public class OrderHistoryByClasalesProductModel
+    {
+        public string ITEMNMBR { get; set; }
+        public string ITEMDESC { get; set; }
+        public string UOFM { get; set; }
+        public string CUSTNMBR { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public float PRICE { get; set; }
+        public float QTY { get; set; }
+        public float ORDERS { get; set; }
+        public string CLASS1 { get; set; }
+        public string CLASS3 { get; set; }
+        public string CLASS6 { get; set; }
+    }
+
     public class Order_ItemModel
     {
         public string ITEMNMBR { get; set; }
@@ -341,6 +386,81 @@ namespace Ecomm.Site.Models.MyOffice.SALES_EORDERS
 
         public double Qty_Shipped { get; set; }
         public double Qty_BackOrdered { get; set; }
+    }
+
+    public class OrderHistoryLocaByuseridModel
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string ADDRESS1 { get; set; }
+        public string ADDRESS2 { get; set; }
+        public string CITY { get; set; }
+        public string CNTCPRSN { get; set; }
+        public string contact_id { get; set; }
+    }
+
+
+    public class InvoiceItemModel
+    {
+        public string ITEMNMBR { get; set; }
+        public string ITEMDESC { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? QTY_ORDERED { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? QTY_SHIPPED { get; set; }
+        public string UOFM { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? UNITPRCE { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? XTNDPRCE { get; set; }
+
+    }
+
+
+    public class InvoiceHeaderModel
+    {
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime DOCDATE { get; set; }
+        public string GstNo { get; set; }
+        public string PageTitle { get; set; }
+        public string SOPNUMBE { get; set; }
+        public string PCKSLPNO { get; set; }
+        public int? MSTRNUMB { get; set; }
+        public string ORIGNUMB { get; set; }
+        public string CUSTNMBR { get; set; }
+        public string CUSTNAME { get; set; }
+        public string CSTPONBR { get; set; }
+
+        public string SLPRSNID { get; set; }
+        public string PRSTADCD { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? SUBTOTAL { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? MISCAMNT { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? FRTAMNT { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public decimal? TAXAMNT { get; set; }
+        public decimal? DOCAMNT { get; set; }
+        public string SHIP_ADDR1 { get; set; }
+        public string SHIP_ADDR2 { get; set; }
+        public string SHIP_CITY { get; set; }
+        public string BILL_ADDR1 { get; set; }
+        public string BILL_ADDR2 { get; set; }
+        public string BILL_CITY { get; set; }
+
+    }
+
+    public class InvoicePageModel : OrderHistoryByInvoiceModel
+    {
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public Decimal? XTNDPRCE { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public Decimal? TAXAMNT { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public Decimal? FRTAMNT { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}")]
+        public Decimal? MISCAMNT { get; set; }
     }
 }
 

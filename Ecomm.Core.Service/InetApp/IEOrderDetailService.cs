@@ -40,7 +40,11 @@ namespace Ecomm.Core.Service.InetApp
         /// <param name="Id"></param>
         /// <returns></returns>
         OperationResult Delete(int  OrderID,string  Sku);
+
+
+        void UpdateOrderDetailQty(int orderID, string sku, float qty);
+        int DeleteOrderDetail(int orderID, string sku);
         #endregion
-	}
+    }
 }
 

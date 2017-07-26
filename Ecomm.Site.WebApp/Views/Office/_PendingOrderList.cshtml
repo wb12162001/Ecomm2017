@@ -1,0 +1,35 @@
+﻿
+<table class="table table-hover">
+    <tr style="color: #cd0824;">
+        <th style="width: 17%">Order Date</th>
+        <th style="width: 10%">ShipID</th>
+        <th style="width: 10%">ShopID</th>
+        <th style="width: 10%">Purchase No.</th>
+        <th style="width: 10%">Amount</th>
+        <th>Reason</th>
+        <th style="width: 10%">Aprove</th>
+        <th style="width: 10%">Edit</th>
+    </tr>
+    @if (ViewBag.Orders != null)
+    {
+        IEnumerable<Ecomm.Site.Models.InetApp.EOrder.PendingOrderModel> list = (IEnumerable<Ecomm.Site.Models.InetApp.EOrder.PendingOrderModel>)ViewBag.Orders;
+        foreach (var item in list)
+        {
+            <tr style="color: #8B8770;font-size: 12px;">
+                <td style="color:#074A84;">@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                <td>@item.ShipID</td>
+                <td>@item.ShopID</td>
+                <td>@item.PurchaseNo</td>
+                <td>@item.Amount</td>
+                <td>@item.Reason</td>
+                <td>
+                    <a href="javascript:void(0)" onclick="aproveOrder('@item.OrderID');"><span class="glyphicon glyphicon-pencil"></span></a>
+                </td>
+                <td>
+                    <a href="@Url.Action("PendingOrderDetail", "Office", new { OrderID = item.OrderID })"><span class="glyphicon glyphicon-log-in"></span></a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+

@@ -304,6 +304,10 @@
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\404-cat.gif" />
     <Content Include="Content\images\error.jpg" />
+    <Content Include="Content\plugins\bootstrap-datetimepicker\css\bootstrap-datetimepicker-standalone.css" />
+    <Content Include="Content\plugins\bootstrap-datetimepicker\css\bootstrap-datetimepicker.css" />
+    <Content Include="Content\plugins\bootstrap-datetimepicker\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\plugins\bootstrap-datetimepicker\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\plugins\bootstrap-table\bootstrap-table-locale-all.js" />
     <Content Include="Content\plugins\bootstrap-table\bootstrap-table-locale-all.min.js" />
     <Content Include="Content\plugins\bootstrap-table\bootstrap-table.css" />
@@ -428,6 +432,15 @@
     <Content Include="Content\plugins\OwlCarousel\owl.carousel.min.js" />
     <Content Include="Content\plugins\OwlCarousel\owl.theme.css" />
     <Content Include="Content\plugins\OwlCarousel\owl.transitions.css" />
+    <Content Include="Content\plugins\select2\css\select2-bootstrap.css" />
+    <Content Include="Content\plugins\select2\css\select2-bootstrap.min.css" />
+    <Content Include="Content\plugins\select2\css\select2.css" />
+    <Content Include="Content\plugins\select2\css\select2.min.css" />
+    <Content Include="Content\plugins\select2\js\i18n\en.js" />
+    <Content Include="Content\plugins\select2\js\select2.full.js" />
+    <Content Include="Content\plugins\select2\js\select2.full.min.js" />
+    <Content Include="Content\plugins\select2\js\select2.js" />
+    <Content Include="Content\plugins\select2\js\select2.min.js" />
     <Content Include="Content\plugins\wysihtml5\bootstrap-wysihtml5.css" />
     <Content Include="Content\plugins\wysihtml5\bootstrap-wysihtml5.js" />
     <Content Include="Content\plugins\wysihtml5\wysihtml5-0.3.0.js" />
@@ -853,6 +866,17 @@
     <Content Include="Views\Office\MyFavouriteItems.cshtml" />
     <Content Include="Views\Office\_Favourites.cshtml" />
     <Content Include="Views\Shared\_AddFavourite.cshtml" />
+    <Content Include="Views\Shared\_AddFavModel.cshtml" />
+    <Content Include="Views\Office\_OrderByLocalList.cshtml" />
+    <Content Include="Views\Office\_OrderHistoryList.cshtml" />
+    <Content Include="Views\Office\_OrderHistoryProductList.cshtml" />
+    <Content Include="Views\Office\_OrderHistoryInvoices.cshtml" />
+    <Content Include="Views\Office\InvoiceStatement.cshtml" />
+    <Content Include="Views\Office\_InvoiceList.cshtml" />
+    <Content Include="Views\Office\_CreditList.cshtml" />
+    <Content Include="Views\Office\PendingOrder.cshtml" />
+    <Content Include="Views\Office\_PendingOrderList.cshtml" />
+    <Content Include="Views\Office\PendingOrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

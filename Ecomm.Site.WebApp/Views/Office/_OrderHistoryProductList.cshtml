@@ -1,0 +1,37 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+@{
+    List<OrderHistoryByClasalesProductModel> list = (List<OrderHistoryByClasalesProductModel>)ViewBag.Orders;
+}
+
+<div id="list" class="product-list" style="min-height: 150px;height: auto;">
+@if (list.Count() > 0)
+{
+    float total = 0;
+        <table class="table table-striped">
+            <tr style="color: #cd0824;font-weight: bold;">
+                <th style="width: 15%">Prod No.</th>
+                <th style="width: 40%">Description</th>
+                <th style="width: 10%">Invoice</th>
+                <th style="width: 10%">Unit</th>
+                <th style="width: 10%">QTY</th>
+                <th style="width: 15%">Sales $</th>
+            </tr>
+@foreach (var item in list)
+{
+            <tr style="color: #8B8770;font-size: 12px;">
+                <td><a target="_blank" href="@Url.Action("Detail", "Prod", new { id = item.ITEMNMBR,ptype="ProductNo" })">@item.ITEMNMBR</a></td>
+                <td><a style="color: #8B8770" href="###">@item.ITEMDESC</a></td>
+                <td><a href="@Url.Action("OrderHistory", "Office",new { itclass = item.ITEMNMBR.Trim(), dataForm = ViewBag.dataForm, dataTo = ViewBag.dataTo, viewBy="Invoices" })">View Detail</a></td>
+                <td>@item.UOFM</td>
+                <td>@item.QTY</td>
+                <td>$@item.PRICE.ToString("N2")</td>
+            </tr>
+    total += item.PRICE;
+}
+            <tr style="color: #cd0824;font-weight: bold;">
+                <td colspan="5"></td>
+                <td>Total：$@total.ToString("N2")</td>
+            </tr>
+        </table>
+}
+</div>

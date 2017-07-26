@@ -1,0 +1,36 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+@{
+    List<OrderSalesByCustidBylocaModel> list = (List<OrderSalesByCustidBylocaModel>)ViewBag.Orders;
+}
+<div id="list" class="product-list" style="min-height: 150px;height: auto;">
+    @if (list.Count() > 0)
+            {
+                float total = 0;
+        <table class="table table-striped">
+            <tr style="color: #cd0824;font-weight: bold;">
+                <th style="width: 15%">Location ID</th>
+                <th style="width: 55%">Description</th>
+                <th style="width: 15%">Sales$</th>
+                <th style="width: 15%"></th>
+            </tr>
+            @foreach (var item in list)
+            {
+                <tr style="color: #8B8770;font-size: 12px;">
+                    <td><a href="@Url.Action("OrderDetail", "office",new { loca = item.PRSTADCD })">@item.PRSTADCD</a></td>
+                    <td><label>@item.ADDRESS1</label><label>@item.ADDRESS2</label><label>@item.CITY</label></td>
+                    <td>$@item.PRICE</td>
+                    <td>
+                        <a href="@Url.Action("OrderDetail", "office",new { loca = item.PRSTADCD })">View Detail</a>
+                    </td>
+                </tr>
+                total += item.PRICE;
+            }
+            <tr style="color: #cd0824;font-weight: bold;">
+                <td></td>
+                <td>TOTAL:</td>
+                <td>$@total</td>
+                <td></td>
+            </tr>
+        </table>
+    }
+</div>

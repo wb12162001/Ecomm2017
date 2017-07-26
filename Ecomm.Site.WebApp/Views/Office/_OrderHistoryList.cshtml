@@ -1,0 +1,34 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+@{
+    List<OrderHistoryByClasalesModel> list = (List<OrderHistoryByClasalesModel>)ViewBag.Orders;
+}
+
+<div id="list" class="product-list" style="min-height: 150px;height: auto;">
+@if (list.Count() > 0)
+{
+    float total = 0;
+    <table class="table table-striped">
+        <tr style="color: #cd0824;font-weight: bold;">
+            <th style="width: 70%">Category</th>
+            <th style="width: 15%">Sales$</th>
+            <th style="width: 15%"></th>
+        </tr>
+@foreach (var item in list)
+{
+        <tr style="color: #8B8770;font-size: 12px;">
+            <td>@item.ITCLASS</td>
+            <td>$@item.PRICE.ToString("N2")</td>
+            <td>
+                <a href="@Url.Action("OrderHistory", "Office",new { itclass = item.ITCLASS, dataForm = ViewBag.dataForm, dataTo = ViewBag.dataTo, viewBy="Product" })">View Detail</a>
+            </td>
+        </tr>
+    total += item.PRICE;
+}
+        <tr style="color: #cd0824;font-weight: bold;">
+            <td></td>
+            <td>Total：$@total.ToString("N2")</td>
+            <td></td>
+        </tr>
+    </table>
+}
+</div>

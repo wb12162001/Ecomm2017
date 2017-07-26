@@ -51,5 +51,15 @@ namespace Ecomm.Core.Service.GPSPS
         {
             return DBRepository.GetOrderItemStatusByPackslip(packslip);
         }
+
+        public IEnumerable<InvoiceItem> GetInvoiceLines(string invoiceNo, string soptype)
+        {
+            return DBRepository.GetInvoiceLines(invoiceNo, soptype);
+        }
+
+        public IEnumerable<InvoiceHeader> GetInvoiceHeader(string invoiceNo, string soptype)
+        {
+            return DBRepository.GetInvoiceHeader(invoiceNo, soptype);
+        }
     }
 }

@@ -1,0 +1,18 @@
+inetapp数据库出错
+Calling 'Read' when the data reader is closed is not a valid operation
+
+是数据库有错误;
+消息 824，级别 24，状态 2，第 3 行
+SQL Server 检测到基于一致性的逻辑 I/O 错误 pageid 不正确(应为 1:1377649，但实际为 0:0)。在文件 'D:\data\sqldata\MSSQL10_50.SQL2008\MSSQL\DATA\inetapp_Data.MDF' 中、偏移量为 0x000002a0ae2000 的位置对数据库 ID 13 中的页 (1:1377649) 执行 读取 期间，发生了该错误。SQL Server 错误日志或系统事件日志中的其他消息可能提供了更详细信息。这是一个威胁数据库完整性的严重错误条件，必须立即纠正。请执行完整的数据库一致性检查(DBCC CHECKDB)。此错误可以由许多因素导致；有关详细信息，请参阅 SQL Server 联机丛书。
+-----------------------------------------------
+
+
+use inetapp  
+go  
+ALTER DATABASE inetapp SET SINGLE_USER  
+go  
+DBCC CHECKDB ('inetapp', repair_allow_data_loss) with NO_INFOMSGS  
+go  
+ALTER DATABASE inetapp SET MULTI_USER  
+go
+----------------------------------------------------

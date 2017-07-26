@@ -19,6 +19,12 @@ namespace Ecomm.Core.Repository.InetApp
     public interface IEOrderDetailRepository : IRepository<EOrderDetail>
     {
         IEnumerable<EOrderDetail_MASTER> QueryEntities(int orderId);
+
+
+        void UpdateOrderDetailQty(int orderID, string sku, float qty);
+
+        int DeleteOrderDetail(int orderID, string sku);
+
     }
 }
 

@@ -162,43 +162,30 @@ $(function () {
     //add to cart
     $('a.cart').each(function (index) {
         $(this).on('click', function () {
-            var objEvt = $._data($(this)[0], "events");
-            if (objEvt && objEvt["click"]) {
-
-            } else {
-                var pro = $(this).attr("data-pno");
-                addCart(pro);
-                return false;
-            }
+            //alert("add to cart");
+            var pro = $(this).attr("data-pno");
+            addCart(pro);
+            return false;
         });
     });
     //add to cart
-    $('span.glyphicon-shopping-cart').each(function (index) {
-        $(this).unbind("click");
-        $(this).on('click', function () {
-            var objEvt = $._data($(this)[0], "events");
-            //console.log(objEvt);
-            if (objEvt && objEvt["click"]) {
-
-            } else {
-                var pro = $(this).attr("data-pno");
-                addCart(pro);
-                return false;
-            }
-        });
-    });
+    //$('span.add-to-cart').each(function (index) {
+    //    $(this).unbind("click");
+    //    $(this).on('click', function () {
+    //        //alert("add2  to cart");
+    //        var pro = $(this).attr("data-pno");
+    //        addCart(pro);
+    //        return false;
+    //    });
+    //});
 
     //add to fav
     $('a.add_fav').each(function (index) {
         $(this).on('click', function () {
-            var objEvt = $._data($(this)[0], "events");
-            if (objEvt && objEvt["click"]) {
-
-            } else {
-                var pro = $(this).attr("data-pno");
-                addFav(pro);
-                return false;
-            }
+            //alert("add_fav");
+            var pro = $(this).attr("data-pno");
+            addFav(pro);
+            return false;
         });
     });
     
@@ -267,11 +254,16 @@ function addCart(pro) {
     //var pro = $(this).attr("data-pno");
     //console.log($(this));
     //console.log(pro);
+    var arg_qty = arguments[1] ? arguments[1] : false;
+    var qty = 1;
+    if (arg_qty) { //arg_qty 域的ID
+        qty = $('#'+arg_qty).val();
+    }
     if (pro == '' || pro == undefined) {
         bootbox.alert({ message: "Product sku is empty!" });
         return;
     }
-    var post_data = { pno: pro, qty: 1 };
+    var post_data = { pno: pro, qty: qty };
     $.ajax({
         type: "POST",
         dataType: 'json',
@@ -294,34 +286,15 @@ function addCart(pro) {
 function addFav(pro) {
     var cl = checkLogin();
     if (!cl) return;
-    //var pro = $(this).attr("data-pno");
-    //console.log($(this));
-    //console.log(pro);
+
     if (pro == '' || pro == undefined) {
         bootbox.alert({ message: "Product sku is empty!" });
         return;
     }
-    var post_data = { pno: pro, qty: 1 };
-    //bootbox.alert("Add Favorites Success!", function () {
-    //});
-    $('#addfavourite-modal-form').modal();
-    /*
-    $.ajax({
-        type: "POST",
-        dataType: 'json',
-        url: "/Home/AddCart",
-        data: post_data,
-        success: function (d) {
-            bootbox.alert(d.message, function () {
-                //bind shopping cart
-                $("#shopping_cart").load('/Home/ShoppingCart' + '?ts=' + Math.random());
-            });
-        },
-        error: function (err) {
-            alert(err);
-        }
+    $('#addfavourite-modal-form').modal({ show: true }, {
+        sku: pro
     });
-    */
+
 }
 
 
@@ -437,3 +410,26 @@ function InitDatatables(dataTableObj, actionUrl, aoColumns, oTable) {
 
     return oTable;
 }
+/*调用方法 
+var text = "a{0}b{0}c{1}d\nqq{0}"; 
+var text2 = $.format(text, 1, 2); 
+alert(text2); 
+*/
+$.format = function (source, params) {
+    if (arguments.length == 1)
+        return function () {
+            var args = $.makeArray(arguments);
+            args.unshift(source);
+            return $.format.apply(this, args);
+        };
+    if (arguments.length > 2 && params.constructor != Array) {
+        params = $.makeArray(arguments).slice(1);
+    }
+    if (params.constructor != Array) {
+        params = [params];
+    }
+    $.each(params, function (i, n) {
+        source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+    });
+    return source;
+};

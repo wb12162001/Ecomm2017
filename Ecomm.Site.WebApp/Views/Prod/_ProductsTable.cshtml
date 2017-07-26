@@ -61,7 +61,7 @@
                 <p class="new-price">$@Html.DisplayFor(modelItem => item.SellPrice) (+GST)</p>
             </div>
             <div class="pull-right">
-                <a href='javascript:void(0);' class='cart' data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" >
+                <a href='javascript:void(0);' class='eof_cart' data-pno='@Html.DisplayFor(modelItem => item.ProductNo)' onclick="addCart('@Html.DisplayFor(modelItem => item.ProductNo)');" >
                     <img src='/Content/snell/images/cart_03.png'>
                 </a>
             </div>

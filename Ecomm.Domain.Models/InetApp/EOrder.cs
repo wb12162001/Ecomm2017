@@ -160,6 +160,10 @@ namespace Ecomm.Domain.Models.InetApp
         
     }
     
-    
+    [NotMapped]
+    public class NoMapping_Eorder: EOrder
+    {
+
+    }
 }
 

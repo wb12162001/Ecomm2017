@@ -1,0 +1,138 @@
+﻿
+@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+@{
+    Layout = null;
+    List<InvoiceItemModel> list = (List<InvoiceItemModel>)ViewBag.InvoiceItems;
+    InvoiceHeaderModel headerInfo = (InvoiceHeaderModel)ViewBag.InvoiceHeader;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Snell packaging & safety</title>
+    @Styles.Render("~/bundles/snell")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/bundles/plugins/bootstrap-table/css")
+    <style>
+        .block{
+            display:block;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoices">
+        <div class="popular-products">
+            <div class="popular-title">
+                <h3>Tax Invoice</h3>
+                <h4 style="display: inline-block;margin-left: 30px;">I000157809</h4>
+                <div class="pull-right text-right">
+                    Date:@Html.DisplayFor(modelItem => headerInfo.DOCDATE)
+                    <br /> GST No:@headerInfo.GstNo
+                </div>
+            </div>
+            <div class="row" style="margin:20px 0 60px 0;padding-top: 10px;border-top: 1px solid #cdcdcd">
+                <div class="col-md-6 col-sm-6 col-lg-6">
+                    <table>
+                        <tr>
+                            <td style="width: 100px;color: #6787af">Bill To:</td>
+                            <td style="color: #676767">
+                                <span class="block">@headerInfo.BILL_ADDR1</span>
+                                <span class="block">@headerInfo.BILL_ADDR2</span>
+                                <span class="block">@headerInfo.BILL_CITY</span>
+
+                             </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6">
+                    <table>
+                        <tr>
+                            <td style="width: 100px;color: #6787af">Ship To:</td>
+                            <td style="color: #676767">
+                                <span class="block">@headerInfo.SHIP_ADDR1</span>
+                                <span class="block">@headerInfo.SHIP_ADDR2</span>
+                                <span class="block">@headerInfo.SHIP_CITY</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+
+                    <table class="table table-striped">
+                        <tr style="color: #cd0824;">
+                            <th style="width: 20%">Debtor ID</th>
+                            <th style="width: 15%">Purchase Order No.</th>
+                            <th style="width: 15%">Date</th>
+                            <th style="width: 15%">Packing Slip</th>
+                            <th style="width: 15%">Salesperson ID</th>
+                            <th style="width: 10%">Master No</th>
+                        </tr>
+                        <tr style="color: #8B8770;font-size: 12px;">
+                            <td>@headerInfo.CUSTNMBR</td>
+                            <td>@headerInfo.CSTPONBR</td>
+                            <td>@Html.DisplayFor(modelItem => headerInfo.DOCDATE)</td>
+                            <td>@headerInfo.ORIGNUMB</td>
+                            <td>@headerInfo.SLPRSNID</td>
+                            <td>@headerInfo.MSTRNUMB</td>
+                        </tr>
+                    </table>
+                    <hr />
+@if (list.Count() > 0)
+{
+                    <table class="table table-striped">
+                        <tr style="color: #cd0824;">
+                            <th style="width: 20%">Item Number</th>
+                            <th style="width: 30%">Description</th>
+                            <th style="width: 10%">Ordered</th>
+                            <th style="width: 10%">Shipped</th>
+                            <th style="width: 10%">Unit Price</th>
+                            <th style="width: 10%">Unit</th>
+                            <th style="width: 10%">Ext.Price</th>
+                        </tr>
+@foreach (var item in list)
+{
+                        <tr style="color: #8B8770;font-size: 12px;">
+                            <td>@item.ITEMNMBR</td>
+                            <td>@item.ITEMDESC</td>
+                            <td>@Html.DisplayFor(modelItem => item.QTY_ORDERED)</td>
+                            <td>@Html.DisplayFor(modelItem => item.QTY_SHIPPED)</td>
+                            <td>$@Html.DisplayFor(modelItem => item.UNITPRCE)</td>
+                            <td>@item.UOFM</td>
+                            <td>$@Html.DisplayFor(modelItem => @item.XTNDPRCE)</td>
+                        </tr>
+}
+                    </table>
+}
+                    <hr />
+                    <table class="table pull-right text-right" style="width: 280px;background-color: #f6f6f6;border:none;color: #676767;font-size: 12px;">
+                        <tr>
+                            <td>Sub Total:</td>
+                            <td>$@Html.DisplayFor(modelItem => headerInfo.SUBTOTAL)</td>
+                        </tr>
+                        <tr>
+                            <td>Misc:</td>
+                            <td>$@Html.DisplayFor(modelItem => headerInfo.MISCAMNT)</td>
+                        </tr>
+                        <tr>
+                            <td>Freight,Handling & Insurance:</td>
+                            <td>$@Html.DisplayFor(modelItem => headerInfo.FRTAMNT)</td>
+                        </tr>
+                        <tr>
+                            <td>Tax:</td>
+                            <td>$@Html.DisplayFor(modelItem => headerInfo.TAXAMNT)</td>
+                        </tr>
+                        <tr style="color: #cd0824;font-weight: bold;">
+                            <td>TOTAL:</td>
+                            <td>$@Html.DisplayFor(modelItem => headerInfo.DOCAMNT)</td>
+                        </tr>
+                    </table>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</body>
+</html>

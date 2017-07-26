@@ -1,4 +1,9 @@
-﻿@section Header  {
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+@{
+    ViewBag.Title = "Order by Location Page";
+}
+@section Header  {
+
     <style>
         .products .popular-products {
             margin-left: 0px;
@@ -23,53 +28,98 @@
         <div class="popular-title">
             <h3>Orders By Location</h3>
         </div>
-        <form class="form-inline" style="margin:10px 0">
+        <div class="form-inline" style="margin:10px 0">
             <div class="form-group" style="margin-right:10px">
-                Date From:
-                <input type="text" class="form-control" id="datestart" value="05/2017" />
-            </div>
+                <div class="col-xs-2">
+                    Form:
+                </div>
+                    <div class="col-xs-4">
+                        <select class="form-control input-lg datestart_month"></select>
+
+                    </div>
+                    <div class="col-xs-4">
+                        <select class="form-control input-lg datestart_year">
+                        </select>
+
+                    </div>
+                </div>
             <div class="form-group" style="margin-right:10px">
-                TO:
-                <input type="text" class="form-control" id="dateend" value="05/2017" />
-            </div>
+                <div class="col-xs-2">
+                    To:
+                </div>
+                <div class="col-xs-4">
+                    <select class="form-control input-lg dateend_month"></select>
+
+                </div>
+                <div class="col-xs-4">
+                    <select class="form-control input-lg dateend_year"></select>
+
+                </div>
+
+                </div>
             <div class="form-group">
-                <button class="btn btn-primary">GO</button>
+                <button class="btn btn-primary" id="btn_Query">GO</button>
             </div>
-        </form>
-        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
-            <form action="">
-                <table class="table table-striped">
-                    <tr style="color: #cd0824;font-weight: bold;">
-                        <th style="width: 15%">Location ID</th>
-                        <th style="width: 55%">Description</th>
-                        <th style="width: 15%">Sales$</th>
-                        <th style="width: 15%"></th>
-                    </tr>
-                    <tr style="color: #8B8770;font-size: 12px;">
-                        <td><a href="###">SHIPTO</a></td>
-                        <td>LSG Sky Chefs , 1 Laurence Stevens Drive Mangere</td>
-                        <td>$371,870.12</td>
-                        <td>
-                            <a href="###">View Detail</a>
-                        </td>
-                    </tr>
-                    <tr style="color: #8B8770;font-size: 12px;">
-                        <td><a href="###">SHIPTONATURE</a></td>
-                        <td>Naturezone LSG , 1 Laurence Stevens Drive Auckland Airport</td>
-                        <td>$21,887.81</td>
-                        <td>
-                            <a href="###">View Detail</a>
-                        </td>
-                    </tr>
-                    <tr style="color: #cd0824;font-weight: bold;">
-                        <td></td>
-                        <td>TOTAL:</td>
-                        <td>$393,757.93</td>
-                        <td></td>
-                    </tr>
-                </table>
-            </form>
         </div>
+       <div id="panle_list">@Html.Partial("_OrderByLocalList")</div>
         <div class="clearfix"></div>
     </div>
 </div>
+@section scripts
+{
+@Styles.Render("~/bundles/plugins/select2/css")
+@Scripts.Render("~/bundles/plugins/select2/js")
+
+<script type="text/javascript">
+    $(function () {
+        var months = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Months));
+        var years = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Years));
+        //$('#datestart').datetimepicker({
+        //    viewMode: 'years',
+        //    format: 'MM/YYYY'
+        //});
+        //$('#dateend').datetimepicker({
+        //    viewMode: 'years',
+        //    format: 'MM/YYYY'
+        //});
+        var datestart_month = $('select.datestart_month').select2({
+            placeholder: "Select a month",
+            data: months
+        });
+        datestart_month.val("@ViewBag.monForm").trigger("change");
+
+        var datestart_year = $('select.datestart_year').select2({
+            placeholder: "Select a start year",
+            data: years
+        });
+
+        datestart_year.val("@ViewBag.yearForm").trigger("change");
+
+        var dateend_month = $('select.dateend_month').select2({
+            placeholder: "Select a month",
+            data: months
+        });
+        dateend_month.val("@ViewBag.mon").trigger("change");
+
+        var dateend_year = $('select.dateend_year').select2({
+            placeholder: "Select a end year",
+            data: years
+        });
+        dateend_year.val("@ViewBag.year").trigger("change");
+
+
+        $("select").on("select2:select", function (evt) {
+            //这里是选中触发的事件
+            //evt.params.data 是选中项的信息
+            //console.log($(this).val());
+            //alert(evt.params.data);
+        });
+
+        $("#btn_Query").click(function () {
+            var dataForm = $.format("{0}-{1}-01", datestart_year.val(), datestart_month.val());
+            var dataTo = $.format("{0}-{1}-01", dateend_year.val(), dateend_month.val());
+            $("#panle_list").load('@Url.Action("OrderByLoca", "Office")' + '?ts=' + Math.random(),{dataForm:dataForm,dataTo:dataTo});
+        });
+    });
+</script>
+}

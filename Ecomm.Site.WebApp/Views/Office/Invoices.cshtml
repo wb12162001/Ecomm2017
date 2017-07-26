@@ -13,113 +13,120 @@
 </style>
     }
 <div class="clearfix"></div>
-<!-- 今日交易 和 受欢迎的产品 -->
+<!-- List -->
 <div class="products">
     <ol class="breadcrumb">
         <li><a href="#">My Office</a></li>
-        <li class="active">Tax Invoice</li>
+        <li class="active">Invoices</li>
     </ol>
     <div class="popular-products">
         <div class="popular-title">
-            <h3>Tax Invoice</h3>
-            <h4 style="display: inline-block;margin-left: 30px;">I000157809</h4>
-            <div class="pull-right text-right">
-                Date:01/05/2017
-                <br /> GST No:11-753-604
+            <h3>Tax Invoices</h3>
+        </div>
+        <div class="form-inline" style="margin:10px 0">
+            <div class="form-group input-group-lg" style="margin-right:10px">
+                <div class="col-xs-4">
+                    Search by:
+                </div>
+                <div class="col-xs-4">
+                    <select class="form-control input-lg search_month"></select>
+                </div>
+                <div class="col-xs-4">
+                    <select class="form-control input-lg search_year"></select>
+                </div>
+            </div>
+
+            <div class="form-group input-group-sm" style="margin-right:10px">
+                View By:
+                <select class="form-control input-sm" id="viewby">
+                    <option value="3">Invoice</option>
+                    <option value="4">Credit</option>
+                </select>
+            </div>
+            <div class="form-group input-group-sm" style="margin-right:10px">
+                Search by Invoice no:
+                <input type="text" id="txtInvoiceNo" class="form-control input-sm" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" id="btn_Query">GO</button>
             </div>
         </div>
-        <div class="row" style="margin:20px 0 60px 0;padding-top: 10px;border-top: 1px solid #cdcdcd">
-            <div class="col-md-6 col-sm-6 col-lg-6">
-                <table>
-                    <tr>
-                        <td style="width: 100px;color: #6787af">Bill To:</td>
-                        <td style="color: #676767">
-                            LSG Sky Chefs
-                            <br /> 1 Laurence Stevens Drive
-                            <br /> Mangere
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-6">
-                <table>
-                    <tr>
-                        <td style="width: 100px;color: #6787af">Bill To:</td>
-                        <td style="color: #676767">
-                            LSG Sky Chefs
-                            <br /> 1 Laurence Stevens Drive
-                            <br /> Mangere
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
-            <form action="">
-                <table class="table table-striped">
-                    <tr style="color: #cd0824;">
-                        <th style="width: 20%">Debtor ID</th>
-                        <th style="width: 15%">Purchase Order No.</th>
-                        <th style="width: 15%">Date</th>
-                        <th style="width: 15%">Packing Slip</th>
-                        <th style="width: 15%">Salesperson ID</th>
-                        <th style="width: 10%">Master No</th>
-                    </tr>
-                    <tr style="color: #8B8770;font-size: 12px;">
-                        <td>CATENZ</td>
-                        <td>4500846025</td>
-                        <td>01/05/2017</td>
-                        <td>OAA2044667</td>
-                        <td>GP</td>
-                        <td>20177497</td>
-                    </tr>
-                </table>
-                <hr />
-                <table class="table table-striped">
-                    <tr style="color: #cd0824;">
-                        <th style="width: 20%">Item Number</th>
-                        <th style="width: 30%">Description</th>
-                        <th style="width: 10%">Ordered</th>
-                        <th style="width: 10%">Shipped</th>
-                        <th style="width: 10%">Unit Price</th>
-                        <th style="width: 10%">Unit</th>
-                        <th style="width: 10%">Ext.Price</th>
-                    </tr>
-                    <tr style="color: #8B8770;font-size: 12px;">
-                        <td>8830056</td>
-                        <td>MENS TAPED STORM PANTS NAVY ZJ352 SZ XL</td>
-                        <td>4.00</td>
-                        <td>4.00</td>
-                        <td>$29.95</td>
-                        <td>PAIR</td>
-                        <td>$119.80</td>
-                    </tr>
-                </table>
-                <hr />
-                <table class="table pull-right text-right" style="width: 280px;background-color: #f6f6f6;border:none;color: #676767;font-size: 12px;">
-                    <tr>
-                        <td>Sub Total:</td>
-                        <td>$119.80</td>
-                    </tr>
-                    <tr>
-                        <td>Misc:</td>
-                        <td>$0.00</td>
-                    </tr>
-                    <tr>
-                        <td>Freight,Handling & Insurance:</td>
-                        <td>$0.00</td>
-                    </tr>
-                    <tr>
-                        <td>Tax:</td>
-                        <td>$17.80</td>
-                    </tr>
-                    <tr style="color: #cd0824;font-weight: bold;">
-                        <td>TOTAL:</td>
-                        <td>$137.77</td>
-                    </tr>
-                </table>
-            </form>
+        <div id="panle_list">
+            @Html.Partial("_InvoiceList")
         </div>
         <div class="clearfix"></div>
     </div>
 </div>
+
+@section scripts
+{
+    @Styles.Render("~/bundles/plugins/select2/css")
+    @Scripts.Render("~/bundles/plugins/select2/js")
+
+    <script type="text/javascript">
+    $(function () {
+        var months = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Months));
+        var years = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Years));
+        //$('#datestart').datetimepicker({
+        //    viewMode: 'years',
+        //    format: 'MM/YYYY'
+        //});
+        //$('#dateend').datetimepicker({
+        //    viewMode: 'years',
+        //    format: 'MM/YYYY'
+        //});
+        var datestart_month = $('select.search_month').select2({
+            placeholder: "Select a month",
+            data: months
+        });
+        datestart_month.val("@ViewBag.monForm").trigger("change");
+
+        var datestart_year = $('select.search_year').select2({
+            placeholder: "Select a start year",
+            data: years
+        });
+
+        datestart_year.val("@ViewBag.yearForm").trigger("change");
+
+
+        $("#btn_Query").click(function () {
+            var dataForm = $.format("{0}-{1}-01", 2010, datestart_month.val());
+            var invno = $("#txtInvoiceNo").val();
+            var viewBy = $("#viewby").val();
+            $("#panle_list").load('@Url.Action("Invoices", "Office")' + '?ts=' + Math.random(),{dataForm:dataForm,type:viewBy,InvoiceNo:invno});
+        });
+    });
+
+     function viewInfo(InvoiceNo, type) {
+         var url = '@Url.Action("InvoiceStatement", "Office")?InvoiceNo=' + InvoiceNo + '&soptype=' + type;
+         var name = "";
+         var iWidth = 1000;
+         var iHeight = 800;
+         var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+         var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+         window.open(url, name, 'height=' + iHeight + ',innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=yes,titlebar=no,z-look=yes');
+     }
+        function TransToOrder(InvoiceNo, type) {
+            $.ajax({
+                //要用post方式      
+                type: "Post",
+                //方法所在页面和方法名
+                url: "@Url.Action("TransToOrder", "Office")",
+                data: "{InvoiceNo:'" + InvoiceNo + "',type:'"+type+"'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    bootbox.alert(d.message, function () {
+                        //bind shopping cart
+                        $("#shopping_cart").load('/Home/ShoppingCart' + '?ts=' + Math.random());
+                    });
+                },
+                error: function (err) {
+                    //ShowMessageAlert("Please sign in");
+                    //location.href = "login.aspx";
+                    
+                }
+            });
+        }
+    </script>
+}

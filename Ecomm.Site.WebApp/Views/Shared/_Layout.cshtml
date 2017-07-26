@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - Snell packaging & safety</title>
     @Styles.Render("~/bundles/snell")
     @Scripts.Render("~/bundles/modernizr")
-   @Styles.Render("~/bundles/plugins/bootstrap-table/css");
+   @Styles.Render("~/bundles/plugins/bootstrap-table/css")
     @RenderSection("header", false)
 </head>
 <body>
@@ -110,7 +110,7 @@
                         // You can reload the current location
                         $('#login-modal-form').modal('hide');
                         window.location.reload();
-                        
+
                         @*$("#top_menu").load('@Url.Action("Top", "Home")' + '?ts=' + Math.random());
                         //bind shopping cart
                         $("#shopping_cart").load('@Url.Action("ShoppingCart", "Home")' + '?ts=' + Math.random());
@@ -129,16 +129,80 @@
                     }
                 }, 'json');
             });
-
         });
 
         $(document).ready(function () {
+            initAddFavourite();
+
             $('#addfavourite-modal-form').on('show.bs.modal',
-            function () {
-                console.log('show.bs.modal');
-                //initTable();
+            function (event) {
+                $('#addfavourite-form').bootstrapValidator('resetForm', true);
+
+                //var a = $(event.relatedTarget) // a that triggered the modal
+                //var sku = a.data('pno'); //这种传参方式一: 是从html中datat-pno = 'xxxx'
+
+                var sku = event.relatedTarget.sku; //这种传参方二: 是从js 调用modal 显示同时传参.
+                //console.log(sku);
+                //var f_id = a.data('f_id');
+                //var action = a.data('action');
+                @*$("#addfavourite-modal-form div.modal-content").load('@Url.Action("MyFavouriteModel", "Office")' + '?ts=' + Math.random(), { sku: sku }, function () {
+                    //initAddFavourite();
+                });*@
+                //console.log(sku);
+                var modal = $(this);
+                modal.find("input[name='sku']").val(sku);
             });
+
         });
+
+        function initAddFavourite() {
+            //addfavourite
+            $('#addfavourite-form').bootstrapValidator({
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                excluded: ':disabled',
+                fields: {
+                    radio: {
+                        validators: {
+                            notEmpty: {
+                                message: 'it is required'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function (e) {
+                // Prevent form submission
+                e.preventDefault();
+                // Get the form instance
+                var $form = $(e.target);
+                // Get the BootstrapValidator instance
+                var bv = $form.data('bootstrapValidator');
+                var favID = $form.find("input[name=radio]:checked").val();
+                // Use Ajax to submit form data
+                var post_data = { action: $form.find("input[name=action]").val(), sku: $form.find("input[name=sku]").val(), favid: favID, f_id: $form.find("input[name=favouriteID]").val() };
+                $.post($form.attr('action'), post_data, function (result) {
+                    //console.log(result);
+                    if (result.ResultType == 0) {
+                        // You can reload the current location
+                        $('#addfavourite-modal-form').modal('hide');
+                        bootbox.alert(result.Message, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        // The account is not found
+                        // Show the errors
+                        bootbox.alert(result.Message);
+
+                        // Enable the submit buttons
+                        $('#addfavourite-form').bootstrapValidator('disableSubmitButtons', false);
+                    }
+                }, 'json');
+            });
+        }
 
 
 

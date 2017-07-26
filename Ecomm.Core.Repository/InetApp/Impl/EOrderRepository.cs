@@ -98,6 +98,52 @@ namespace Ecomm.Core.Repository.InetApp
         {
             return GetOrdersByCurrentMonth(custId, shipId, DateTime.Now);
         }
+
+        public IEnumerable<Ecomm.Domain.Models.InetApp.NoMapping_Eorder> GetPendingOrder(string custId)
+        {
+            string sql = string.Format("SELECT * FROM dbo.EOrders WHERE PROC_STATUS=3 AND CustID='{0}'", custId);
+            return base.ExcuteQuery<Ecomm.Domain.Models.InetApp.NoMapping_Eorder>(sql);
+        }
+        public void UpdateProcStatus(int orderID, int status)
+        {
+            string sql = string.Format("UPDATE EOrders set PROC_STATUS={0} where OrderID={1}", status, orderID);
+            base.ExcuteNoQuery(sql);
+        }
+
+        
+
+        /// <summary>
+        /// 获取用户所有历史订单的总额
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Double GetAmountByContactId(string shopId)
+        {
+            Double d = 0;
+            StringBuilder sb = new StringBuilder();
+            //SQLUtil db = new SQLUtil(DatabaseType.IntAppDB, CommandType.Text);
+            //Ben 2015-03-19
+            sb.AppendLine("select sum(a.UnitPrice*a.orderqty) AS amount from EOrderdetails as a (nolock) inner join EOrders as b (nolock)");
+            sb.AppendLine(" on a.OrderID = b.OrderID ");
+            sb.AppendFormat(" where b.ShopID='{0}';", shopId);
+            object obj = base.ExecuteScalar<Double>(sb.ToString());
+            if (obj != DBNull.Value) Double.TryParse(obj.ToString(), out d);
+            return d;
+        }
+
+        public Double GetOrdersByCurrentMonth_2(string custId, string shipId, DateTime orderDt)
+        {
+            Double d = 0;
+            StringBuilder sb = new StringBuilder();
+            //SQLUtil db = new SQLUtil(DatabaseType.IntAppDB, CommandType.Text);
+            //Ben 2015-03-19
+            sb.AppendLine("select sum(a.UnitPrice*a.orderqty) AS amount from EOrderdetails as a (nolock) inner join EOrders as b (nolock)");
+            sb.AppendLine(" on a.OrderID = b.OrderID ");
+            sb.AppendFormat(" where b.CustID='{0}' and b.ShipID='{1}' and datediff(m,b.CretDate,'{2}')=0;", custId, shipId, orderDt.ToString("yyyy-MM-dd"));
+            object obj = base.ExecuteScalar<Double>(sb.ToString());
+            if (obj != DBNull.Value) Double.TryParse(obj.ToString(), out d);
+            return d;
+        }
     }
 }
 

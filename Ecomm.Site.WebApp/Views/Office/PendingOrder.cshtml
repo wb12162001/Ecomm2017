@@ -1,0 +1,46 @@
+﻿@section Header  {
+    <style>
+        .products .popular-products {
+            margin-left: 0px;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 8px 8px;
+        }
+
+            .products .popular-products .product-list {
+                border: none;
+            }
+    </style>
+}
+<div class="clearfix"></div>
+
+<div class="products">
+    <ol class="breadcrumb">
+        <li><a href="#">My Office</a></li>
+        <li class="active">Pending Order</li>
+    </ol>
+    <div class="popular-products">
+        <div class="popular-title">
+            <h3>Pending Order</h3>
+        </div>
+        <div id="list" class="product-list" style="min-height: 150px;height: auto;">
+            @Html.Partial("_PendingOrderList")
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        function aproveOrder(orderid) {
+            $.post('@Url.Action("PendingOrderAprove", "Office")', { OrderID: orderid }, function (result) {
+                //console.log(result);
+                if (result.success) {
+                    bootbox.alert(result.message, function () {
+                        window.location.reload();
+                    });
+                }
+            }, 'json');
+        }
+    </script>
+}

@@ -266,5 +266,18 @@ namespace Ecomm.Site.Models.InetApp.EOrder
 
         public List<SelectListItem> EnabledItems { get; set; }
     }
+
+    public class PendingOrderModel
+    {
+        public int OrderID { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime? OrderDate { get; set; }
+        public string ShipID { get; set; }
+        public string ShopID { get; set; }
+        public string PurchaseNo { get; set; }
+        public Double? Amount { get; set; }
+        public string Reason { get; set; }
+    }
 }
 

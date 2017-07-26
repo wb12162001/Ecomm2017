@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -381,6 +382,32 @@ namespace Ecomm.Site.WebApp.Common
                 Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["IsTesting"].ToString(), out ret);
                 return ret;
             }
+        }
+
+        public static ArrayList GetMonths()
+        {
+            ArrayList al = new ArrayList();
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            System.Globalization.CultureInfo cinfo = new System.Globalization.CultureInfo("en-US");
+            string[] monthNames = cinfo.DateTimeFormat.MonthNames;
+            var mNames = from m in monthNames where !string.IsNullOrEmpty(m) select new { text = m.Substring(0, Math.Min(m.Length, 3)), id = Array.IndexOf(monthNames.ToArray<string>(), m) + 1 };
+            foreach (var mon in mNames)
+            {
+                al.Add(mon);
+            }
+            return al;
+            //return new ArrayList(mNames.ToArray<string>());
+        }
+
+        public static ArrayList GetYears(int limit)
+        {
+            ArrayList al = new ArrayList();
+            Int32 i = default(Int32);
+            for (i = DateTime.Now.Year - limit; i <= DateTime.Now.Year; i++)
+            {
+                al.Add(new { text= i.ToString(), id = i });
+            }
+            return al;
         }
 
     }

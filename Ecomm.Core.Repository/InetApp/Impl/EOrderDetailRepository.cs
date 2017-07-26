@@ -31,6 +31,27 @@ namespace Ecomm.Core.Repository.InetApp
             string sql = "select a*, f0.ITEMDESC as ProductName from dbo.EOrderDetails a left join dbo.EPRODUCTS f0 on a.Sku=f0.ITEMNMBR where a.OrderID=@orderId";
             return base.ExcuteQuery<EOrderDetail_MASTER>(sql, parameters);
         }
+
+        /// <summary>
+        /// PendingOrderDetail2.aspx中更新qty
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <param name="sku"></param>
+        public void UpdateOrderDetailQty(int orderID, string sku, float qty)
+        {
+            string sql = string.Format("UPDATE EOrderDetails set Orderqty={2} where OrderID={0} and Sku='{1}'", orderID, sku, qty);
+            base.ExcuteNoQuery(sql);
+        }
+        /// <summary>
+        /// PendingOrderDetail2.aspx中删除
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <param name="status"></param>
+        public int DeleteOrderDetail(int orderID, string sku)
+        {
+            string sql = string.Format("Delete FROM EOrderDetails where OrderID={0} and Sku='{1}'", orderID, sku);
+            return base.ExcuteNoQuery(sql);
+        }
     }
 }
 

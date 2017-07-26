@@ -17,5 +17,9 @@ namespace Ecomm.Core.Repository.GPSPS
         IEnumerable<RM00102> GetRM00102(string strWhere);
 
         IEnumerable<OrderItem> GetOrderItemStatusByPackslip(string packslip);
+
+        IEnumerable<InvoiceItem> GetInvoiceLines(string invoiceNo, string soptype);
+
+        IEnumerable<InvoiceHeader> GetInvoiceHeader(string invoiceNo, string soptype);
     }
 }

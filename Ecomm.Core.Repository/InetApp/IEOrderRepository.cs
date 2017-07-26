@@ -22,6 +22,15 @@ namespace Ecomm.Core.Repository.InetApp
 
         IEnumerable<double> GetOrdersByCurrentMonth(string custId, string shipId, DateTime orderDt);
         IEnumerable<double> GetOrdersByCurrentMonth(string custId, string shipId);
+
+        Double GetOrdersByCurrentMonth_2(string custId, string shipId, DateTime orderDt);
+
+        IEnumerable<Ecomm.Domain.Models.InetApp.NoMapping_Eorder> GetPendingOrder(string custId);
+
+        void UpdateProcStatus(int orderID, int status);
+
+
+        Double GetAmountByContactId(string shopId);
     }
 }
 

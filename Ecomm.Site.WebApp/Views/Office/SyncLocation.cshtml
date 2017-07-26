@@ -50,7 +50,11 @@
     }
 }
                 </table>
+            <div class="col-xs-12 row">
                 <button class="btn btn-primary pull-right" id="update_shipto">Update</button>
+                <a class="btn btn-default pull-right" style="margin-right:10px" href="@Url.Action("Users", "Office")">Back</a>
+            </div>
+                
         </div>
         <div class="clearfix"></div>
     </div>
@@ -78,10 +82,16 @@
                     success: function (data) {
                         //var json = eval("(" + data + ")");//必须加否则字符串不能序列化成json
                         //jQuery.gritter.add(json);
-                        console.log(data);
+                        //console.log(data);
+                        bootbox.alert(data.Message, function () {
+                            window.location.href = '@Url.Action("Users", "Office")';
+                        });
+                        return;
                     },
                     error: function (data) {
-                        console.debug(data);
+                        //console.debug(data);
+                        bootbox.alert({ message: data.Message });
+                        return;
                     }
                 });
             })

@@ -41,7 +41,20 @@ namespace Ecomm.Core.Service.MyOffice
         double GetOrdersByCurrentMonth(string custId, string shipId);
 
         IEnumerable<Order_Status> GetOrderStatus(string Custid);
+        IEnumerable<OrderSalesByCustidByloca> GetsalesByCustidByloca(string Custid, string date1, string date2);
 
+        IEnumerable<OrderSalesByClasalesModel> GetClasalesByCustid(string Custid, string date1, string date2, string loca);
+
+        IEnumerable<OrderSalesByClasalesProductModel> GetclasalesByCustidByAllprod(string Custid, string date1, string date2, string loca);
+
+        IEnumerable<OrderSalesByClasalesProductModel> GetclasalesByCustidByprod(string Custid, string date1, string date2, string itclass, string loca);
+
+        IEnumerable<OrderInvByProdModel> GetInvByProd(string Custid, string itmembr, string date1, string date2);
+
+        IEnumerable<OrderLocaByuseridModel> GetLocaByuserid(string Custid, string userId);
+
+        IEnumerable<InvByCustidModel> GetInvByCustid(string Custid, string dateFrom, string dateTo, string searchKey, string type);
+        IEnumerable<InvoiceDetailModel> GetInvdetailByCustid(string Custid, string invoiceNo, int invoiceType);
         string GetStatus(object status);
         #endregion
     }

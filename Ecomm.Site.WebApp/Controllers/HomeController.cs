@@ -36,11 +36,11 @@ namespace Ecomm.Site.WebApp.Controllers
         [Import]
         public Ecomm.Core.Service.Product.IPROD_GROUP_INDEXService PROD_GROUP_INDEXService { get; set; }
 
-        [Import]
-        public Ecomm.Core.Service.Product.IPROD_MASTERService PROD_MASTERService { get; set; }
+        //[Import]
+        //public Ecomm.Core.Service.Product.IPROD_MASTERService PROD_MASTERService { get; set; }
 
-        [Import]
-        public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
+        //[Import]
+        //public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
 
         [Import]
         public Ecomm.Core.Service.InetApp.IEOrderService EOrderService { get; set; }
@@ -564,6 +564,7 @@ namespace Ecomm.Site.WebApp.Controllers
         [HttpPost]
         public JsonResult AddCart(string pno,int qty)
         {
+            /*
             int ret = 0;
             if (!string.IsNullOrEmpty(pno) && base.CurrentUser != null) {
                 Domain.Models.Product.PROD_MASTER prod = PROD_MASTERService.GetProduct(pno);
@@ -611,8 +612,12 @@ namespace Ecomm.Site.WebApp.Controllers
                     }
                 }
             }
-
-
+            */
+            int ret = base._AddCart(pno, qty);
+            if(ret == -10)
+            {
+                return Json(new { success = false, message = "You need to purchase contract goods." });
+            }
             if (ret > 0)
             {
                 return Json(new { success = true, message = "successfull added to cart" });

@@ -71,9 +71,28 @@ namespace Ecomm.Core.Repository.GPSPS
         public IEnumerable<OrderItem> GetOrderItemStatusByPackslip(string packslip)
         {
             System.Data.SqlClient.SqlParameter[] parameters = {
-               new System.Data.SqlClient.SqlParameter("@sopnumbe", packslip)
+                base.GetParameter("@sopnumbe",packslip, System.Data.SqlDbType.VarChar,20)
             };
             return base.ExecuteProc<OrderItem>("zx_GetOrderStatusByOrderId", parameters);
         }
+
+        public IEnumerable<InvoiceItem> GetInvoiceLines(string invoiceNo, string soptype)
+        {
+            System.Data.SqlClient.SqlParameter[] parameters = {
+                base.GetParameter("@INVOICENUMBR",invoiceNo, System.Data.SqlDbType.VarChar,50),
+               base.GetParameter("@SOPTYPE",soptype, System.Data.SqlDbType.VarChar,50),
+            };
+            return base.ExecuteProc<InvoiceItem>("zx_GetInvoiceLines", parameters);
+        }
+
+        public IEnumerable<InvoiceHeader> GetInvoiceHeader(string invoiceNo, string soptype)
+        {
+            System.Data.SqlClient.SqlParameter[] parameters = {
+                base.GetParameter("@INVOICENUMBR",invoiceNo, System.Data.SqlDbType.VarChar,50),
+               base.GetParameter("@SOPTYPE",soptype, System.Data.SqlDbType.VarChar,50),
+            };
+            return base.ExecuteProc<InvoiceHeader>("zx_GetInvoiceHeader", parameters);
+        }
+
     }
 }

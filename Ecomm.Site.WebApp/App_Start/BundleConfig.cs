@@ -68,6 +68,22 @@ namespace Ecomm.Site.WebApp
                 ));
             bundles.Add(new StyleBundle("~/bundles/plugins/bootstrapvalidator/css").Include(
                      "~/Content/plugins/bootstrapvalidator/css/bootstrapValidator.min.css"));
+            //bootstrap-datetimepicker
+            bundles.Add(new ScriptBundle("~/bundles/plugins/bootstrap-datetimepicker/js").Include(
+                "~/Content/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+                ));
+            bundles.Add(new StyleBundle("~/bundles/plugins/bootstrap-datetimepicker/css").Include(
+                     "~/Content/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"));
+
+            //select2
+            bundles.Add(new ScriptBundle("~/bundles/plugins/select2/js").Include(
+                "~/Content/plugins/select2/js/select2.js",
+                "~/Content/plugins/select2/js/i18n/es.js"
+                ));
+            bundles.Add(new StyleBundle("~/bundles/plugins/select2/css").Include(
+                     "~/Content/plugins/select2/css/select2.css"
+                     ));
+
             //OwlCarousel
             bundles.Add(new ScriptBundle("~/bundles/plugins/owl-carousel/js").Include(
                 "~/Content/plugins/OwlCarousel/owl.carousel.min.js"

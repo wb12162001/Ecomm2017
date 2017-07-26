@@ -20,6 +20,7 @@ using System.Threading;
 using Ecomm.Domain.Models.MyOffice;
 using Newtonsoft.Json;
 using Ecomm.Site.Models.EpSnell.Rela_contact_location;
+using System.Web.UI;
 
 namespace Ecomm.Site.WebApp.Controllers
 {
@@ -54,17 +55,17 @@ namespace Ecomm.Site.WebApp.Controllers
         [Import]
         public Ecomm.Core.Service.MyOffice.ISALES_ESIORDERFORMService SALES_ESIORDERFORMService { get; set; }
 
-        [Import]
-        public Ecomm.Core.Service.MyOffice.ISALES_FAVFOLDERService SALES_FAVFOLDERService { get; set; }
+        //[Import]
+        //public Ecomm.Core.Service.MyOffice.ISALES_FAVFOLDERService SALES_FAVFOLDERService { get; set; }
 
         [Import]
         public Ecomm.Core.Service.MyOffice.ISALES_FAVORITEService SALES_FAVORITEService { get; set; }
 
-        [Import]
-        public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
+        //[Import]
+        //public Ecomm.Core.Service.MyOffice.ISALES_CONTRACTPRICEService SALES_CONTRACTPRICEService { get; set; }
 
-        [Import]
-        public Ecomm.Core.Service.Product.IPROD_MASTERService PROD_MASTERService { get; set; }
+        //[Import]
+        //public Ecomm.Core.Service.Product.IPROD_MASTERService PROD_MASTERService { get; set; }
 
         // GET: Office
         public ActionResult Index()
@@ -1011,6 +1012,8 @@ namespace Ecomm.Site.WebApp.Controllers
             }
             return img;
         }
+        
+
         [HttpPost]
         public JsonResult UpdateFavourite(string hdfavid, string FavouriteName)
         {
@@ -1056,6 +1059,51 @@ namespace Ecomm.Site.WebApp.Controllers
         {
             SALES_FAVORITEService.Delete(favid);
             return Json(new { success = true, message = "delete success" });
+        }
+
+        [HttpPost]
+        public JsonResult AddFavouriteItem(string action, string sku, string favid,string f_id)
+        {
+            if (action == "edit" && !string.IsNullOrEmpty(f_id)) {
+                var entity = SALES_FAVORITEService.SALES_FAVORITEList.FirstOrDefault(t => t.ID == f_id);
+                if (null != entity)
+                {
+                    Models.MyOffice.SALES_FAVORITE.UpdateSALES_FAVORITEModel model = new Models.MyOffice.SALES_FAVORITE.UpdateSALES_FAVORITEModel
+                    {
+                        ContactID = entity.ContactID,
+                        CreateDate = entity.CreateDate,
+                        Creator = entity.Creator,
+                        CustomerID = entity.CustomerID,
+                        FavFolderID = favid, //entity.FavFolderID,
+                        ID = entity.ID,
+                        ModiDate = DateTime.Now,
+                        Modifier = CurrentUser.UserName,
+                        ProductNo = sku,
+                        Status = entity.Status
+                    };
+
+                    OperationResult result = SALES_FAVORITEService.Update(model);
+                    return Json(result);
+                }
+            }
+            else
+            {
+                Models.MyOffice.SALES_FAVORITE.SALES_FAVORITEModel model = new Models.MyOffice.SALES_FAVORITE.SALES_FAVORITEModel
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    FavFolderID = favid,
+                    ProductNo = sku,
+                    Status = 0,
+                    CreateDate = DateTime.Now,
+                    CustomerID = CurrentUser.AccountInfo.Account_no,
+                    ContactID = CurrentUser.Id,
+                    Creator = CurrentUser.UserName,
+                };
+
+                OperationResult result = SALES_FAVORITEService.Insert(model);
+                return Json(result);
+            }
+            return Json(new OperationResult(OperationResultType.Error));
         }
 
         public ActionResult MyFavouriteItems(int id = 1,string favId ="")
@@ -1200,6 +1248,8 @@ namespace Ecomm.Site.WebApp.Controllers
             //return View();
         }
 
+
+
         private IEnumerable<EOF_Category> BindMyFavouritesCategory(string favId)
         {
             string strWhere = string.Empty;
@@ -1231,6 +1281,16 @@ namespace Ecomm.Site.WebApp.Controllers
             int total = myfavs.Count();
             var json = new { total = total, rows = list };
             return Json(json, JsonRequestBehavior.AllowGet);
+        }
+
+        [OutputCache(NoStore = true, Location = OutputCacheLocation.Client, Duration = 1)]
+        public ActionResult MyFavouriteModel(string sku)
+        {
+            var myfav = base.InitMyFav();
+            myfav.Sku = sku;
+            ViewBag.MyFavFolders = myfav;
+            return PartialView("_AddFavModel");
+            //return Json(cartModel, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -1586,9 +1646,9 @@ namespace Ecomm.Site.WebApp.Controllers
                     ITEMDESC = t.ITEMDESC,
                     ITEMNMBR = t.ITEMNMBR,
                     ITMCLSCD = t.ITMCLSCD,
-                    Qty_BackOrdered = t.Qty_BackOrdered,
-                    Qty_Ordered = t.Qty_Ordered,
-                    Qty_Shipped = t.Qty_Shipped,
+                    Qty_BackOrdered = (double)t.Qty_BackOrdered,
+                    Qty_Ordered = (double)t.Qty_Ordered,
+                    Qty_Shipped = (double)t.Qty_Shipped,
                     UOFM = t.UOFM
                 });
             ViewBag.OrderModel = items;
@@ -1597,26 +1657,549 @@ namespace Ecomm.Site.WebApp.Controllers
         #endregion
 
         #region Invoices
-        public ActionResult Invoices()
+        public ActionResult Invoices(string dataForm, string type = "3", string InvoiceNo = "")
         {
+            ViewBag.Months = WebApp.Common.Util.GetMonths();
+            ViewBag.Years = WebApp.Common.Util.GetYears(2);
+            //初始选中
+            ViewBag.monForm = DateTime.Now.AddMonths(-2).Month.ToString();
+            ViewBag.yearForm = DateTime.Now.AddMonths(-2).Year.ToString();
+
+            if (string.IsNullOrEmpty(dataForm))
+            {
+                dataForm = string.Format("{0}-{1}-01", ViewBag.yearForm, ViewBag.monForm); //ViewBag.yearForm
+            }
+            string dataTo = Convert.ToDateTime(dataForm).AddMonths(1).ToString("yyyy-MM-dd");
+            if (type == "3" && !string.IsNullOrEmpty(InvoiceNo))
+            {
+                dataForm = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd");
+                dataTo = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd");
+            }
+            //dataForm = "2008-5-01";
+            //dataTo = "2010-12-01";
+            var Orders = SALES_EORDERSService.GetInvByCustid(base.CurrentUser.AccountInfo.Account_no, dataForm, dataTo, InvoiceNo, type)
+               .Select(t => new InvoicePageModel
+               {
+                   CSTPONBR = t.CSTPONBR,
+                   FRTAMNT = t.FRTAMNT,
+                   IDATE = (DateTime)t.IDATE,
+                   MISCAMNT = t.MISCAMNT,
+                   SOPNUMBE = t.SOPNUMBE,
+                   SOPTYPE = (int)t.SOPTYPE,
+                   TAXAMNT = t.TAXAMNT,
+                   XTNDPRCE = t.XTNDPRCE
+               });
+            if (Orders != null)
+            {
+                ViewBag.Orders = Orders.ToList();
+            }
+            else
+            {
+                ViewBag.Orders = null;
+            }
+            
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_InvoiceList");
+            }
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult TransToOrder(string InvoiceNo, string type)
+        {
+            int ret = 0;
+            string result = string.Empty;
+            string PackingSlip = GetPackingSlip(InvoiceNo, type);
+            var InvoiceItems = DBService.GetInvoiceLines(PackingSlip, "2");
+            int index = 0;
+            if (InvoiceItems != null && InvoiceItems.Count() > 0)
+            {
+
+                //string prolist = string.Empty;
+                //List<string> condition = new List<string>();
+                foreach (var row in InvoiceItems.AsEnumerable())
+                {
+                    //condition.Add(row.ITEMNMBR+ "," + row.QTY_ORDERED);
+                    ret = base._AddCart(row.ITEMNMBR, (int)row.QTY_ORDERED);
+                    if (ret > 0)
+                    {
+                        index++;
+                    }
+                }
+                //prolist = string.Join("|", condition);
+                //result = AddShoppingCartList(prolist, true);
+            }
+            if (index > 0)
+            {
+                return Json(new { success = true, message = "successfull added to cart" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "added to cart failed." });
+            }
+            //ShoppingCart
+            //ViewBag.ShoppingCartModel = base.InitSalesEbasket();
+            //return PartialView("_ShoppingCart");
+        }
+        private string GetPackingSlip(string InvoiceNo, string type)
+        {
+            string result = string.Empty;
+            var ds = DBService.GetInvoiceHeader(InvoiceNo, type).FirstOrDefault();
+            if (ds != null)
+            {
+                result = ds.ORIGNUMB;
+            }
+            return result;
+        }
+
+        public ActionResult InvoiceStatement(string InvoiceNo, string soptype)
+        {
+            //InvoiceNo = "IA003161"; //测试
+            ViewBag.InvoiceItems = DBService.GetInvoiceLines(InvoiceNo, soptype)
+                .Select(t => new InvoiceItemModel
+                {
+                    ITEMDESC = t.ITEMDESC,
+                    ITEMNMBR = t.ITEMNMBR,
+                    QTY_ORDERED = t.QTY_ORDERED,
+                    QTY_SHIPPED = t.QTY_SHIPPED,
+                    UNITPRCE = t.UNITPRCE,
+                    UOFM = t.UOFM,
+                    XTNDPRCE = t.XTNDPRCE
+                }).ToList();
+
+            var hearder = DBService.GetInvoiceHeader(InvoiceNo, soptype)
+                .Select(t => new InvoiceHeaderModel
+                {
+                    BILL_ADDR1 = t.BILL_ADDR1,
+                    BILL_ADDR2 = t.BILL_ADDR2,
+                    BILL_CITY = t.BILL_CITY,
+                    CSTPONBR = t.CSTPONBR,
+                    CUSTNAME = t.CUSTNAME,
+                    CUSTNMBR = t.CUSTNMBR,
+                    DOCAMNT = t.DOCAMNT,
+                    DOCDATE = t.DOCDATE,
+                    FRTAMNT = t.FRTAMNT,
+                    MISCAMNT = t.MISCAMNT,
+                    MSTRNUMB = t.MSTRNUMB,
+                    ORIGNUMB = t.ORIGNUMB,
+                    PCKSLPNO = t.PCKSLPNO,
+                    PRSTADCD = t.PRSTADCD,
+                    SHIP_ADDR1 = t.SHIP_ADDR1,
+                    SHIP_ADDR2 = t.SHIP_ADDR2,
+                    SHIP_CITY = t.SHIP_CITY,
+                    SLPRSNID = t.SLPRSNID,
+                    SOPNUMBE = t.SOPNUMBE,
+                    SUBTOTAL = t.SUBTOTAL,
+                    TAXAMNT = t.TAXAMNT
+                }).FirstOrDefault();
+            if (hearder != null) {
+                hearder.GstNo = SYS_CONFIGService.GetGstNo();
+                hearder.PageTitle = soptype.Trim() == "3" ? "Tax Invoice" : "Credit Note";
+                ViewBag.InvoiceHeader = hearder;
+                return View();
+            }
+            return RedirectToAction("Index", "Error", new { msg = "Can't find the invoice." });
         }
         #endregion
 
         #region OrderByLoca
-        public ActionResult OrderByLoca()
+        public ActionResult OrderByLoca(string dataForm, string dataTo)
         {
+            
+            ViewBag.Months = WebApp.Common.Util.GetMonths();
+            ViewBag.Years = WebApp.Common.Util.GetYears(2);
+            
+            //初始选中
+            ViewBag.mon = DateTime.Now.Month.ToString();
+            ViewBag.monForm = DateTime.Now.AddMonths(-2).Month.ToString();
+            ViewBag.year = DateTime.Now.Year.ToString();
+            ViewBag.yearForm = DateTime.Now.AddMonths(-2).Year.ToString();
+            if (string.IsNullOrEmpty(dataForm))
+            {
+                dataForm = string.Format("{0}-{1}-01", ViewBag.yearForm, ViewBag.monForm);
+            }
+            if (string.IsNullOrEmpty(dataTo))
+            {
+                dataTo = string.Format("{0}-{1}-01", ViewBag.year, ViewBag.mon);
+            }
+            var list = SALES_EORDERSService.GetsalesByCustidByloca(base.CurrentUser.AccountInfo.Account_no, dataForm, dataTo)
+                .Select(t => new OrderSalesByCustidBylocaModel
+                {
+                    ADDRESS1 = t.ADDRESS1,
+                    ADDRESS2 = t.ADDRESS2,
+                    CITY = t.CITY,
+                    CNTCPRSN = t.CNTCPRSN,
+                    FAX = t.FAX,
+                    ORDERS = t.ORDERS,
+                    PHONE1 = t.PHONE1,
+                    PRICE = (float)t.PRICE,
+                    PRSTADCD = t.PRSTADCD
+                }).ToList();
+            ViewBag.Orders = list;
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_OrderByLocalList");
+            }
+
             return View();
         }
 
-        public ActionResult OrderHistory()
+        public ActionResult OrderHistory(string dataForm, string dataTo,string itclass, string local ="ALL",string viewBy = "Category")
         {
+            ViewBag.Months = WebApp.Common.Util.GetMonths();
+            ViewBag.Years = WebApp.Common.Util.GetYears(2);
+
+            //初始选中
+            ViewBag.mon = DateTime.Now.Month.ToString();
+            ViewBag.monForm = DateTime.Now.AddMonths(-2).Month.ToString();
+            ViewBag.year = DateTime.Now.Year.ToString();
+            ViewBag.yearForm = DateTime.Now.AddMonths(-2).Year.ToString();
+            //第一次加载
+            //if (string.IsNullOrEmpty(local))
+            //{
+            //    local = "0";
+            //}
+            //if (string.IsNullOrEmpty(viewBy))
+            //{
+            //    viewBy = "Category";
+            //}
+
+            ViewBag.shipTos = SALES_EORDERSService.GetLocaByuserid(base.CurrentUser.AccountInfo.Account_no, base.CurrentUser.UserName)
+                .Select(t => new OrderHistoryLocaByuseridModel {
+                    id=t.id,
+                    name=t.name
+                }).ToList();
+
+            if (string.IsNullOrEmpty(dataForm))
+            {
+                dataForm = string.Format("{0}-{1}-01", ViewBag.yearForm, ViewBag.monForm);
+            }
+            if (string.IsNullOrEmpty(dataTo))
+            {
+                dataTo = string.Format("{0}-{1}-01", ViewBag.year, ViewBag.mon);
+            }
+            //dataForm = "2008-5-01";
+            //dataTo = "2010-12-01";
+            ViewBag.dataForm = dataForm;
+            ViewBag.dataTo = dataTo;
+            ViewBag.listType = viewBy;
+            if (viewBy == "Category")
+            {
+                ViewBag.Orders = SALES_EORDERSService.GetClasalesByCustid(base.CurrentUser.AccountInfo.Account_no, dataForm, dataTo, local)
+                    .Select(t => new OrderHistoryByClasalesModel
+                     {
+                         ITCLASS = t.ITCLASS,
+                         PRICE = (float)t.PRICE,
+                     }).ToList();
+            } else if (viewBy == "Invoices")
+            {
+                ViewBag.InvoiceItem = itclass;
+                //这里的itclass 其实传值为: itmember
+                ViewBag.Orders = SALES_EORDERSService.GetInvByProd(base.CurrentUser.AccountInfo.Account_no, itclass, dataForm, dataTo)
+                    .Select(t => new OrderHistoryByInvoiceModel
+                    {
+                        CSTPONBR = t.CSTPONBR,
+                        IDATE = t.IDATE,
+                        SOPNUMBE = t.SOPNUMBE,
+                        SOPTYPE = (int)t.SOPTYPE
+                    }).ToList();
+            }
+            else
+            {
+                //ViewBag.listType = "Product";
+                if (!string.IsNullOrEmpty(itclass))
+                {
+                    ViewBag.Orders = SALES_EORDERSService.GetclasalesByCustidByprod(base.CurrentUser.AccountInfo.Account_no, dataForm, dataTo, itclass, local)
+                    .Select(t => new OrderHistoryByClasalesProductModel
+                    {
+                        CLASS1 = t.CLASS1,
+                        CLASS3 = t.CLASS3,
+                        CLASS6 = t.CLASS6,
+                        CUSTNMBR = t.CUSTNMBR,
+                        ITEMDESC = t.ITEMDESC,
+                        ITEMNMBR = t.ITEMNMBR,
+                        QTY = (float)t.QTY,
+                        PRICE= (float)t.PRICE,
+                        UOFM = t.UOFM,
+                    }).ToList();
+                }
+                else
+                {
+                    ViewBag.Orders= SALES_EORDERSService.GetclasalesByCustidByAllprod(base.CurrentUser.AccountInfo.Account_no, dataForm, dataTo, local)
+                    .Select(t => new OrderHistoryByClasalesProductModel
+                    {
+                        CLASS1 = t.CLASS1,
+                        CLASS3 = t.CLASS3,
+                        CLASS6 = t.CLASS6,
+                        CUSTNMBR = t.CUSTNMBR,
+                        ITEMDESC = t.ITEMDESC,
+                        ITEMNMBR = t.ITEMNMBR,
+                        QTY = (float)t.QTY,
+                        PRICE = (float)t.PRICE,
+                        UOFM = t.UOFM,
+                    }).ToList();
+                }
+                
+            }
+
+            if (Request.IsAjaxRequest())
+            {
+                if (ViewBag.listType == "Category")
+                {
+                    return PartialView("_OrderHistoryList");
+                }
+                else
+                {
+                    return PartialView("_OrderHistoryProductList");
+                }
+            }
             return View();
         }
 
         public ActionResult OrderDetail()
         {
             return View();
+        }
+        #endregion
+
+        #region Pending Order
+
+        [HttpPost]
+        public JsonResult PendingOrderAprove(int OrderID)
+        {
+            EOrderService.UpdateProcStatus(OrderID,0);
+            return Json(new { success = true, message = "Aprove pending order success" });
+        }
+
+        [HttpPost]
+        public JsonResult PendingOrderSaveAndAprove(int OrderID, string[] skus)
+        {
+            foreach (var item in skus) {
+                string[] lt = item.Split(new char[] { '|' });
+                float qty = 0;
+                float.TryParse(lt[1], out qty);
+                if(!string.IsNullOrEmpty(lt[0]) && qty > 0)
+                {
+                    EOrderDetailService.UpdateOrderDetailQty(OrderID, lt[0], qty);
+                }
+            }
+            EOrderService.UpdateProcStatus(OrderID, 0);
+            return Json(new { success = true, message = "Aprove pending order success" });
+        }
+
+        [HttpPost]
+        public JsonResult PendingOrderDetailDeleteItem(string sku,int order_id)
+        {
+            int ret = EOrderDetailService.DeleteOrderDetail(order_id, sku);
+            //ben 2017-07-26
+            //??? 这里需不需要重新计算运费,杂费,GST...
+            if (ret > 0)
+            {
+                UpdatePendingOrder(order_id);
+                return Json(new { success = true, message = "delete order item success" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "delete order item failed." });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult PendingOrderDetailUpdateItem(string sku, int order_id,float qty)
+        {
+            EOrderDetailService.UpdateOrderDetailQty(order_id, sku, qty);
+            //ben 2017-07-26
+            //??? 这里需不需要重新计算运费,杂费,GST...
+            UpdatePendingOrder(order_id);
+            return Json(new { success = true, message = "Update pending order item success" });
+        }
+
+        /// <summary>
+        /// 重新更新订单PendingOrder的运费,杂费
+        /// </summary>
+        /// <param name="OrderID"></param>
+        private void UpdatePendingOrder(int OrderID)
+        {
+            var items = EOrderDetailService.EOrderDetailList.Where(t => t.OrderID == OrderID);
+            if (items.Count() > 0)
+            {
+                var item_subtotal = items.Sum(t => ((double)t.UnitPrice * (double)t.Orderqty));
+                double Freight = SALES_EBASKETService.GetUserFreight(item_subtotal);
+                double Miscellaneous = this.CurrentUser.Miscellaneous;
+                double GST = SYS_CONFIGService.GetCalculatedGst(Freight, Miscellaneous, item_subtotal);
+                var ord_model = EOrderService.EOrderList.FirstOrDefault(t => t.OrderID == OrderID);
+                if (ord_model != null)
+                {
+                    ord_model.Freight = (decimal)Freight;
+                    ord_model.Miscellaneous = (decimal)Miscellaneous;
+                    EOrderService.UpdateByRepository(ord_model);
+                }
+            }
+            else
+            {
+                //全部删除了
+                EOrderService.Delete(OrderID);
+            }
+        }
+
+        public ActionResult PendingOrderDetail(int OrderID)
+        {
+            var shopingcart = new ShoppingCartViewModel();
+            var ord_model = EOrderService.EOrderList.FirstOrDefault(t => t.OrderID == OrderID);
+            if (ord_model != null)
+            {
+                ShoppingOrder = new ShoppingOrderViewModel();
+                var model = new ShoppingInformationViewModel();
+                model.Address = ord_model.Ship_Address;
+                model.City = ord_model.Ship_City;
+                model.Company = ord_model.Ship_Name;
+                model.CommonText = ord_model.CommText;
+                model.PurchaseNO = ord_model.Pono;
+                model.PurchaseName = ord_model.Auth_code;
+                model.PurchaseTel = ord_model.Ship_phone;
+                ShoppingOrder.ShoppingInfo = model;
+                ShoppingOrder.OrderID = OrderID.ToString();
+
+
+
+                var slist = EOrderDetailService.EOrderDetailList.Where(t => t.OrderID == OrderID)
+                .Select(t => new SALES_EBASKET_RelaModel
+                {
+                    //StockType = t.s,
+                    StndCost = (double)t.UnitCost,
+                    UnitPrice = (double)t.UnitPrice,
+                    Quantity = (double)t.Orderqty,
+                    //Status = t.OrderStats,
+                    ProductNo = t.Sku,
+                    Unit = t.Unit,
+                    UnitPType = t.Unit,
+                    //ID = t.OrderID,
+                    //ProductID = t.ProductID,
+                    ProductName = t.Skudesc,
+                    //ProductPic = t.ProductPic
+                });
+                List<SALES_EBASKET_RelaModel> ls = new List<SALES_EBASKET_RelaModel>();
+                foreach (var lit in slist)
+                {
+                    var sku = PROD_MASTERService.GetProduct(lit.ProductNo);
+                    lit.ProductName = sku.ProductName;
+                    lit.ProductID = sku.ID;
+                    lit.Unit = sku.BaseUOFM;
+                    lit.MakeOrderID = OrderID.ToString();
+                    ls.Add(lit);
+                }
+
+                //shopingcart.Freight = (double)ord_model.Freight;
+                //shopingcart.Miscellaneous = (double)ord_model.Miscellaneous;
+                //shopingcart.Sales_Ebaskets = slist;
+
+                int item_count = slist.Count();
+                double item_subtotal = slist.Sum(t => (t.Quantity * (double)t.UnitPrice));
+
+                shopingcart.ItemCount = item_count;
+                shopingcart.CartTotal = item_subtotal.ToString("N2");
+                shopingcart.Sales_Ebaskets = ls;
+                shopingcart.Freight = (double)ord_model.Freight;
+                shopingcart.Miscellaneous = (double)ord_model.Miscellaneous;
+                shopingcart.GST = SYS_CONFIGService.GetCalculatedGst(shopingcart.Freight, shopingcart.Miscellaneous, item_subtotal);
+                shopingcart.Total = item_subtotal + shopingcart.Freight + shopingcart.Miscellaneous + shopingcart.GST;
+
+            }
+            ShoppingOrder.ShoppingCart = shopingcart;
+            ViewBag.ShoppingOrderModel = ShoppingOrder;
+            ViewBag.CurrentUser = CurrentUser;
+            return View();
+        }
+
+        public ActionResult PendingOrder()
+        {
+            double amout = 0;
+            ViewBag.Orders = EOrderService.GetPendingOrder(base.CurrentUser.AccountInfo.Account_no)
+                .AsEnumerable()
+                    .Select(t => new Ecomm.Site.Models.InetApp.EOrder.PendingOrderModel
+                    {
+                        //Amount = GetAmount(t.ShopID),
+                        OrderDate = t.CretDate,
+                        OrderID = t.OrderID,
+                        PurchaseNo = t.Pono,
+                        Reason = GetReason(t.ShipID,t.CustID,t.ShopID,(DateTime)t.CretDate,out amout),
+                        Amount = amout,
+                        ShipID = t.ShipID,
+                        ShopID = GetShopID(t.ShopID)
+                    }).ToList();
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_PendingOrderList");
+            }
+            return View();
+        }
+
+        private string GetShopID(string shopId)
+        {
+            string cn = string.Empty;
+            if (!string.IsNullOrEmpty(shopId))
+            {
+                var contactInfo = Rela_contactService.Rela_contactList.FirstOrDefault(t => t.Id == shopId);
+                if (contactInfo != null)
+                {
+                    cn = contactInfo.Name;
+                }
+            }
+            return cn;
+        }
+        /// <summary>
+        /// 对用户有下订单总额的限制
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        private Double GetAmount(string shopId)
+        {
+            Double amount = 0;
+            if (!string.IsNullOrEmpty(shopId))
+            {
+                amount = (Double)EOrderService.GetAmountByContactId(shopId);
+            }
+            return amount;
+        }
+        /// <summary>
+        /// 对客户下的ShipID有月份订单总额限制
+        /// </summary>
+        /// <param name="shipId"></param>
+        /// <param name="creator"></param>
+        /// <param name="amount"></param>
+        /// <param name="orderDate"></param>
+        /// <returns></returns>
+        private string GetReason(string shipId, string custId, string shopId, DateTime orderDate,out double amount)
+        {
+            amount = 0;
+            if (!string.IsNullOrEmpty(shopId))
+            {
+                amount = EOrderService.GetAmountByContactId(shopId);
+                var contactInfo = Rela_contactService.Rela_contactList.FirstOrDefault(t => t.Id == shopId);
+                if (contactInfo != null)
+                {
+                    if (contactInfo.AmountLimit > 0 && contactInfo.AmountLimit <= amount)
+                    {
+                        return string.Format("Order amount limit is {0}", contactInfo.AmountLimit);
+                    }
+                }
+
+                var info = Rela_location_limitService.Rela_location_limitList.FirstOrDefault(t => t.Account_no == custId && t.Address_id == shipId);
+
+                if (info != null)
+                {
+                    amount = EOrderService.GetOrdersByCurrentMonth_2(custId, shipId, orderDate);
+
+                    if (info.Month_quota > 0 && (Double)info.Month_quota <= amount)
+                    {
+                        return string.Format("This order amount more than Month limit: {0}", info.Month_quota);
+                    }
+                }
+            }
+            return "it is ok";
+
         }
         #endregion
     }

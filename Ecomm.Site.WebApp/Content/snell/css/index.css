@@ -100,7 +100,7 @@ a:hover{text-decoration: none}
 .products .popular-products .product-list{border: 1px solid #e4e4e4;width: 100%;height: 455px;}
 .products .popular-products .product-list .product-box{width: 247px;height: 453px;border-right: 1px solid #e4e4e4;padding: 55px 15px 15px 15px;}
 .products .popular-products .product-list .product-box:last-child{border-right: none;}
-.products .popular-products .product-list .product-box .pro-img{display: block;margin: 0 auto;margin-bottom: 20px; max-width:150px; }
+.products .popular-products .product-list .product-box .pro-img{display: block;margin: 0 auto;margin-bottom: 20px; max-width:150px; min-height: 140px; z-index:103; }
 .products .popular-products .product-list .product-box .product-name{color: #4b7ca8;font-size: 12px;font-weight: 600}
 .products .popular-products .product-list .product-box .price-cart{border-bottom: 1px solid #e4e4e4;height: 65px;}
 .products .popular-products .product-list .product-box .price-cart .price .old-price{color: #d9d9d9;font-size: 13px;text-decoration: line-through;}
@@ -124,6 +124,9 @@ a:hover{text-decoration: none}
 .products .best-sellers .sellers-list .sellers-box .sellers-desc .sellers-name{color: #4b7ca8;font-size: 12px;font-weight: 600}
 .products .best-sellers .sellers-list .sellers-box .sellers-desc .price .old-price{color: #d9d9d9;font-size: 13px;text-decoration: line-through;margin-bottom: 0;margin-top: 24px;}
 .products .best-sellers .sellers-list .sellers-box .sellers-desc .price .new-price{font-weight: 800}
+/*Invoice*/
+.invoices .popular-products{float: left;margin: 10px 10px;width: 95%;}
+
 /* 灰色背景 开始 */
 .container .main{width: 100%;background-color: #edeff0;margin-top: 30px;padding-top: 25px;}
 .container .main .personal-protection{width: 1074px;margin: 0 auto}
@@ -312,3 +315,38 @@ background-color: #fff;
     display: block;
     border-bottom: 1px solid #000;
 }
+
+.addToCart{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    /*padding: 50px 50px 15px 5px;*/
+    background-color: #c9c9c9;
+    height: 178px;
+    width: 100%;
+    display: none;
+    z-index:7000;
+}
+.hover_cart{
+    left: 25px;
+    position: relative;
+    top: 50px;
+    display: inline-block;
+}
+.img_addtocart{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    clear:both;
+    height: 178px;
+    width: 100%;
+}
+.ft_addtocar{
+    position: absolute;
+    top: 180px;
+    margin: 0 17px 0 0px;
+}
+.w50{width:50px}
+.w70{width:70px}
+.w80{width:80px}
+.w100{width:100px}

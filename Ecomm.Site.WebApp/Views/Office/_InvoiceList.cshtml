@@ -1,0 +1,63 @@
+﻿@using Ecomm.Site.Models.MyOffice.SALES_EORDERS;
+@{
+    List<InvoicePageModel> list = (List<InvoicePageModel>)ViewBag.Orders;
+}
+
+<div id="list" class="product-list" style="min-height: 150px;height: auto;">
+    @if (list.Count() > 0)
+    {
+        decimal total, subTotal, freiTotal, taxTotal, miscTotal;
+        total = 0; subTotal = 0; freiTotal = 0; taxTotal = 0; miscTotal = 0;
+        <table class="table table-striped">
+            <tr style="color: #cd0824;font-weight: bold;">
+                <th style="width: 10%">Invoice. No.</th>
+                <th style="width: 10%">Date</th>
+                <th style="width: 10%">My Order No.</th>
+                <th style="width: 10%">SubTotal</th>
+                <th style="width: 10%">Misc</th>
+                <th style="width: 10%">Tax</th>
+                <th style="width: 15%">Freight</th>
+                <th style="width: 15%"></th>
+            </tr>
+            @foreach (var item in list)
+            {
+                <tr style="color: #8B8770;font-size: 12px;">
+                    <td><a href="#" style="color:#0c4080;padding-left:5px;" onclick="viewInfo('@item.SOPNUMBE.Trim()','@item.SOPTYPE')">@item.SOPNUMBE</a></td>
+                    <td>@Html.DisplayFor(modelItem => item.IDATE)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CSTPONBR)</td>
+                    <td>@Html.DisplayFor(modelItem => item.XTNDPRCE)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MISCAMNT)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FRTAMNT)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TAXAMNT)</td>
+                    <td>
+                        <a href="#" style="color:#0c4080;" onclick="TransToOrder('@item.SOPNUMBE.Trim()', '@item.SOPTYPE')">Trans to orders</a>
+                    </td>
+                </tr>
+                subTotal += item.XTNDPRCE.Value;
+                freiTotal += item.FRTAMNT.Value;
+                taxTotal += item.TAXAMNT.Value;
+                miscTotal += item.MISCAMNT.Value;
+            }
+            <tr style="color: #cd0824;font-weight: bold;">
+                <td></td>
+                <td></td>
+                <td>Sub Total：</td>
+                <td>@subTotal.ToString("c")</td>
+                <td>@miscTotal.ToString("c")</td>
+                <td>@freiTotal.ToString("c")</td>
+                <td>@taxTotal.ToString("c")</td>
+                <td></td>
+            </tr>
+            @{ 
+                total = subTotal + freiTotal + taxTotal + miscTotal;
+            }
+            
+            <tr style="color: #cd0824;font-weight: bold;">
+                <td></td>
+                <td></td>
+                <td>Total：</td>
+                <td colspan="5">@total.ToString("c")</td>
+            </tr>
+        </table>
+    }
+</div>

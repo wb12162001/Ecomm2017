@@ -275,6 +275,41 @@ namespace Ecomm.Core.Service.MyOffice.Impl
             }
             return st;
         }
+
+        public IEnumerable<OrderSalesByCustidByloca> GetsalesByCustidByloca(string Custid, string date1, string date2)
+        {
+            return SALES_EORDERSRepository.GetsalesByCustidByloca(Custid, date1, date2);
+        }
+
+        public IEnumerable<OrderSalesByClasalesModel> GetClasalesByCustid(string Custid, string date1, string date2, string loca)
+        {
+            return SALES_EORDERSRepository.GetClasalesByCustid(Custid, date1, date2, loca);
+        }
+
+        public IEnumerable<OrderSalesByClasalesProductModel> GetclasalesByCustidByAllprod(string Custid, string date1, string date2, string loca)
+        {
+            return SALES_EORDERSRepository.GetclasalesByCustidByAllprod(Custid, date1, date2, loca);
+        }
+        public IEnumerable<OrderSalesByClasalesProductModel> GetclasalesByCustidByprod(string Custid, string date1, string date2, string itclass, string loca)
+        {
+            return SALES_EORDERSRepository.GetclasalesByCustidByprod(Custid, date1, date2, itclass, loca);
+        }
+        public IEnumerable<OrderInvByProdModel> GetInvByProd(string Custid, string itmembr, string date1, string date2)
+        {
+            return SALES_EORDERSRepository.GetInvByProd(Custid, itmembr, date1, date2);
+        }
+        public IEnumerable<OrderLocaByuseridModel> GetLocaByuserid(string Custid, string userId)
+        {
+            return SALES_EORDERSRepository.GetLocaByuserid(Custid, userId);
+        }
+        public IEnumerable<InvByCustidModel> GetInvByCustid(string Custid, string dateFrom, string dateTo, string searchKey, string type)
+        {
+            return SALES_EORDERSRepository.GetInvByCustid(Custid, dateFrom, dateTo, searchKey, type);
+        }
+        public IEnumerable<InvoiceDetailModel> GetInvdetailByCustid(string Custid, string invoiceNo, int invoiceType)
+        {
+            return SALES_EORDERSRepository.GetInvdetailByCustid(Custid, invoiceNo, invoiceType);
+        }
         #endregion
 
     }
